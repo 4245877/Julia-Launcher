@@ -34,7 +34,11 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             label1 = new Label();
             button2 = new Button();
-            button3 = new Button();
+            buttonSettings = new Button();
+            panel1 = new Panel();
+            button4 = new Button();
+            panelSettings = new Panel();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -65,21 +69,49 @@
             // 
             // button2
             // 
-            button2.Location = new Point(22, 41);
+            button2.Location = new Point(0, 621);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(206, 45);
             button2.TabIndex = 3;
-            button2.Text = "button2";
+            button2.Text = "S";
             button2.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // buttonSettings
             // 
-            button3.Location = new Point(22, 70);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 4;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            buttonSettings.Location = new Point(0, 672);
+            buttonSettings.Name = "buttonSettings";
+            buttonSettings.Size = new Size(206, 45);
+            buttonSettings.TabIndex = 4;
+            buttonSettings.Text = "S";
+            buttonSettings.UseVisualStyleBackColor = true;
+            buttonSettings.Click += buttonSettings_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(button4);
+            panel1.Controls.Add(button2);
+            panel1.Controls.Add(buttonSettings);
+            panel1.Location = new Point(6, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(206, 717);
+            panel1.TabIndex = 6;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(0, 3);
+            button4.Name = "button4";
+            button4.Size = new Size(206, 45);
+            button4.TabIndex = 5;
+            button4.Text = "button4";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // panelSettings
+            // 
+            panelSettings.Location = new Point(245, 12);
+            panelSettings.Name = "panelSettings";
+            panelSettings.Size = new Size(200, 100);
+            panelSettings.TabIndex = 7;
+            panelSettings.Visible = false;
             // 
             // MainForm
             // 
@@ -87,13 +119,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1350, 729);
-            Controls.Add(button3);
-            Controls.Add(button2);
+            Controls.Add(panelSettings);
+            Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(button1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             Text = "Julia";
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -104,6 +137,9 @@
         private ContextMenuStrip contextMenuStrip1;
         private Label label1;
         private Button button2;
-        private Button button3;
+        private Button buttonSettings;
+        private Panel panel1;
+        private Button button4;
+        private Panel panelSettings;
     }
 }

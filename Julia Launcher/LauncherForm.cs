@@ -22,6 +22,12 @@ namespace Julia_Launcher
         {
 
         }
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+
+
+        }
     }
 
     // Классы данных
