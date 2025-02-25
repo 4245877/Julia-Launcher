@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Julia_Launcher
 {
-    public partial class SettingsControl : UserControl
+    public partial class settingsControl : UserControl
     {
-        public SettingsControl()
+        public settingsControl()
         {
             InitializeComponent();
+        }
+
+        private void settingsControl_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

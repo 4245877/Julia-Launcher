@@ -37,7 +37,6 @@
             buttonSettings = new Button();
             panel1 = new Panel();
             button4 = new Button();
-            panelSettings = new Panel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -105,21 +104,12 @@
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
             // 
-            // panelSettings
-            // 
-            panelSettings.Location = new Point(245, 12);
-            panelSettings.Name = "panelSettings";
-            panelSettings.Size = new Size(200, 100);
-            panelSettings.TabIndex = 7;
-            panelSettings.Visible = false;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1350, 729);
-            Controls.Add(panelSettings);
             Controls.Add(panel1);
             Controls.Add(label1);
             Controls.Add(button1);
@@ -140,6 +130,5 @@
         private Button buttonSettings;
         private Panel panel1;
         private Button button4;
-        private Panel panelSettings;
     }
 }
