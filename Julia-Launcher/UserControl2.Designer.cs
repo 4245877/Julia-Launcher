@@ -32,7 +32,6 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar3 = new System.Windows.Forms.TrackBar();
-            this.trackBar4 = new System.Windows.Forms.TrackBar();
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.trackBar6 = new System.Windows.Forms.TrackBar();
             this.trackBar7 = new System.Windows.Forms.TrackBar();
@@ -48,7 +47,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).BeginInit();
@@ -85,30 +83,23 @@
             this.trackBar3.Size = new System.Drawing.Size(104, 45);
             this.trackBar3.TabIndex = 3;
             // 
-            // trackBar4
-            // 
-            this.trackBar4.Location = new System.Drawing.Point(351, 225);
-            this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(104, 12);
-            this.trackBar4.TabIndex = 4;
-            // 
             // trackBar5
             // 
-            this.trackBar5.Location = new System.Drawing.Point(351, 276);
+            this.trackBar5.Location = new System.Drawing.Point(287, 186);
             this.trackBar5.Name = "trackBar5";
             this.trackBar5.Size = new System.Drawing.Size(104, 45);
             this.trackBar5.TabIndex = 5;
             // 
             // trackBar6
             // 
-            this.trackBar6.Location = new System.Drawing.Point(351, 327);
+            this.trackBar6.Location = new System.Drawing.Point(287, 237);
             this.trackBar6.Name = "trackBar6";
             this.trackBar6.Size = new System.Drawing.Size(104, 45);
             this.trackBar6.TabIndex = 6;
             // 
             // trackBar7
             // 
-            this.trackBar7.Location = new System.Drawing.Point(351, 378);
+            this.trackBar7.Location = new System.Drawing.Point(287, 288);
             this.trackBar7.Name = "trackBar7";
             this.trackBar7.Size = new System.Drawing.Size(104, 45);
             this.trackBar7.TabIndex = 7;
@@ -211,7 +202,6 @@
             this.Controls.Add(this.trackBar7);
             this.Controls.Add(this.trackBar6);
             this.Controls.Add(this.trackBar5);
-            this.Controls.Add(this.trackBar4);
             this.Controls.Add(this.trackBar3);
             this.Controls.Add(this.trackBar2);
             this.Controls.Add(this.trackBar1);
@@ -221,7 +211,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).EndInit();
@@ -236,7 +225,6 @@
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.TrackBar trackBar3;
-        private System.Windows.Forms.TrackBar trackBar4;
         private System.Windows.Forms.TrackBar trackBar5;
         private System.Windows.Forms.TrackBar trackBar6;
         private System.Windows.Forms.TrackBar trackBar7;

@@ -430,6 +430,7 @@
             this.cmbCpuCores.Name = "cmbCpuCores";
             this.cmbCpuCores.Size = new System.Drawing.Size(121, 21);
             this.cmbCpuCores.TabIndex = 101;
+            this.cmbCpuCores.SelectedIndexChanged += new System.EventHandler(this.cmbCpuCores_SelectedIndexChanged);
             // 
             // checkBox9
             // 
@@ -447,6 +448,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 108;
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // textBox6
             // 

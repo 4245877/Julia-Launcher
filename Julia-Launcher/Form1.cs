@@ -6,12 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Management;
 using System.Windows.Forms;
-
+using System.IO;
 namespace Julia_Launcher
 {
     public partial class Form1: Form
     {
+        private string hardwareInfoFilePath = Path.Combine(Application.StartupPath, "hardware_info.txt");
+
+
         public Form1()
         {
             InitializeComponent();
@@ -19,8 +23,80 @@ namespace Julia_Launcher
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            CollectHardwareInfo();
         }
+        private void CollectHardwareInfo()
+        {
+            try
+            {
+                StringBuilder hardwareInfo = new StringBuilder();
+                hardwareInfo.AppendLine("=== Характеристики компьютера ===");
+                hardwareInfo.AppendLine($"Дата и время сбора: {DateTime.Now}");
+                hardwareInfo.AppendLine();
+
+                // Сбор информации о процессоре
+                hardwareInfo.AppendLine("=== Процессор ===");
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        hardwareInfo.AppendLine($"Название: {obj["Name"]}");
+                        hardwareInfo.AppendLine($"Производитель: {obj["Manufacturer"]}");
+                        hardwareInfo.AppendLine($"Количество ядер: {obj["NumberOfCores"]}");
+                        hardwareInfo.AppendLine($"Количество логических процессоров: {obj["NumberOfLogicalProcessors"]}");
+                        hardwareInfo.AppendLine($"Максимальная тактовая частота: {obj["MaxClockSpeed"]} МГц");
+                        hardwareInfo.AppendLine($"Архитектура: {obj["AddressWidth"]} бит");
+                    }
+                }
+
+                // Сбор информации об оперативной памяти
+                hardwareInfo.AppendLine("\n=== Оперативная память ===");
+                ulong totalMemory = 0;
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        ulong capacity = Convert.ToUInt64(obj["Capacity"]);
+                        totalMemory += capacity;
+                        hardwareInfo.AppendLine($"Модуль ОЗУ: {obj["Manufacturer"]} - {capacity / (1024 * 1024)} МБ");
+                        hardwareInfo.AppendLine($"Формат: {obj["FormFactor"]}");
+                        hardwareInfo.AppendLine($"Тип: {obj["MemoryType"]}");
+                        hardwareInfo.AppendLine($"Скорость: {obj["Speed"]} МГц");
+                    }
+                }
+                hardwareInfo.AppendLine($"Общий объем ОЗУ: {totalMemory / (1024 * 1024 * 1024)} ГБ");
+
+                // Сбор информации о видеокарте
+                hardwareInfo.AppendLine("\n=== Видеокарта ===");
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        hardwareInfo.AppendLine($"Название: {obj["Name"]}");
+                        hardwareInfo.AppendLine($"Производитель: {obj["AdapterCompatibility"]}");
+                        hardwareInfo.AppendLine($"Видеопроцессор: {obj["VideoProcessor"]}");
+                        hardwareInfo.AppendLine($"Версия драйвера: {obj["DriverVersion"]}");
+                        hardwareInfo.AppendLine($"Объем памяти: {Convert.ToUInt64(obj["AdapterRAM"]) / (1024 * 1024)} МБ");
+                        hardwareInfo.AppendLine($"Разрешение экрана: {obj["CurrentHorizontalResolution"]} x {obj["CurrentVerticalResolution"]}");
+                        hardwareInfo.AppendLine($"Частота обновления: {obj["CurrentRefreshRate"]} Гц");
+                    }
+                }
+
+                // Запись информации в файл
+                File.WriteAllText(hardwareInfoFilePath, hardwareInfo.ToString());
+
+                MessageBox.Show($"Информация о характеристиках компьютера успешно сохранена в файл:\n{hardwareInfoFilePath}",
+                    "Сбор информации", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сборе информации о характеристиках компьютера: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -66,6 +142,11 @@ namespace Julia_Launcher
 
             // Добавляем UserControl1 в panel1
             panel1.Controls.Add(userControl);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
