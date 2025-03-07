@@ -46,5 +46,26 @@ namespace Julia_Launcher
         {
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            // Очищаем panel1 от существующих элементов управления
+            panel1.Controls.Clear();
+
+            // Создаем новый экземпляр UserControl1
+            UserControl2 userControl = new UserControl2();
+
+            // Устанавливаем свойство Dock, чтобы элемент заполнил всю панель
+            userControl.Dock = DockStyle.Fill;
+
+            // Добавляем UserControl1 в panel1
+            panel1.Controls.Add(userControl);
+        }
     }
 }

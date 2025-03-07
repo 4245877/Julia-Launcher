@@ -30,12 +30,12 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SetingButton = new System.Windows.Forms.Button();
+            this.btnModelVoiceSettings = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.SetingButton = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -51,13 +51,53 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.SetingButton);
-            this.panel2.Controls.Add(this.button4);
+            this.panel2.Controls.Add(this.btnModelVoiceSettings);
             this.panel2.Controls.Add(this.button3);
             this.panel2.Controls.Add(this.button2);
             this.panel2.Location = new System.Drawing.Point(12, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(127, 705);
             this.panel2.TabIndex = 1;
+            // 
+            // SetingButton
+            // 
+            this.SetingButton.Location = new System.Drawing.Point(3, 660);
+            this.SetingButton.Name = "SetingButton";
+            this.SetingButton.Size = new System.Drawing.Size(121, 42);
+            this.SetingButton.TabIndex = 4;
+            this.SetingButton.Text = "Setings";
+            this.SetingButton.UseVisualStyleBackColor = true;
+            this.SetingButton.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // btnModelVoiceSettings
+            // 
+            this.btnModelVoiceSettings.Location = new System.Drawing.Point(3, 612);
+            this.btnModelVoiceSettings.Name = "btnModelVoiceSettings";
+            this.btnModelVoiceSettings.Size = new System.Drawing.Size(121, 42);
+            this.btnModelVoiceSettings.TabIndex = 3;
+            this.btnModelVoiceSettings.Text = "Model & Voice Settings";
+            this.btnModelVoiceSettings.UseVisualStyleBackColor = true;
+            this.btnModelVoiceSettings.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(3, 564);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(124, 42);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(3, 516);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(124, 42);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel3
             // 
@@ -75,44 +115,6 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Start";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(3, 516);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(124, 42);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(3, 564);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(124, 42);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(3, 612);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(121, 42);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // SetingButton
-            // 
-            this.SetingButton.Location = new System.Drawing.Point(3, 660);
-            this.SetingButton.Name = "SetingButton";
-            this.SetingButton.Size = new System.Drawing.Size(121, 42);
-            this.SetingButton.TabIndex = 4;
-            this.SetingButton.Text = "Setings";
-            this.SetingButton.UseVisualStyleBackColor = true;
-            this.SetingButton.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
@@ -137,7 +139,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button SetingButton;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnModelVoiceSettings;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
