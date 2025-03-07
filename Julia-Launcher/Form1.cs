@@ -85,8 +85,6 @@ namespace Julia_Launcher
                 // Запись информации в файл
                 File.WriteAllText(hardwareInfoFilePath, hardwareInfo.ToString());
 
-                MessageBox.Show($"Информация о характеристиках компьютера успешно сохранена в файл:\n{hardwareInfoFilePath}",
-                    "Сбор информации", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

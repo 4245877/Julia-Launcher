@@ -11,7 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Julia_Launcher
 {
-    public partial class UserControl1: UserControl
+    public partial class UserControl1 : UserControl
     {
         public UserControl1()
         {
@@ -49,6 +49,83 @@ namespace Julia_Launcher
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                // Настраиваем диалоговое окно
+                folderDialog.Description = "Выберите папку для установки";
+                folderDialog.ShowNewFolderButton = true; // Показывать кнопку создания новой папки
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer; // Начальная папка
+
+                // Открываем диалог и проверяем, что пользователь выбрал папку
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Сохраняем выбранный путь в txtInstallDirectory
+                    txtInstallDirectory.Text = folderDialog.SelectedPath;
+                }
+            }
+        }
+
+        private void txtInstallDirectory_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSelectLogDirectory_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                // Настраиваем диалоговое окно
+                folderDialog.Description = "Выберите папку для логов";
+                folderDialog.ShowNewFolderButton = true; // Показывать кнопку создания новой папки
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer; // Начальная папка
+
+                // Открываем диалог и проверяем, что пользователь выбрал папку
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Сохраняем выбранный путь в txtLogDirectory
+                    txtLogDirectory.Text = folderDialog.SelectedPath;
+                }
+            }
+        }
+
+        private void btnSelectModulesDirectory_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                // Настраиваем диалоговое окно
+                folderDialog.Description = "Выберите папку для модулей";
+                folderDialog.ShowNewFolderButton = true; // Показывать кнопку создания новой папки
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer; // Начальная папка
+
+                // Открываем диалог и проверяем, что пользователь выбрал папку
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Сохраняем выбранный путь в txtModulesDirectory
+                    txtModulesDirectory.Text = folderDialog.SelectedPath;
+                }
+            }
+        }
+
+        private void btnSelectCacheDirectory_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                // Настраиваем диалоговое окно
+                folderDialog.Description = "Выберите папку для кеша";
+                folderDialog.ShowNewFolderButton = true; // Показывать кнопку создания новой папки
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer; // Начальная папка
+
+                // Открываем диалог и проверяем, что пользователь выбрал папку
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Сохраняем выбранный путь в txtCacheDirectory
+                    txtCacheDirectory.Text = folderDialog.SelectedPath;
+                }
+            }
         }
     }
 }
