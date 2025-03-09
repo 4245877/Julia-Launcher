@@ -8,15 +8,94 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
+using System.Text.Json;
 
 namespace Julia_Launcher
 {
     public partial class UserControl1 : UserControl
     {
+        private const string settingsFilePath = "settings.json";
+
         public UserControl1()
         {
             InitializeComponent();
+            // Подписываемся на события изменения текста
+            txtInstallDirectory.TextChanged += txtInstallDirectory_TextChanged;
+            txtLogDirectory.TextChanged += txtLogDirectory_TextChanged;
+            txtModulesDirectory.TextChanged += txtModulesDirectory_TextChanged;
+
+            // Загружаем настройки при запуске (опционально)
+            LoadSettings();
         }
+
+        private void SaveSettings(string key, string value)
+        {
+            try
+            {
+                // Читаем текущие настройки
+                var settings = ReadSettings();
+
+                // Обновляем нужное поле
+                if (key == "InstallDirectory")
+                {
+                    settings.InstallDirectory = value;
+                }
+                else if (key == "LogDirectory")
+                {
+                    settings.LogDirectory = value;
+                }
+                else if (key == "ModulesDirectory")
+                {
+                    settings.ModulesDirectory = value;
+                }
+
+
+                // Записываем обновленные настройки в файл
+                string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(settingsFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении настроек: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private Settings ReadSettings()
+        {
+            if (File.Exists(settingsFilePath))
+            {
+                string json = File.ReadAllText(settingsFilePath);
+                return JsonSerializer.Deserialize<Settings>(json) ?? new Settings();
+            }
+            return new Settings();
+        }
+
+        // Класс для хранения настроек
+        private class Settings
+        {
+            public string InstallDirectory { get; set; } = string.Empty;
+            public string LogDirectory { get; set; } = string.Empty;
+            public string ModulesDirectory { get; set; } = string.Empty;
+        }
+
+        // Загрузка сохраненных настроек в TextBox при запуске (опционально)
+        private void LoadSettings()
+        {
+            var settings = ReadSettings();
+            txtInstallDirectory.Text = settings.InstallDirectory;
+            txtLogDirectory.Text = settings.LogDirectory;
+            txtModulesDirectory.Text = settings.ModulesDirectory; // Исправлено: присваивание текстовому полю
+        }
+
+
+
+
+
+
+
+
+
+
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Разрешаем только цифры и управляющие клавиши
@@ -71,7 +150,7 @@ namespace Julia_Launcher
 
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("InstallDirectory", txtInstallDirectory.Text);
         }
 
         private void btnSelectLogDirectory_Click(object sender, EventArgs e)
@@ -126,6 +205,16 @@ namespace Julia_Launcher
                     txtCacheDirectory.Text = folderDialog.SelectedPath;
                 }
             }
+        }
+
+        private void txtLogDirectory_TextChanged(object sender, EventArgs e)
+        {
+            SaveSettings("LogDirectory", txtLogDirectory.Text);
+        }
+
+        private void txtModulesDirectory_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

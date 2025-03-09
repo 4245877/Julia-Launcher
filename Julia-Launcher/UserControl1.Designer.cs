@@ -205,6 +205,7 @@
             txtLogDirectory.Name = "txtLogDirectory";
             txtLogDirectory.Size = new System.Drawing.Size(288, 23);
             txtLogDirectory.TabIndex = 78;
+            txtLogDirectory.TextChanged += txtLogDirectory_TextChanged;
             // 
             // txtInstallDirectory
             // 
@@ -262,7 +263,7 @@
             btnSelectModulesDirectory.Name = "btnSelectModulesDirectory";
             btnSelectModulesDirectory.Size = new System.Drawing.Size(88, 27);
             btnSelectModulesDirectory.TabIndex = 119;
-            btnSelectModulesDirectory.Text = "button1";
+            btnSelectModulesDirectory.Text = "Обзор";
             btnSelectModulesDirectory.UseVisualStyleBackColor = true;
             btnSelectModulesDirectory.Click += btnSelectModulesDirectory_Click;
             // 
@@ -273,7 +274,7 @@
             btnSelectInstallDirectory.Name = "btnSelectInstallDirectory";
             btnSelectInstallDirectory.Size = new System.Drawing.Size(88, 27);
             btnSelectInstallDirectory.TabIndex = 51;
-            btnSelectInstallDirectory.Text = "button1";
+            btnSelectInstallDirectory.Text = "Обзор";
             btnSelectInstallDirectory.UseVisualStyleBackColor = true;
             btnSelectInstallDirectory.Click += btnSelectInstallDirectory_Click;
             // 
@@ -284,6 +285,7 @@
             txtModulesDirectory.Name = "txtModulesDirectory";
             txtModulesDirectory.Size = new System.Drawing.Size(288, 23);
             txtModulesDirectory.TabIndex = 118;
+            txtModulesDirectory.TextChanged += txtModulesDirectory_TextChanged;
             // 
             // btnSelectCacheDirectory
             // 
@@ -292,7 +294,7 @@
             btnSelectCacheDirectory.Name = "btnSelectCacheDirectory";
             btnSelectCacheDirectory.Size = new System.Drawing.Size(88, 27);
             btnSelectCacheDirectory.TabIndex = 117;
-            btnSelectCacheDirectory.Text = "button2";
+            btnSelectCacheDirectory.Text = "Обзор";
             btnSelectCacheDirectory.UseVisualStyleBackColor = true;
             btnSelectCacheDirectory.Click += btnSelectCacheDirectory_Click;
             // 
@@ -311,7 +313,7 @@
             btnSelectLogDirectory.Name = "btnSelectLogDirectory";
             btnSelectLogDirectory.Size = new System.Drawing.Size(88, 27);
             btnSelectLogDirectory.TabIndex = 116;
-            btnSelectLogDirectory.Text = "button1";
+            btnSelectLogDirectory.Text = "Обзор";
             btnSelectLogDirectory.UseVisualStyleBackColor = true;
             btnSelectLogDirectory.Click += btnSelectLogDirectory_Click;
             // 
