@@ -28,194 +28,227 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.trackBar3 = new System.Windows.Forms.TrackBar();
-            this.trackBar5 = new System.Windows.Forms.TrackBar();
-            this.trackBar6 = new System.Windows.Forms.TrackBar();
-            this.trackBar7 = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).BeginInit();
-            this.SuspendLayout();
+            label1 = new System.Windows.Forms.Label();
+            trackBar1 = new System.Windows.Forms.TrackBar();
+            trackBar2 = new System.Windows.Forms.TrackBar();
+            trackBar3 = new System.Windows.Forms.TrackBar();
+            trackBar5 = new System.Windows.Forms.TrackBar();
+            trackBar6 = new System.Windows.Forms.TrackBar();
+            trackBar7 = new System.Windows.Forms.TrackBar();
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
+            label12 = new System.Windows.Forms.Label();
+            label13 = new System.Windows.Forms.Label();
+            label6 = new System.Windows.Forms.Label();
+            glControl1 = new OpenTK.GLControl.GLControl();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(3, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Model & Voice Settings";
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label1.Location = new System.Drawing.Point(4, 3);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(131, 13);
+            label1.TabIndex = 0;
+            label1.Text = "Model & Voice Settings";
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(156, 7);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 45);
-            this.trackBar1.TabIndex = 1;
+            trackBar1.Location = new System.Drawing.Point(182, 8);
+            trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar1.Name = "trackBar1";
+            trackBar1.Size = new System.Drawing.Size(121, 45);
+            trackBar1.TabIndex = 1;
             // 
             // trackBar2
             // 
-            this.trackBar2.Location = new System.Drawing.Point(156, 58);
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(104, 45);
-            this.trackBar2.TabIndex = 2;
+            trackBar2.Location = new System.Drawing.Point(182, 67);
+            trackBar2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar2.Name = "trackBar2";
+            trackBar2.Size = new System.Drawing.Size(121, 45);
+            trackBar2.TabIndex = 2;
             // 
             // trackBar3
             // 
-            this.trackBar3.Location = new System.Drawing.Point(156, 103);
-            this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(104, 45);
-            this.trackBar3.TabIndex = 3;
+            trackBar3.Location = new System.Drawing.Point(182, 119);
+            trackBar3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar3.Name = "trackBar3";
+            trackBar3.Size = new System.Drawing.Size(121, 45);
+            trackBar3.TabIndex = 3;
             // 
             // trackBar5
             // 
-            this.trackBar5.Location = new System.Drawing.Point(287, 186);
-            this.trackBar5.Name = "trackBar5";
-            this.trackBar5.Size = new System.Drawing.Size(104, 45);
-            this.trackBar5.TabIndex = 5;
+            trackBar5.Location = new System.Drawing.Point(223, 215);
+            trackBar5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar5.Name = "trackBar5";
+            trackBar5.Size = new System.Drawing.Size(121, 45);
+            trackBar5.TabIndex = 5;
             // 
             // trackBar6
             // 
-            this.trackBar6.Location = new System.Drawing.Point(287, 237);
-            this.trackBar6.Name = "trackBar6";
-            this.trackBar6.Size = new System.Drawing.Size(104, 45);
-            this.trackBar6.TabIndex = 6;
+            trackBar6.Location = new System.Drawing.Point(223, 273);
+            trackBar6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar6.Name = "trackBar6";
+            trackBar6.Size = new System.Drawing.Size(121, 45);
+            trackBar6.TabIndex = 6;
             // 
             // trackBar7
             // 
-            this.trackBar7.Location = new System.Drawing.Point(287, 288);
-            this.trackBar7.Name = "trackBar7";
-            this.trackBar7.Size = new System.Drawing.Size(104, 45);
-            this.trackBar7.TabIndex = 7;
+            trackBar7.Location = new System.Drawing.Point(223, 332);
+            trackBar7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackBar7.Name = "trackBar7";
+            trackBar7.Size = new System.Drawing.Size(121, 45);
+            trackBar7.TabIndex = 7;
+            trackBar7.Scroll += trackBar7_Scroll;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 58);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Рост";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(33, 67);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(32, 15);
+            label2.TabIndex = 8;
+            label2.Text = "Рост";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(28, 122);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Возраст";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(33, 141);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(50, 15);
+            label3.TabIndex = 9;
+            label3.Text = "Возраст";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 186);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(26, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Тон";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(33, 215);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(28, 15);
+            label4.TabIndex = 10;
+            label4.Text = "Тон";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 250);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(81, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Скорость речи";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(33, 288);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(89, 15);
+            label5.TabIndex = 11;
+            label5.Text = "Скорость речи";
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(28, 90);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(26, 13);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "Вес";
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(33, 104);
+            label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(26, 15);
+            label10.TabIndex = 16;
+            label10.Text = "Вес";
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(13, 154);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(116, 13);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "Настройки голоса";
+            label11.AutoSize = true;
+            label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label11.Location = new System.Drawing.Point(15, 178);
+            label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(116, 13);
+            label11.TabIndex = 17;
+            label11.Text = "Настройки голоса";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(28, 218);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(40, 13);
-            this.label12.TabIndex = 18;
-            this.label12.Text = "Тембр";
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(33, 252);
+            label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(43, 15);
+            label12.TabIndex = 18;
+            label12.Text = "Тембр";
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(28, 282);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(62, 13);
-            this.label13.TabIndex = 19;
-            this.label13.Text = "Громкость";
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(33, 325);
+            label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(66, 15);
+            label13.TabIndex = 19;
+            label13.Text = "Громкость";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 28);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(120, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Настройки 3D-модели";
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(15, 32);
+            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(131, 15);
+            label6.TabIndex = 20;
+            label6.Text = "Настройки 3D-модели";
+            // 
+            // glControl1
+            // 
+            glControl1.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            glControl1.APIVersion = new System.Version(3, 3, 0, 0);
+            glControl1.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            glControl1.IsEventDriven = true;
+            glControl1.Location = new System.Drawing.Point(670, 141);
+            glControl1.Name = "glControl1";
+            glControl1.Profile = OpenTK.Windowing.Common.ContextProfile.Core;
+            glControl1.SharedContext = null;
+            glControl1.Size = new System.Drawing.Size(430, 314);
+            glControl1.TabIndex = 21;
             // 
             // UserControl2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.trackBar7);
-            this.Controls.Add(this.trackBar6);
-            this.Controls.Add(this.trackBar5);
-            this.Controls.Add(this.trackBar3);
-            this.Controls.Add(this.trackBar2);
-            this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.label1);
-            this.Name = "UserControl2";
-            this.Size = new System.Drawing.Size(1157, 602);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(glControl1);
+            Controls.Add(label6);
+            Controls.Add(label13);
+            Controls.Add(label12);
+            Controls.Add(label11);
+            Controls.Add(label10);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(trackBar7);
+            Controls.Add(trackBar6);
+            Controls.Add(trackBar5);
+            Controls.Add(trackBar3);
+            Controls.Add(trackBar2);
+            Controls.Add(trackBar1);
+            Controls.Add(label1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "UserControl2";
+            Size = new System.Drawing.Size(1350, 695);
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar7).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -237,5 +270,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label6;
+        private OpenTK.GLControl.GLControl glControl1;
     }
 }

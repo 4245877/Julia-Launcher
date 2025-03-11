@@ -305,6 +305,7 @@
             txtCacheDirectory.Name = "txtCacheDirectory";
             txtCacheDirectory.Size = new System.Drawing.Size(288, 23);
             txtCacheDirectory.TabIndex = 99;
+            txtCacheDirectory.TextChanged += txtCacheDirectory_TextChanged;
             // 
             // btnSelectLogDirectory
             // 

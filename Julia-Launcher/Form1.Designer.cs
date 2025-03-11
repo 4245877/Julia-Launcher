@@ -28,109 +28,118 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.SetingButton = new System.Windows.Forms.Button();
-            this.btnModelVoiceSettings = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.SuspendLayout();
+            panel1 = new System.Windows.Forms.Panel();
+            panel2 = new System.Windows.Forms.Panel();
+            SetingButton = new System.Windows.Forms.Button();
+            btnModelVoiceSettings = new System.Windows.Forms.Button();
+            button3 = new System.Windows.Forms.Button();
+            button2 = new System.Windows.Forms.Button();
+            panel3 = new System.Windows.Forms.Panel();
+            button1 = new System.Windows.Forms.Button();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(145, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1193, 624);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            panel1.Location = new System.Drawing.Point(169, 14);
+            panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(1392, 720);
+            panel1.TabIndex = 0;
+            panel1.Paint += panel1_Paint;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.SetingButton);
-            this.panel2.Controls.Add(this.btnModelVoiceSettings);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Location = new System.Drawing.Point(12, 12);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(127, 705);
-            this.panel2.TabIndex = 1;
+            panel2.Controls.Add(SetingButton);
+            panel2.Controls.Add(btnModelVoiceSettings);
+            panel2.Controls.Add(button3);
+            panel2.Controls.Add(button2);
+            panel2.Location = new System.Drawing.Point(14, 14);
+            panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(148, 813);
+            panel2.TabIndex = 1;
             // 
             // SetingButton
             // 
-            this.SetingButton.Location = new System.Drawing.Point(3, 660);
-            this.SetingButton.Name = "SetingButton";
-            this.SetingButton.Size = new System.Drawing.Size(121, 42);
-            this.SetingButton.TabIndex = 4;
-            this.SetingButton.Text = "Setings";
-            this.SetingButton.UseVisualStyleBackColor = true;
-            this.SetingButton.Click += new System.EventHandler(this.button5_Click);
+            SetingButton.Location = new System.Drawing.Point(4, 762);
+            SetingButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            SetingButton.Name = "SetingButton";
+            SetingButton.Size = new System.Drawing.Size(141, 48);
+            SetingButton.TabIndex = 4;
+            SetingButton.Text = "Setings";
+            SetingButton.UseVisualStyleBackColor = true;
+            SetingButton.Click += button5_Click;
             // 
             // btnModelVoiceSettings
             // 
-            this.btnModelVoiceSettings.Location = new System.Drawing.Point(3, 612);
-            this.btnModelVoiceSettings.Name = "btnModelVoiceSettings";
-            this.btnModelVoiceSettings.Size = new System.Drawing.Size(121, 42);
-            this.btnModelVoiceSettings.TabIndex = 3;
-            this.btnModelVoiceSettings.Text = "Model & Voice Settings";
-            this.btnModelVoiceSettings.UseVisualStyleBackColor = true;
-            this.btnModelVoiceSettings.Click += new System.EventHandler(this.button4_Click);
+            btnModelVoiceSettings.Location = new System.Drawing.Point(4, 706);
+            btnModelVoiceSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnModelVoiceSettings.Name = "btnModelVoiceSettings";
+            btnModelVoiceSettings.Size = new System.Drawing.Size(141, 48);
+            btnModelVoiceSettings.TabIndex = 3;
+            btnModelVoiceSettings.Text = "Model & Voice Settings";
+            btnModelVoiceSettings.UseVisualStyleBackColor = true;
+            btnModelVoiceSettings.Click += button4_Click;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 564);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(124, 42);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            button3.Location = new System.Drawing.Point(4, 651);
+            button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(145, 48);
+            button3.TabIndex = 2;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 516);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(124, 42);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.Location = new System.Drawing.Point(4, 595);
+            button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(145, 48);
+            button2.TabIndex = 1;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.button1);
-            this.panel3.Location = new System.Drawing.Point(145, 642);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1193, 75);
-            this.panel3.TabIndex = 2;
+            panel3.Controls.Add(button1);
+            panel3.Location = new System.Drawing.Point(169, 741);
+            panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel3.Name = "panel3";
+            panel3.Size = new System.Drawing.Size(1392, 87);
+            panel3.TabIndex = 2;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(492, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(187, 69);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Location = new System.Drawing.Point(574, 0);
+            button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(218, 80);
+            button1.TabIndex = 0;
+            button1.Text = "Start";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1350, 729);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1575, 841);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "Form1";
+            Text = "Form1";
+            Load += Form1_Load;
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
