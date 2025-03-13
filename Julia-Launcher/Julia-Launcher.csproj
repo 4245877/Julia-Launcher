@@ -43,6 +43,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="OpenTK" Version="4.9.3" />
     <PackageReference Include="OpenTK.GLControl" Version="4.0.2" />

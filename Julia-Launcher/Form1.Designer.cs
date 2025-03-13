@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             SetingButton = new System.Windows.Forms.Button();
@@ -90,18 +91,18 @@
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(145, 48);
             button3.TabIndex = 2;
-            button3.Text = "button3";
+            button3.Text = "CoreFolder";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(4, 595);
+            button2.Location = new System.Drawing.Point(0, 3);
             button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(145, 48);
             button2.TabIndex = 1;
-            button2.Text = "button2";
+            button2.Text = "account";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -133,9 +134,10 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Julia Launcher ";
             Load += Form1_Load;
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);

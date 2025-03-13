@@ -241,5 +241,26 @@ namespace Julia_Launcher
         {
 
         }
+
+        private void txtGPULimit_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtGPULimit.Text))
+                return;
+
+            if (int.TryParse(txtGPULimit.Text, out int number))
+            {
+                if (number < 1 || number > 100)
+                {
+                    // Восстанавливаем предыдущее значение или очищаем TextBox
+                    txtGPULimit.Text = number < 1 ? "1" : "100";
+                    txtGPULimit.SelectionStart = txtGPULimit.Text.Length; // Устанавливаем курсор в конец
+                }
+            }
+            else
+            {
+                // Удаляем некорректный ввод
+                txtGPULimit.Text = "";
+            }
+        }
     }
 }

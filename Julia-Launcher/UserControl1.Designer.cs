@@ -498,6 +498,7 @@
             txtGPULimit.Name = "txtGPULimit";
             txtGPULimit.Size = new System.Drawing.Size(116, 23);
             txtGPULimit.TabIndex = 110;
+            txtGPULimit.TextChanged += txtGPULimit_TextChanged;
             // 
             // txtCpuLoad
             // 
