@@ -60,9 +60,9 @@
             trackRamUsage = new System.Windows.Forms.TrackBar();
             cmbGpuSelection = new System.Windows.Forms.ComboBox();
             cmbCpuCores = new System.Windows.Forms.ComboBox();
-            checkBox9 = new System.Windows.Forms.CheckBox();
-            textBox4 = new System.Windows.Forms.TextBox();
-            textBox6 = new System.Windows.Forms.TextBox();
+            chkGPUEnable = new System.Windows.Forms.CheckBox();
+            txtCPULimit = new System.Windows.Forms.TextBox();
+            txtGPULimit = new System.Windows.Forms.TextBox();
             txtCpuLoad = new System.Windows.Forms.TextBox();
             tabPage3 = new System.Windows.Forms.TabPage();
             label16 = new System.Windows.Forms.Label();
@@ -333,9 +333,9 @@
             tabPage2.Controls.Add(trackRamUsage);
             tabPage2.Controls.Add(cmbGpuSelection);
             tabPage2.Controls.Add(cmbCpuCores);
-            tabPage2.Controls.Add(checkBox9);
-            tabPage2.Controls.Add(textBox4);
-            tabPage2.Controls.Add(textBox6);
+            tabPage2.Controls.Add(chkGPUEnable);
+            tabPage2.Controls.Add(txtCPULimit);
+            tabPage2.Controls.Add(txtGPULimit);
             tabPage2.Controls.Add(txtCpuLoad);
             tabPage2.Location = new System.Drawing.Point(4, 24);
             tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -472,33 +472,32 @@
             cmbCpuCores.TabIndex = 101;
             cmbCpuCores.SelectedIndexChanged += cmbCpuCores_SelectedIndexChanged;
             // 
-            // checkBox9
+            // chkGPUEnable
             // 
-            checkBox9.AutoSize = true;
-            checkBox9.Location = new System.Drawing.Point(236, 192);
-            checkBox9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox9.Name = "checkBox9";
-            checkBox9.Size = new System.Drawing.Size(82, 19);
-            checkBox9.TabIndex = 111;
-            checkBox9.Text = "checkBox9";
-            checkBox9.UseVisualStyleBackColor = true;
+            chkGPUEnable.AutoSize = true;
+            chkGPUEnable.Location = new System.Drawing.Point(221, 194);
+            chkGPUEnable.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkGPUEnable.Name = "chkGPUEnable";
+            chkGPUEnable.Size = new System.Drawing.Size(15, 14);
+            chkGPUEnable.TabIndex = 111;
+            chkGPUEnable.UseVisualStyleBackColor = true;
             // 
-            // textBox4
+            // txtCPULimit
             // 
-            textBox4.Location = new System.Drawing.Point(160, 78);
-            textBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new System.Drawing.Size(116, 23);
-            textBox4.TabIndex = 108;
-            textBox4.TextChanged += textBox4_TextChanged;
+            txtCPULimit.Location = new System.Drawing.Point(160, 78);
+            txtCPULimit.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtCPULimit.Name = "txtCPULimit";
+            txtCPULimit.Size = new System.Drawing.Size(116, 23);
+            txtCPULimit.TabIndex = 108;
+            txtCPULimit.TextChanged += textBox4_TextChanged;
             // 
-            // textBox6
+            // txtGPULimit
             // 
-            textBox6.Location = new System.Drawing.Point(261, 226);
-            textBox6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new System.Drawing.Size(116, 23);
-            textBox6.TabIndex = 110;
+            txtGPULimit.Location = new System.Drawing.Point(261, 226);
+            txtGPULimit.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtGPULimit.Name = "txtGPULimit";
+            txtGPULimit.Size = new System.Drawing.Size(116, 23);
+            txtGPULimit.TabIndex = 110;
             // 
             // txtCpuLoad
             // 
@@ -687,6 +686,7 @@
             chkAutoStart.Size = new System.Drawing.Size(15, 14);
             chkAutoStart.TabIndex = 103;
             chkAutoStart.UseVisualStyleBackColor = true;
+            chkAutoStart.CheckedChanged += chkAutoStart_CheckedChanged;
             // 
             // tabPage4
             // 
@@ -890,6 +890,7 @@
             radioButton1.TabStop = true;
             radioButton1.Text = "radioButton1";
             radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // label34
             // 
@@ -1063,9 +1064,9 @@
         private System.Windows.Forms.TrackBar trackRamUsage;
         private System.Windows.Forms.ComboBox cmbGpuSelection;
         private System.Windows.Forms.ComboBox cmbCpuCores;
-        private System.Windows.Forms.CheckBox checkBox9;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.CheckBox chkGPUEnable;
+        private System.Windows.Forms.TextBox txtCPULimit;
+        private System.Windows.Forms.TextBox txtGPULimit;
         private System.Windows.Forms.TextBox txtCpuLoad;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label16;
