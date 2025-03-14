@@ -22,6 +22,8 @@ namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
+
+        /*
         private GLControl glControl;
         private bool loaded = false;
         private Model model;
@@ -745,14 +747,14 @@ namespace Julia_Launcher
 
 
 
+        */
 
 
 
 
 
 
-
-            private void glControl1_Click(object sender, EventArgs e)
+        private void glControl1_Click(object sender, EventArgs e)
             {
 
             }
@@ -771,6 +773,6 @@ namespace Julia_Launcher
             {
 
             }
-        }
     }
 }
+
