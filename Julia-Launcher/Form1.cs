@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Management;
@@ -121,6 +122,42 @@ namespace Julia_Launcher
             control.Dock = DockStyle.Fill;
             panel1.Controls.Add(control);
         }
+
+
+
+
+        public class SystemHardwareInfo
+        {
+            public int CpuCores { get; set; }            // Количество ядер процессора
+            public List<string> GpuList { get; set; }    // Список видеокарт
+            public int TotalMemoryGB { get; set; }       // Общий объем ОЗУ в гигабайтах
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Обработчики событий кнопок
         private void button2_Click(object sender, EventArgs e)
