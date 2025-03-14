@@ -72,13 +72,11 @@
             label21 = new System.Windows.Forms.Label();
             label17 = new System.Windows.Forms.Label();
             label22 = new System.Windows.Forms.Label();
-            checkBox11 = new System.Windows.Forms.CheckBox();
-            comboBox2 = new System.Windows.Forms.ComboBox();
             checkBox10 = new System.Windows.Forms.CheckBox();
-            checkBox1 = new System.Windows.Forms.CheckBox();
+            chkManUpdate = new System.Windows.Forms.CheckBox();
             cmbUpdateBranch = new System.Windows.Forms.ComboBox();
-            checkBox3 = new System.Windows.Forms.CheckBox();
-            checkBox4 = new System.Windows.Forms.CheckBox();
+            chkAutoUpdate = new System.Windows.Forms.CheckBox();
+            chkUpdPreferen = new System.Windows.Forms.CheckBox();
             chkAutoStart = new System.Windows.Forms.CheckBox();
             tabPage4 = new System.Windows.Forms.TabPage();
             label23 = new System.Windows.Forms.Label();
@@ -90,7 +88,7 @@
             label27 = new System.Windows.Forms.Label();
             label28 = new System.Windows.Forms.Label();
             label29 = new System.Windows.Forms.Label();
-            cmbLogFormat = new System.Windows.Forms.ComboBox();
+            cmbWarnings = new System.Windows.Forms.ComboBox();
             label30 = new System.Windows.Forms.Label();
             tabPage5 = new System.Windows.Forms.TabPage();
             label31 = new System.Windows.Forms.Label();
@@ -108,6 +106,9 @@
             label38 = new System.Windows.Forms.Label();
             checkBox7 = new System.Windows.Forms.CheckBox();
             chkEncryptLogs = new System.Windows.Forms.CheckBox();
+            cmbLogFormat = new System.Windows.Forms.ComboBox();
+            chkLogRetention = new System.Windows.Forms.CheckBox();
+            cmbInfoMassages = new System.Windows.Forms.ComboBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -452,6 +453,7 @@
             trackRamUsage.Name = "trackRamUsage";
             trackRamUsage.Size = new System.Drawing.Size(288, 45);
             trackRamUsage.TabIndex = 100;
+            trackRamUsage.Scroll += trackRamUsage_Scroll;
             // 
             // cmbGpuSelection
             // 
@@ -517,13 +519,11 @@
             tabPage3.Controls.Add(label21);
             tabPage3.Controls.Add(label17);
             tabPage3.Controls.Add(label22);
-            tabPage3.Controls.Add(checkBox11);
-            tabPage3.Controls.Add(comboBox2);
             tabPage3.Controls.Add(checkBox10);
-            tabPage3.Controls.Add(checkBox1);
+            tabPage3.Controls.Add(chkManUpdate);
             tabPage3.Controls.Add(cmbUpdateBranch);
-            tabPage3.Controls.Add(checkBox3);
-            tabPage3.Controls.Add(checkBox4);
+            tabPage3.Controls.Add(chkAutoUpdate);
+            tabPage3.Controls.Add(chkUpdPreferen);
             tabPage3.Controls.Add(chkAutoStart);
             tabPage3.Location = new System.Drawing.Point(4, 24);
             tabPage3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -605,30 +605,10 @@
             label22.TabIndex = 77;
             label22.Text = "Choose update branch (Stable, Beta, Nightly).";
             // 
-            // checkBox11
-            // 
-            checkBox11.AutoSize = true;
-            checkBox11.Location = new System.Drawing.Point(590, 24);
-            checkBox11.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox11.Name = "checkBox11";
-            checkBox11.Size = new System.Drawing.Size(88, 19);
-            checkBox11.TabIndex = 115;
-            checkBox11.Text = "checkBox11";
-            checkBox11.UseVisualStyleBackColor = true;
-            // 
-            // comboBox2
-            // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new System.Drawing.Point(590, 110);
-            comboBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new System.Drawing.Size(140, 23);
-            comboBox2.TabIndex = 55;
-            // 
             // checkBox10
             // 
             checkBox10.AutoSize = true;
-            checkBox10.Location = new System.Drawing.Point(211, 155);
+            checkBox10.Location = new System.Drawing.Point(204, 155);
             checkBox10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new System.Drawing.Size(88, 19);
@@ -636,16 +616,16 @@
             checkBox10.Text = "checkBox10";
             checkBox10.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // chkManUpdate
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new System.Drawing.Point(136, 192);
-            checkBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(82, 19);
-            checkBox1.TabIndex = 53;
-            checkBox1.Text = "checkBox1";
-            checkBox1.UseVisualStyleBackColor = true;
+            chkManUpdate.AutoSize = true;
+            chkManUpdate.Location = new System.Drawing.Point(136, 192);
+            chkManUpdate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkManUpdate.Name = "chkManUpdate";
+            chkManUpdate.Size = new System.Drawing.Size(15, 14);
+            chkManUpdate.TabIndex = 53;
+            chkManUpdate.UseVisualStyleBackColor = true;
+            chkManUpdate.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // cmbUpdateBranch
             // 
@@ -656,32 +636,30 @@
             cmbUpdateBranch.Size = new System.Drawing.Size(140, 23);
             cmbUpdateBranch.TabIndex = 96;
             // 
-            // checkBox3
+            // chkAutoUpdate
             // 
-            checkBox3.AutoSize = true;
-            checkBox3.Location = new System.Drawing.Point(154, 118);
-            checkBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox3.Name = "checkBox3";
-            checkBox3.Size = new System.Drawing.Size(82, 19);
-            checkBox3.TabIndex = 98;
-            checkBox3.Text = "checkBox3";
-            checkBox3.UseVisualStyleBackColor = true;
+            chkAutoUpdate.AutoSize = true;
+            chkAutoUpdate.Location = new System.Drawing.Point(152, 118);
+            chkAutoUpdate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkAutoUpdate.Name = "chkAutoUpdate";
+            chkAutoUpdate.Size = new System.Drawing.Size(15, 14);
+            chkAutoUpdate.TabIndex = 98;
+            chkAutoUpdate.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // chkUpdPreferen
             // 
-            checkBox4.AutoSize = true;
-            checkBox4.Location = new System.Drawing.Point(159, 81);
-            checkBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new System.Drawing.Size(82, 19);
-            checkBox4.TabIndex = 102;
-            checkBox4.Text = "checkBox4";
-            checkBox4.UseVisualStyleBackColor = true;
+            chkUpdPreferen.AutoSize = true;
+            chkUpdPreferen.Location = new System.Drawing.Point(150, 83);
+            chkUpdPreferen.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkUpdPreferen.Name = "chkUpdPreferen";
+            chkUpdPreferen.Size = new System.Drawing.Size(15, 14);
+            chkUpdPreferen.TabIndex = 102;
+            chkUpdPreferen.UseVisualStyleBackColor = true;
             // 
             // chkAutoStart
             // 
             chkAutoStart.AutoSize = true;
-            chkAutoStart.Location = new System.Drawing.Point(112, 45);
+            chkAutoStart.Location = new System.Drawing.Point(103, 46);
             chkAutoStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chkAutoStart.Name = "chkAutoStart";
             chkAutoStart.Size = new System.Drawing.Size(15, 14);
@@ -691,6 +669,9 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(cmbInfoMassages);
+            tabPage4.Controls.Add(chkLogRetention);
+            tabPage4.Controls.Add(cmbLogFormat);
             tabPage4.Controls.Add(label23);
             tabPage4.Controls.Add(label24);
             tabPage4.Controls.Add(comboBox4);
@@ -700,7 +681,7 @@
             tabPage4.Controls.Add(label27);
             tabPage4.Controls.Add(label28);
             tabPage4.Controls.Add(label29);
-            tabPage4.Controls.Add(cmbLogFormat);
+            tabPage4.Controls.Add(cmbWarnings);
             tabPage4.Controls.Add(label30);
             tabPage4.Location = new System.Drawing.Point(4, 24);
             tabPage4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -800,14 +781,14 @@
             label29.TabIndex = 85;
             label29.Text = "Log Format (TXT, JSON, etc.).";
             // 
-            // cmbLogFormat
+            // cmbWarnings
             // 
-            cmbLogFormat.FormattingEnabled = true;
-            cmbLogFormat.Location = new System.Drawing.Point(140, 115);
-            cmbLogFormat.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            cmbLogFormat.Name = "cmbLogFormat";
-            cmbLogFormat.Size = new System.Drawing.Size(140, 23);
-            cmbLogFormat.TabIndex = 107;
+            cmbWarnings.FormattingEnabled = true;
+            cmbWarnings.Location = new System.Drawing.Point(140, 115);
+            cmbWarnings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbWarnings.Name = "cmbWarnings";
+            cmbWarnings.Size = new System.Drawing.Size(140, 23);
+            cmbWarnings.TabIndex = 107;
             // 
             // label30
             // 
@@ -1002,6 +983,31 @@
             chkEncryptLogs.TabIndex = 104;
             chkEncryptLogs.UseVisualStyleBackColor = true;
             // 
+            // cmbLogFormat
+            // 
+            cmbLogFormat.FormattingEnabled = true;
+            cmbLogFormat.Location = new System.Drawing.Point(202, 227);
+            cmbLogFormat.Name = "cmbLogFormat";
+            cmbLogFormat.Size = new System.Drawing.Size(121, 23);
+            cmbLogFormat.TabIndex = 125;
+            // 
+            // chkLogRetention
+            // 
+            chkLogRetention.AutoSize = true;
+            chkLogRetention.Location = new System.Drawing.Point(121, 266);
+            chkLogRetention.Name = "chkLogRetention";
+            chkLogRetention.Size = new System.Drawing.Size(15, 14);
+            chkLogRetention.TabIndex = 126;
+            chkLogRetention.UseVisualStyleBackColor = true;
+            // 
+            // cmbInfoMassages
+            // 
+            cmbInfoMassages.FormattingEnabled = true;
+            cmbInfoMassages.Location = new System.Drawing.Point(176, 153);
+            cmbInfoMassages.Name = "cmbInfoMassages";
+            cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
+            cmbInfoMassages.TabIndex = 127;
+            // 
             // UserControl1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1077,13 +1083,11 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckBox checkBox11;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.CheckBox checkBox10;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkManUpdate;
         private System.Windows.Forms.ComboBox cmbUpdateBranch;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox chkAutoUpdate;
+        private System.Windows.Forms.CheckBox chkUpdPreferen;
         private System.Windows.Forms.CheckBox chkAutoStart;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label23;
@@ -1095,7 +1099,7 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.ComboBox cmbLogFormat;
+        private System.Windows.Forms.ComboBox cmbWarnings;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label31;
@@ -1113,5 +1117,8 @@
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox chkEncryptLogs;
+        private System.Windows.Forms.ComboBox cmbLogFormat;
+        private System.Windows.Forms.CheckBox chkLogRetention;
+        private System.Windows.Forms.ComboBox cmbInfoMassages;
     }
 }

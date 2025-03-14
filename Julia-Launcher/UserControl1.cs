@@ -120,7 +120,7 @@ namespace Julia_Launcher
             public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
         }
 
-        // Загрузка сохраненных настроек в TextBox при запуске
+        // Загрузка сохраненных настроек 
         private void LoadSettings()
         {
             var settings = ReadSettings();
@@ -129,6 +129,10 @@ namespace Julia_Launcher
             txtModulesDirectory.Text = settings.ModulesDirectory;
             txtCacheDirectory.Text = settings.CacheDirectory;
 
+
+            // Загрузка для CheckBox
+            chkGPUEnable.Checked = settings.GPUEnable;
+            chkAutoStart.Checked = settings.AutoStart;
 
 
 
@@ -261,6 +265,16 @@ namespace Julia_Launcher
                 // Удаляем некорректный ввод
                 txtGPULimit.Text = "";
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackRamUsage_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }
