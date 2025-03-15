@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Devices;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -26,11 +27,13 @@ namespace Julia_Launcher
 
             // Устанавливаем путь к файлу с информацией о железе
             hardwareInfoFilePath = Path.Combine(settingsDirectory, "hardware_info.txt");
+
+            CollectHardwareInfo(); // Сначала собираем информацию
+            LoadHardwareInfo();    // Затем загружаем ее
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            CollectHardwareInfo();
         }
 
         private void CollectHardwareInfo()
@@ -124,35 +127,131 @@ namespace Julia_Launcher
         }
 
 
-
-
-        public class SystemHardwareInfo
+        private void LoadHardwareInfo()
         {
-            public int CpuCores { get; set; }            // Количество ядер процессора
-            public List<string> GpuList { get; set; }    // Список видеокарт
-            public int TotalMemoryGB { get; set; }       // Общий объем ОЗУ в гигабайтах
+            ComputerInfo = new HardwareInfo();
+            if (!ComputerInfo.ReadFromFile(hardwareInfoFilePath)) // Используем hardwareInfoFilePath
+            {
+                MessageBox.Show("Не удалось загрузить информацию о характеристиках компьютера.",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
 
+        public class HardwareInfo
+        {
+            // Данные о процессоре
+            public string CpuName { get; set; }
+            public string CpuManufacturer { get; set; }
+            public int CpuCores { get; set; }
+            public int CpuLogicalProcessors { get; set; }
+            public int CpuMaxFrequency { get; set; }
+            public string CpuArchitecture { get; set; }
 
+            // Данные об оперативной памяти
+            public int RamTotalSize { get; set; }
+            public List<RamModule> RamModules { get; set; } = new List<RamModule>(); // Новый список
 
+            // Данные о видеокарте
+            public string GpuName { get; set; }
+            public string GpuManufacturer { get; set; }
+            public int GpuMemory { get; set; }
+            public string GpuResolution { get; set; }
+            public int GpuRefreshRate { get; set; }
 
+            // Вспомогательный класс для модулей ОЗУ
+            public class RamModule
+            {
+                public string Manufacturer { get; set; }
+                public ulong Size { get; set; } // Используем ulong для больших объемов
+                public int Speed { get; set; }
+            }
 
+            public bool ReadFromFile(string filePath)
+            {
+                try
+                {
+                    if (!File.Exists(filePath))
+                        return false;
 
+                    string[] lines = File.ReadAllLines(filePath);
+                    string currentSection = "";
 
+                    foreach (string line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
 
+                        if (line.StartsWith("=== "))
+                        {
+                            if (line.Contains("Процессор"))
+                                currentSection = "CPU";
+                            else if (line.Contains("Оперативная память"))
+                                currentSection = "RAM";
+                            else if (line.Contains("Видеокарта"))
+                                currentSection = "GPU";
+                            continue;
+                        }
 
+                        if (currentSection == "CPU")
+                        {
+                            if (line.StartsWith("Название:"))
+                                CpuName = line.Substring("Название:".Length).Trim();
+                            else if (line.StartsWith("Производитель:"))
+                                CpuManufacturer = line.Substring("Производитель:".Length).Trim();
+                            else if (line.StartsWith("Количество ядер:"))
+                                CpuCores = int.Parse(line.Substring("Количество ядер:".Length).Trim());
+                            else if (line.StartsWith("Количество логических процессоров:"))
+                                CpuLogicalProcessors = int.Parse(line.Substring("Количество логических процессоров:".Length).Trim());
+                            else if (line.StartsWith("Максимальная тактовая частота:"))
+                                CpuMaxFrequency = int.Parse(line.Substring("Максимальная тактовая частота:".Length).Split(' ')[0].Trim());
+                            else if (line.StartsWith("Архитектура:"))
+                                CpuArchitecture = line.Substring("Архитектура:".Length).Trim();
+                        }
+                        else if (currentSection == "RAM")
+                        {
+                            if (line.StartsWith("Модуль ОЗУ:"))
+                            {
+                                var parts = line.Substring("Модуль ОЗУ:".Length).Trim().Split('-');
+                                var manufacturer = parts[0].Trim();
+                                var size = ulong.Parse(parts[1].Trim().Split(' ')[0]) * 1024 * 1024; // Переводим МБ в байты
+                                RamModules.Add(new RamModule { Manufacturer = manufacturer, Size = size });
+                            }
+                            else if (line.StartsWith("Скорость:"))
+                            {
+                                var speed = int.Parse(line.Substring("Скорость:".Length).Trim().Split(' ')[0]);
+                                if (RamModules.Count > 0)
+                                    RamModules[RamModules.Count - 1].Speed = speed;
+                            }
+                            else if (line.StartsWith("Общий объем ОЗУ:"))
+                                RamTotalSize = int.Parse(line.Substring("Общий объем ОЗУ:".Length).Trim().Split(' ')[0]);
+                        }
+                        else if (currentSection == "GPU")
+                        {
+                            if (line.StartsWith("Название:"))
+                                GpuName = line.Substring("Название:".Length).Trim();
+                            else if (line.StartsWith("Производитель:"))
+                                GpuManufacturer = line.Substring("Производитель:".Length).Trim();
+                            else if (line.StartsWith("Объем памяти:"))
+                                GpuMemory = int.Parse(line.Substring("Объем памяти:".Length).Trim().Split(' ')[0]);
+                            else if (line.StartsWith("Разрешение экрана:"))
+                                GpuResolution = line.Substring("Разрешение экрана:".Length).Trim();
+                            else if (line.StartsWith("Частота обновления:"))
+                                GpuRefreshRate = int.Parse(line.Substring("Частота обновления:".Length).Trim().Split(' ')[0]);
+                        }
+                    }
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
 
-
-
-
-
-
-
-
-
-
+        // Статический экземпляр класса HardwareInfo для доступа из других форм
+        public static HardwareInfo ComputerInfo { get; private set; }
 
 
 

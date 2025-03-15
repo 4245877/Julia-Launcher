@@ -12,9 +12,14 @@ namespace Julia_Launcher
     {
         private readonly string settingsFilePath;
 
+        // Ссылка на информацию о характеристиках
+        private Form1.HardwareInfo hardwareInfo;
+
+
         public UserControl1()
         {
             InitializeComponent();
+
 
             // Создаем директорию settings, если она не существует
             string settingsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings");
@@ -33,6 +38,10 @@ namespace Julia_Launcher
 
             // Загружаем настройки при запуске
             LoadSettings();
+
+            // Получаем ссылку на информацию о характеристиках
+            hardwareInfo = Form1.ComputerInfo;
+
         }
 
         private void SaveSettings(string key, string value)
@@ -140,6 +149,21 @@ namespace Julia_Launcher
         }
 
 
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -233,7 +257,7 @@ namespace Julia_Launcher
 
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Оставлено пустым, так как в исходном коде не было реализации
+            // ПОместить информацию сколько ядер выбрано
         }
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
