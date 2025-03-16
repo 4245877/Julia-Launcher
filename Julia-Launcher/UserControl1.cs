@@ -41,7 +41,7 @@ namespace Julia_Launcher
 
             // Получаем ссылку на информацию о характеристиках
             hardwareInfo = Form1.ComputerInfo;
-
+            LoadHardwareInfo();
         }
 
         private void SaveSettings(string key, string value)
@@ -149,7 +149,30 @@ namespace Julia_Launcher
         }
 
 
-        
+        private void LoadHardwareInfo()
+        {
+            // Получаем доступ к информации о железе через статический экземпляр
+            var computerInfo = Form1.ComputerInfo;
+
+            if (computerInfo != null)
+            {
+                // Заполняем данные в элементы управления
+                // Используйте фактические имена ваших элементов управления
+
+                // Процессор
+                // Предполагается, что у вас есть ComboBox для отображения количества ядер
+                if (cmbCpuCores != null)
+                {
+                    cmbCpuCores.Items.Clear();
+                    cmbCpuCores.Items.Add(computerInfo.CpuCores.ToString());
+                    if (cmbCpuCores.Items.Count > 0)
+                        cmbCpuCores.SelectedIndex = 0;
+                }
+
+                // Здесь заполните другие элементы управления
+                // в соответствии с их фактическими именами
+            }
+        }
 
 
 

@@ -23,12 +23,12 @@ namespace Julia_Launcher
     public partial class UserControl2 : UserControl
     {
 
-        /*
+        
         private GLControl glControl;
         private bool loaded = false;
-        private Model model;
+        //private Model model;
         private Camera camera;
-        private Shader shader;
+        //private Shader shader;
         private float rotation = 0.0f;
         private Vector3 modelPosition = Vector3.Zero;
         private float modelScale = 1.0f;
@@ -38,8 +38,9 @@ namespace Julia_Launcher
         public UserControl2()
         {
             InitializeComponent();
-            InitializeOpenGL();
+            //InitializeOpenGL();
         }
+        /*
         private void InitializeOpenGL()
         {
             // Create GLControl with appropriate settings
