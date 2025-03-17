@@ -18,22 +18,30 @@ using OpenTK.GLControl;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection;
 using System;
+
+
+
 namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
-
         
         private GLControl glControl;
         private bool loaded = false;
-        //private Model model;
+       // private Model model;
         private Camera camera;
-        //private Shader shader;
+       // private Shader shader;
         private float rotation = 0.0f;
         private Vector3 modelPosition = Vector3.Zero;
         private float modelScale = 1.0f;
         private bool isDragging = false;
         private Point lastMousePos;
+
+        // Lighting variables
+        private Vector3 lightPos = new Vector3(1.2f, 1.0f, 2.0f);
+        private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
+        private float ambientStrength = 0.1f;
+        private float specularStrength = 0.5f;
 
         public UserControl2()
         {
@@ -44,7 +52,7 @@ namespace Julia_Launcher
         private void InitializeOpenGL()
         {
             // Create GLControl with appropriate settings
-            glControl = new GLControl(new GraphicsMode(32, 24, 0, 8), 4, 0, GraphicsContextFlags.Default);
+            glControl = new GLControl();
             glControl.Dock = DockStyle.Fill;
             glControl.Name = "glControl1";
             glControl.Load += GlControl_Load;
@@ -54,17 +62,19 @@ namespace Julia_Launcher
             glControl.MouseMove += GlControl_MouseMove;
             glControl.MouseUp += GlControl_MouseUp;
             glControl.MouseWheel += GlControl_MouseWheel;
+            glControl.Click += GlControl_Click;
 
             // Add the control to the form
             this.Controls.Add(glControl);
         }
+
         private void GlControl_Load(object sender, EventArgs e)
         {
             // Initialize OpenGL
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
+            GL.CullFace(TriangleFace.Back);
 
             // Create camera
             camera = new Camera(new Vector3(0, 0, 5), glControl.Width / (float)glControl.Height);
@@ -74,6 +84,7 @@ namespace Julia_Launcher
 
             loaded = true;
         }
+
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
             if (!loaded) return;
@@ -113,6 +124,7 @@ namespace Julia_Launcher
 
             glControl.SwapBuffers();
         }
+
         private void GlControl_Resize(object sender, EventArgs e)
         {
             if (!loaded) return;
@@ -168,7 +180,11 @@ namespace Julia_Launcher
         {
             try
             {
+                // Dispose previous model if exists
+                model?.Dispose();
+
                 model = new Model(path);
+
                 // Center and scale model to fit view
                 modelScale = 1.0f;
                 modelPosition = Vector3.Zero;
@@ -181,29 +197,12 @@ namespace Julia_Launcher
             }
         }
 
-        private void glControl1_Click(object sender, EventArgs e)
-        {
-            // Can be used for additional functionality
-        }
-
-        private void trackBar7_Scroll(object sender, EventArgs e)
-        {
-            // Adjust model scale
-            modelScale = trackBar7.Value / 100.0f;
-            glControl.Invalidate();
-        }
-
-        private void glControl1_Click_1(object sender, EventArgs e)
-        {
-            // Can be used for additional functionality
-        }
-
-        private void glControl1_Click_2(object sender, EventArgs e)
+        private void GlControl_Click(object sender, EventArgs e)
         {
             // Use open file dialog to select FBX file
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "FBX files (*.fbx)|*.fbx|All files (*.*)|*.*";
+                openFileDialog.Filter = "3D Models|*.fbx;*.obj;*.3ds;*.dae|FBX files (*.fbx)|*.fbx|OBJ files (*.obj)|*.obj|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -213,7 +212,12 @@ namespace Julia_Launcher
             }
         }
 
-        // Additional classes for the 3D rendering engine
+        private void trackBar7_Scroll(object sender, EventArgs e)
+        {
+            // Adjust model scale
+            modelScale = trackBar7.Value / 100.0f;
+            glControl.Invalidate();
+        }
 
         // Camera class to handle camera transformations
         public class Camera
@@ -389,7 +393,6 @@ namespace Julia_Launcher
             }
         }
 
-
         // Mesh class to store mesh data
         public class Mesh
         {
@@ -432,7 +435,6 @@ namespace Julia_Launcher
 
                 GL.BindVertexArray(0);
             }
-
             public void Draw(Shader shader)
             {
                 // Bind appropriate textures
@@ -745,10 +747,12 @@ namespace Julia_Launcher
                     GL.DeleteTexture(textureId);
                 }
             }
+        }
 
 
 
         */
+
 
 
 
@@ -760,10 +764,6 @@ namespace Julia_Launcher
 
         }
 
-        private void trackBar7_Scroll(object sender, EventArgs e)
-        {
-
-        }
 
         private void glControl1_Click_1(object sender, EventArgs e)
         {

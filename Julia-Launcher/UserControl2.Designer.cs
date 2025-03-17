@@ -34,7 +34,6 @@
             trackBar3 = new System.Windows.Forms.TrackBar();
             trackBar5 = new System.Windows.Forms.TrackBar();
             trackBar6 = new System.Windows.Forms.TrackBar();
-            trackBar7 = new System.Windows.Forms.TrackBar();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -50,7 +49,6 @@
             ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -66,11 +64,12 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new System.Drawing.Point(182, 8);
+            trackBar1.Location = new System.Drawing.Point(223, 324);
             trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new System.Drawing.Size(121, 45);
             trackBar1.TabIndex = 1;
+
             // 
             // trackBar2
             // 
@@ -103,15 +102,6 @@
             trackBar6.Name = "trackBar6";
             trackBar6.Size = new System.Drawing.Size(121, 45);
             trackBar6.TabIndex = 6;
-            // 
-            // trackBar7
-            // 
-            trackBar7.Location = new System.Drawing.Point(223, 332);
-            trackBar7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar7.Name = "trackBar7";
-            trackBar7.Size = new System.Drawing.Size(121, 45);
-            trackBar7.TabIndex = 7;
-            trackBar7.Scroll += trackBar7_Scroll;
             // 
             // label2
             // 
@@ -232,7 +222,6 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(trackBar7);
             Controls.Add(trackBar6);
             Controls.Add(trackBar5);
             Controls.Add(trackBar3);
@@ -247,7 +236,6 @@
             ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar7).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -261,7 +249,6 @@
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TrackBar trackBar5;
         private System.Windows.Forms.TrackBar trackBar6;
-        private System.Windows.Forms.TrackBar trackBar7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
