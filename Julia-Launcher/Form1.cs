@@ -406,5 +406,10 @@ namespace Julia_Launcher
         {
             // Пустой метод в исходном коде
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

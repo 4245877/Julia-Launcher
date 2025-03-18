@@ -44,31 +44,59 @@ namespace Julia_Launcher
             LoadHardwareInfo();
         }
 
-        private void SaveSettings(string key, string value)
+        private void SaveSettings(string key, object value)
         {
             try
             {
-                // Читаем текущие настройки
                 var settings = ReadSettings();
-
-                // Обновляем нужное поле
                 switch (key)
                 {
                     case "InstallDirectory":
-                        settings.InstallDirectory = value;
+                        settings.InstallDirectory = (string)value;
                         break;
                     case "LogDirectory":
-                        settings.LogDirectory = value;
+                        settings.LogDirectory = (string)value;
                         break;
                     case "ModulesDirectory":
-                        settings.ModulesDirectory = value;
+                        settings.ModulesDirectory = (string)value;
                         break;
                     case "CacheDirectory":
-                        settings.CacheDirectory = value;
+                        settings.CacheDirectory = (string)value;
+                        break;
+                    case "CPULimit":
+                        settings.CPULimit = (string)value;
+                        break;
+                    case "CpuLoad":
+                        settings.CpuLoad = (string)value;
+                        break;
+                    case "GPULimit":
+                        settings.GPULimit = (string)value;
+                        break;
+                    case "NetworkSpeed":
+                        settings.NetworkSpeed = (string)value;
+                        break;
+                    case "CpuCores":
+                        settings.CpuCores = (string)value;
+                        break;
+                    case "GpuSelection":
+                        settings.GpuSelection = (string)value;
+                        break;
+                    case "GPUEnable":
+                        settings.GPUEnable = (bool)value;
+                        break;
+                    case "AutoStart":
+                        settings.AutoStart = (bool)value;
+                        break;
+                    case "UpdateBranch":
+                        settings.UpdateBranch = (string)value;
+                        break;
+                    case "LogLevel":
+                        settings.LogLevel = (string)value;
+                        break;
+                    case "Language":
+                        settings.Language = (string)value;
                         break;
                 }
-
-                // Записываем обновленные настройки в файл
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(settingsFilePath, json);
             }
@@ -87,9 +115,9 @@ namespace Julia_Launcher
                     string json = File.ReadAllText(settingsFilePath);
                     return JsonSerializer.Deserialize<Settings>(json) ?? new Settings();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // В случае ошибки возвращаем новый объект настроек
+                    MessageBox.Show($"Ошибка при чтении настроек: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return new Settings();
                 }
             }
@@ -124,8 +152,8 @@ namespace Julia_Launcher
             public string NetworkSpeed { get; set; } = string.Empty;
             public string GPULimit { get; set; } = string.Empty;
             public string CpuLoad { get; set; } = string.Empty;
+            public string CPULimit { get; set; } = string.Empty; // Добавлено для txtCPULimit
 
-            // Словарь для дополнительных настроек (оставляем как есть)
             public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
         }
 
@@ -143,6 +171,10 @@ namespace Julia_Launcher
             chkGPUEnable.Checked = settings.GPUEnable;
             chkAutoStart.Checked = settings.AutoStart;
 
+
+            // Загрузка для ComboBox
+
+            // Загрузка для RadioButton
 
 
 
@@ -285,12 +317,33 @@ namespace Julia_Launcher
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AutoStart", chkAutoStart.Text);
+
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtCPULimit_TextChanged(object sender, EventArgs e)
+        {
+            // Существующий код проверки (был назван textBox4_TextChanged)
+            if (string.IsNullOrEmpty(txtCPULimit.Text))
+                return;
+
+            if (int.TryParse(txtCPULimit.Text, out int number))
+            {
+                if (number < 1 || number > 100)
+                {
+                    txtCPULimit.Text = number < 1 ? "1" : "100";
+                    txtCPULimit.SelectionStart = txtCPULimit.Text.Length;
+                }
+            }
+            else
+            {
+                txtCPULimit.Text = "";
+            }
+            SaveSettings("CPULimit", txtCPULimit.Text);
         }
 
         private void txtGPULimit_TextChanged(object sender, EventArgs e)
@@ -302,16 +355,15 @@ namespace Julia_Launcher
             {
                 if (number < 1 || number > 100)
                 {
-                    // Восстанавливаем предыдущее значение или очищаем TextBox
                     txtGPULimit.Text = number < 1 ? "1" : "100";
-                    txtGPULimit.SelectionStart = txtGPULimit.Text.Length; // Устанавливаем курсор в конец
+                    txtGPULimit.SelectionStart = txtGPULimit.Text.Length;
                 }
             }
             else
             {
-                // Удаляем некорректный ввод
                 txtGPULimit.Text = "";
             }
+            SaveSettings("GPULimit", txtGPULimit.Text); // Уже есть в коде
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -320,6 +372,11 @@ namespace Julia_Launcher
         }
 
         private void trackRamUsage_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
         {
 
         }

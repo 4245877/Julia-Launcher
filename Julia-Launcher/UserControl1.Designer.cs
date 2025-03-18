@@ -79,6 +79,9 @@
             chkUpdPreferen = new System.Windows.Forms.CheckBox();
             chkAutoStart = new System.Windows.Forms.CheckBox();
             tabPage4 = new System.Windows.Forms.TabPage();
+            cmbInfoMassages = new System.Windows.Forms.ComboBox();
+            chkLogRetention = new System.Windows.Forms.CheckBox();
+            cmbLogFormat = new System.Windows.Forms.ComboBox();
             label23 = new System.Windows.Forms.Label();
             label24 = new System.Windows.Forms.Label();
             comboBox4 = new System.Windows.Forms.ComboBox();
@@ -106,9 +109,6 @@
             label38 = new System.Windows.Forms.Label();
             checkBox7 = new System.Windows.Forms.CheckBox();
             chkEncryptLogs = new System.Windows.Forms.CheckBox();
-            cmbLogFormat = new System.Windows.Forms.ComboBox();
-            chkLogRetention = new System.Windows.Forms.CheckBox();
-            cmbInfoMassages = new System.Windows.Forms.ComboBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -445,6 +445,7 @@
             txtNetworkSpeed.Name = "txtNetworkSpeed";
             txtNetworkSpeed.Size = new System.Drawing.Size(116, 23);
             txtNetworkSpeed.TabIndex = 113;
+            txtNetworkSpeed.TextChanged += txtNetworkSpeed_TextChanged;
             // 
             // trackRamUsage
             // 
@@ -691,6 +692,31 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // cmbInfoMassages
+            // 
+            cmbInfoMassages.FormattingEnabled = true;
+            cmbInfoMassages.Location = new System.Drawing.Point(176, 153);
+            cmbInfoMassages.Name = "cmbInfoMassages";
+            cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
+            cmbInfoMassages.TabIndex = 127;
+            // 
+            // chkLogRetention
+            // 
+            chkLogRetention.AutoSize = true;
+            chkLogRetention.Location = new System.Drawing.Point(121, 266);
+            chkLogRetention.Name = "chkLogRetention";
+            chkLogRetention.Size = new System.Drawing.Size(15, 14);
+            chkLogRetention.TabIndex = 126;
+            chkLogRetention.UseVisualStyleBackColor = true;
+            // 
+            // cmbLogFormat
+            // 
+            cmbLogFormat.FormattingEnabled = true;
+            cmbLogFormat.Location = new System.Drawing.Point(202, 227);
+            cmbLogFormat.Name = "cmbLogFormat";
+            cmbLogFormat.Size = new System.Drawing.Size(121, 23);
+            cmbLogFormat.TabIndex = 125;
             // 
             // label23
             // 
@@ -982,31 +1008,6 @@
             chkEncryptLogs.Size = new System.Drawing.Size(15, 14);
             chkEncryptLogs.TabIndex = 104;
             chkEncryptLogs.UseVisualStyleBackColor = true;
-            // 
-            // cmbLogFormat
-            // 
-            cmbLogFormat.FormattingEnabled = true;
-            cmbLogFormat.Location = new System.Drawing.Point(202, 227);
-            cmbLogFormat.Name = "cmbLogFormat";
-            cmbLogFormat.Size = new System.Drawing.Size(121, 23);
-            cmbLogFormat.TabIndex = 125;
-            // 
-            // chkLogRetention
-            // 
-            chkLogRetention.AutoSize = true;
-            chkLogRetention.Location = new System.Drawing.Point(121, 266);
-            chkLogRetention.Name = "chkLogRetention";
-            chkLogRetention.Size = new System.Drawing.Size(15, 14);
-            chkLogRetention.TabIndex = 126;
-            chkLogRetention.UseVisualStyleBackColor = true;
-            // 
-            // cmbInfoMassages
-            // 
-            cmbInfoMassages.FormattingEnabled = true;
-            cmbInfoMassages.Location = new System.Drawing.Point(176, 153);
-            cmbInfoMassages.Name = "cmbInfoMassages";
-            cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
-            cmbInfoMassages.TabIndex = 127;
             // 
             // UserControl1
             // 
