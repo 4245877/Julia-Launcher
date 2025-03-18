@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
@@ -10,34 +11,28 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-
 using System.IO;
 using Assimp;
 using Assimp.Configs;
 using OpenTK.GLControl;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection;
-using System;
-
-
 
 namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
-        
         private GLControl glControl;
         private bool loaded = false;
-       // private Model model;
+        private Model model;
         private Camera camera;
-       // private Shader shader;
+        private Shader shader;
         private float rotation = 0.0f;
         private Vector3 modelPosition = Vector3.Zero;
         private float modelScale = 1.0f;
         private bool isDragging = false;
         private Point lastMousePos;
 
-        // Lighting variables
         private Vector3 lightPos = new Vector3(1.2f, 1.0f, 2.0f);
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
@@ -46,9 +41,9 @@ namespace Julia_Launcher
         public UserControl2()
         {
             InitializeComponent();
-            //InitializeOpenGL();
+            InitializeOpenGL(); // Uncommented this line
         }
-        /*
+
         private void InitializeOpenGL()
         {
             // Create GLControl with appropriate settings
@@ -214,9 +209,7 @@ namespace Julia_Launcher
 
         private void trackBar7_Scroll(object sender, EventArgs e)
         {
-            // Adjust model scale
-            modelScale = trackBar7.Value / 100.0f;
-            glControl.Invalidate();
+
         }
 
         // Camera class to handle camera transformations
@@ -435,6 +428,7 @@ namespace Julia_Launcher
 
                 GL.BindVertexArray(0);
             }
+
             public void Draw(Shader shader)
             {
                 // Bind appropriate textures
@@ -464,7 +458,7 @@ namespace Julia_Launcher
 
                 // Draw mesh
                 GL.BindVertexArray(VAO);
-                GL.DrawElements(PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
+                GL.DrawElements(OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
                 GL.BindVertexArray(0);
 
                 // Reset active texture
@@ -514,10 +508,10 @@ namespace Julia_Launcher
                     image.UnlockBits(data);
 
                     // Set texture parameters
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
+                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
 
                     // Generate mipmaps
                     GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
@@ -549,28 +543,29 @@ namespace Julia_Launcher
 
             private void LoadModel(string path)
             {
-                // Use Assimp to import the model
                 var importer = new AssimpContext();
-
-                // Configure import settings
                 importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
 
-                // Import the file with post processing
-                Scene scene = importer.ImportFile(path,
-                    PostProcessSteps.Triangulate |
-                    PostProcessSteps.GenerateSmoothNormals |
-                    PostProcessSteps.FlipUVs |
-                    PostProcessSteps.CalculateTangentSpace);
-
-                if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
+                try
                 {
-                    throw new Exception($"Assimp error: {importer.GetErrorString()}");
+                    Scene scene = importer.ImportFile(path,
+                        PostProcessSteps.Triangulate |
+                        PostProcessSteps.GenerateSmoothNormals |
+                        PostProcessSteps.FlipUVs |
+                        PostProcessSteps.CalculateTangentSpace);
+
+                    if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
+                    {
+                        throw new Exception("Не удалось загрузить модель с помощью Assimp. Проверьте путь к файлу и формат.");
+                    }
+
+                    directory = Path.GetDirectoryName(path);
+                    ProcessNode(scene.RootNode, scene);
                 }
-
-                directory = Path.GetDirectoryName(path);
-
-                // Process the root node and all its children
-                ProcessNode(scene.RootNode, scene);
+                catch (AssimpException ex)
+                {
+                    throw new Exception($"Ошибка Assimp: {ex.Message}");
+                }
             }
 
             private void ProcessNode(Node node, Scene scene)
@@ -727,10 +722,10 @@ namespace Julia_Launcher
                     PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
                 // Set texture parameters
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
 
                 return textureId;
             }
@@ -749,31 +744,29 @@ namespace Julia_Launcher
             }
         }
 
-
-
-        */
-
-
-
-
-
-
-
+        // Empty event handlers - implementing them with basic functionality
         private void glControl1_Click(object sender, EventArgs e)
         {
-
+            // Forward to main click handler
+            GlControl_Click(sender, e);
         }
-
 
         private void glControl1_Click_1(object sender, EventArgs e)
         {
-
+            // Forward to main click handler
+            GlControl_Click(sender, e);
         }
 
         private void glControl1_Click_2(object sender, EventArgs e)
         {
+            // Forward to main click handler
+            GlControl_Click(sender, e);
+        }
 
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            // Implement if needed or remove
+            // Currently empty as trackBar7 is handling scale
         }
     }
 }
-

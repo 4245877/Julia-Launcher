@@ -69,6 +69,7 @@
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new System.Drawing.Size(121, 45);
             trackBar1.TabIndex = 1;
+            trackBar1.Scroll += trackBar1_Scroll;
             // 
             // trackBar2
             // 
