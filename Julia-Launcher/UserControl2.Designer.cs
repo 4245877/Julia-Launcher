@@ -64,12 +64,11 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new System.Drawing.Point(223, 324);
+            trackBar1.Location = new System.Drawing.Point(182, 309);
             trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new System.Drawing.Size(121, 45);
             trackBar1.TabIndex = 1;
-
             // 
             // trackBar2
             // 
@@ -81,7 +80,7 @@
             // 
             // trackBar3
             // 
-            trackBar3.Location = new System.Drawing.Point(182, 119);
+            trackBar3.Location = new System.Drawing.Point(182, 118);
             trackBar3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar3.Name = "trackBar3";
             trackBar3.Size = new System.Drawing.Size(121, 45);
@@ -89,7 +88,7 @@
             // 
             // trackBar5
             // 
-            trackBar5.Location = new System.Drawing.Point(223, 215);
+            trackBar5.Location = new System.Drawing.Point(182, 215);
             trackBar5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar5.Name = "trackBar5";
             trackBar5.Size = new System.Drawing.Size(121, 45);
@@ -97,7 +96,7 @@
             // 
             // trackBar6
             // 
-            trackBar6.Location = new System.Drawing.Point(223, 273);
+            trackBar6.Location = new System.Drawing.Point(182, 258);
             trackBar6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar6.Name = "trackBar6";
             trackBar6.Size = new System.Drawing.Size(121, 45);

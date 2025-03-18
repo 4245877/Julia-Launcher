@@ -386,7 +386,15 @@ namespace Julia_Launcher
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // Пустой метод в исходном коде
+            string settingsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings");
+            if (Directory.Exists(settingsDirectory))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", settingsDirectory);
+            }
+            else
+            {
+                MessageBox.Show("Папка настроек не существует.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
