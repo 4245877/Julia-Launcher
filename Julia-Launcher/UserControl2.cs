@@ -22,6 +22,8 @@ namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
+        string vertexPath = @"F:\Work\C#\Julia-Launcher\Julia-Launcher\Julia-Launcher\Shaders\vertex.glsl";
+
         private GLControl glControl;
         private bool loaded = false;
         private Model model;
@@ -65,19 +67,24 @@ namespace Julia_Launcher
 
         private void GlControl_Load(object sender, EventArgs e)
         {
-            // Initialize OpenGL
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(TriangleFace.Back);
+            try
+            {
+                string vertexPath = "Shaders/vertex.glsl";
+                string fragmentPath = "Shaders/fragment.glsl";
 
-            // Create camera
-            camera = new Camera(new Vector3(0, 0, 5), glControl.Width / (float)glControl.Height);
+                string vertexShaderSource = File.ReadAllText(vertexPath);
+                string fragmentShaderSource = File.ReadAllText(fragmentPath);
 
-            // Load shader
-            shader = new Shader("vertex.glsl", "fragment.glsl");
-
-            loaded = true;
+                // Дальше ваш код для работы с шейдерами
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show($"Файл не найден: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void GlControl_Paint(object sender, PaintEventArgs e)
