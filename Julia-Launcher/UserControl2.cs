@@ -22,8 +22,6 @@ namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
-        string vertexPath = @"F:\Work\C#\Julia-Launcher\Julia-Launcher\Julia-Launcher\Shaders\vertex.glsl";
-
         private GLControl glControl;
         private bool loaded = false;
         private Model model;
@@ -69,8 +67,8 @@ namespace Julia_Launcher
         {
             try
             {
-                string vertexPath = "Shaders/vertex.glsl";
-                string fragmentPath = "Shaders/fragment.glsl";
+                string vertexPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\vertex.glsl";
+                string fragmentPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\fragment.glsl";
 
                 string vertexShaderSource = File.ReadAllText(vertexPath);
                 string fragmentShaderSource = File.ReadAllText(fragmentPath);
