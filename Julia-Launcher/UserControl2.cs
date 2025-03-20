@@ -67,21 +67,34 @@ namespace Julia_Launcher
         {
             try
             {
+                // Initialize OpenGL settings
+                GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+                GL.Enable(EnableCap.DepthTest);
+
+                // Load shaders
                 string vertexPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\vertex.glsl";
                 string fragmentPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\fragment.glsl";
 
-                string vertexShaderSource = File.ReadAllText(vertexPath);
-                string fragmentShaderSource = File.ReadAllText(fragmentPath);
+                if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
+                {
+                    MessageBox.Show("Не удалось найти файлы шейдеров!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-                // Дальше ваш код для работы с шейдерами
-            }
-            catch (FileNotFoundException ex)
-            {
-                MessageBox.Show($"Файл не найден: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                shader = new Shader(vertexPath, fragmentPath);
+
+                // Initialize camera
+                camera = new Camera(new Vector3(0, 0, 3), glControl.Width / (float)glControl.Height);
+
+                // Load the specific model
+                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\hero_spy_orange_body_0001.fbx";
+                LoadModel(modelPath);
+
+                loaded = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка инициализации OpenGL: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -180,7 +193,7 @@ namespace Julia_Launcher
         {
             try
             {
-                // Dispose previous model if exists
+                // Dispose previous model if exists GlControl_Load
                 model?.Dispose();
 
                 model = new Model(path);
