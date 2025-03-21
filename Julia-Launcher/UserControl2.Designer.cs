@@ -55,6 +55,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label1.ForeColor = System.Drawing.Color.White;
             label1.Location = new System.Drawing.Point(4, 3);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
@@ -106,6 +107,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = System.Drawing.Color.White;
             label2.Location = new System.Drawing.Point(33, 67);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
@@ -116,6 +118,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = System.Drawing.Color.White;
             label3.Location = new System.Drawing.Point(33, 141);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
@@ -126,6 +129,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = System.Drawing.Color.White;
             label4.Location = new System.Drawing.Point(33, 215);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
@@ -136,6 +140,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = System.Drawing.Color.White;
             label5.Location = new System.Drawing.Point(33, 288);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
@@ -146,6 +151,7 @@
             // label10
             // 
             label10.AutoSize = true;
+            label10.ForeColor = System.Drawing.Color.White;
             label10.Location = new System.Drawing.Point(33, 104);
             label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label10.Name = "label10";
@@ -157,6 +163,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label11.ForeColor = System.Drawing.Color.White;
             label11.Location = new System.Drawing.Point(15, 178);
             label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label11.Name = "label11";
@@ -167,6 +174,7 @@
             // label12
             // 
             label12.AutoSize = true;
+            label12.ForeColor = System.Drawing.Color.White;
             label12.Location = new System.Drawing.Point(33, 252);
             label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label12.Name = "label12";
@@ -177,6 +185,7 @@
             // label13
             // 
             label13.AutoSize = true;
+            label13.ForeColor = System.Drawing.Color.White;
             label13.Location = new System.Drawing.Point(33, 325);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
@@ -187,6 +196,7 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.ForeColor = System.Drawing.Color.White;
             label6.Location = new System.Drawing.Point(15, 32);
             label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label6.Name = "label6";
@@ -212,6 +222,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             Controls.Add(glControl1);
             Controls.Add(label6);
             Controls.Add(label13);
@@ -231,6 +242,7 @@
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
             Size = new System.Drawing.Size(1350, 695);
+            Load += UserControl2_Load;
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();

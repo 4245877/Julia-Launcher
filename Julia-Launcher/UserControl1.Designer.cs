@@ -166,6 +166,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage1.Controls.Add(label1);
             tabPage1.Controls.Add(txtLogDirectory);
             tabPage1.Controls.Add(txtInstallDirectory);
@@ -186,12 +187,12 @@
             tabPage1.Size = new System.Drawing.Size(1337, 623);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "File and Folder Paths";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label1.ForeColor = System.Drawing.Color.White;
             label1.Location = new System.Drawing.Point(4, 3);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
@@ -220,6 +221,7 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.ForeColor = System.Drawing.Color.White;
             label6.Location = new System.Drawing.Point(33, 119);
             label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label6.Name = "label6";
@@ -230,6 +232,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = System.Drawing.Color.White;
             label5.Location = new System.Drawing.Point(33, 156);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
@@ -240,6 +243,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = System.Drawing.Color.White;
             label4.Location = new System.Drawing.Point(33, 82);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
@@ -250,6 +254,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = System.Drawing.Color.White;
             label3.Location = new System.Drawing.Point(33, 45);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
@@ -321,6 +326,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(label15);
             tabPage2.Controls.Add(label14);
@@ -338,6 +344,7 @@
             tabPage2.Controls.Add(txtCPULimit);
             tabPage2.Controls.Add(txtGPULimit);
             tabPage2.Controls.Add(txtCpuLoad);
+            tabPage2.ForeColor = System.Drawing.Color.White;
             tabPage2.Location = new System.Drawing.Point(4, 24);
             tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage2.Name = "tabPage2";
@@ -345,7 +352,6 @@
             tabPage2.Size = new System.Drawing.Size(1337, 623);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Resource Allocation";
-            tabPage2.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -361,6 +367,7 @@
             // label15
             // 
             label15.AutoSize = true;
+            label15.ForeColor = System.Drawing.Color.White;
             label15.Location = new System.Drawing.Point(33, 303);
             label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label15.Name = "label15";
@@ -371,6 +378,7 @@
             // label14
             // 
             label14.AutoSize = true;
+            label14.ForeColor = System.Drawing.Color.White;
             label14.Location = new System.Drawing.Point(33, 267);
             label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label14.Name = "label14";
@@ -381,6 +389,7 @@
             // label13
             // 
             label13.AutoSize = true;
+            label13.ForeColor = System.Drawing.Color.White;
             label13.Location = new System.Drawing.Point(33, 230);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
@@ -391,6 +400,7 @@
             // label12
             // 
             label12.AutoSize = true;
+            label12.ForeColor = System.Drawing.Color.White;
             label12.Location = new System.Drawing.Point(33, 193);
             label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label12.Name = "label12";
@@ -401,6 +411,7 @@
             // label11
             // 
             label11.AutoSize = true;
+            label11.ForeColor = System.Drawing.Color.White;
             label11.Location = new System.Drawing.Point(33, 156);
             label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label11.Name = "label11";
@@ -411,6 +422,7 @@
             // label10
             // 
             label10.AutoSize = true;
+            label10.ForeColor = System.Drawing.Color.White;
             label10.Location = new System.Drawing.Point(33, 119);
             label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label10.Name = "label10";
@@ -421,6 +433,7 @@
             // label9
             // 
             label9.AutoSize = true;
+            label9.ForeColor = System.Drawing.Color.White;
             label9.Location = new System.Drawing.Point(33, 82);
             label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label9.Name = "label9";
@@ -431,6 +444,7 @@
             // label8
             // 
             label8.AutoSize = true;
+            label8.ForeColor = System.Drawing.Color.White;
             label8.Location = new System.Drawing.Point(33, 45);
             label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label8.Name = "label8";
@@ -513,6 +527,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage3.Controls.Add(label16);
             tabPage3.Controls.Add(label19);
             tabPage3.Controls.Add(label20);
@@ -533,12 +548,12 @@
             tabPage3.Size = new System.Drawing.Size(1337, 623);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Startup and Update Settings";
-            tabPage3.UseVisualStyleBackColor = true;
             // 
             // label16
             // 
             label16.AutoSize = true;
             label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label16.ForeColor = System.Drawing.Color.White;
             label16.Location = new System.Drawing.Point(4, 3);
             label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label16.Name = "label16";
@@ -549,6 +564,7 @@
             // label19
             // 
             label19.AutoSize = true;
+            label19.ForeColor = System.Drawing.Color.White;
             label19.Location = new System.Drawing.Point(33, 119);
             label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label19.Name = "label19";
@@ -559,6 +575,7 @@
             // label20
             // 
             label20.AutoSize = true;
+            label20.ForeColor = System.Drawing.Color.White;
             label20.Location = new System.Drawing.Point(33, 156);
             label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label20.Name = "label20";
@@ -569,6 +586,7 @@
             // label18
             // 
             label18.AutoSize = true;
+            label18.ForeColor = System.Drawing.Color.White;
             label18.Location = new System.Drawing.Point(33, 82);
             label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label18.Name = "label18";
@@ -579,6 +597,7 @@
             // label21
             // 
             label21.AutoSize = true;
+            label21.ForeColor = System.Drawing.Color.White;
             label21.Location = new System.Drawing.Point(33, 193);
             label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label21.Name = "label21";
@@ -589,6 +608,7 @@
             // label17
             // 
             label17.AutoSize = true;
+            label17.ForeColor = System.Drawing.Color.White;
             label17.Location = new System.Drawing.Point(33, 45);
             label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label17.Name = "label17";
@@ -599,6 +619,7 @@
             // label22
             // 
             label22.AutoSize = true;
+            label22.ForeColor = System.Drawing.Color.White;
             label22.Location = new System.Drawing.Point(33, 230);
             label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label22.Name = "label22";
@@ -670,6 +691,7 @@
             // 
             // tabPage4
             // 
+            tabPage4.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage4.Controls.Add(cmbInfoMassages);
             tabPage4.Controls.Add(chkLogRetention);
             tabPage4.Controls.Add(cmbLogFormat);
@@ -691,7 +713,6 @@
             tabPage4.Size = new System.Drawing.Size(1337, 623);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
-            tabPage4.UseVisualStyleBackColor = true;
             // 
             // cmbInfoMassages
             // 
@@ -722,6 +743,7 @@
             // 
             label23.AutoSize = true;
             label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label23.ForeColor = System.Drawing.Color.White;
             label23.Location = new System.Drawing.Point(4, 3);
             label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label23.Name = "label23";
@@ -732,6 +754,7 @@
             // label24
             // 
             label24.AutoSize = true;
+            label24.ForeColor = System.Drawing.Color.White;
             label24.Location = new System.Drawing.Point(33, 45);
             label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label24.Name = "label24";
@@ -751,6 +774,7 @@
             // label25
             // 
             label25.AutoSize = true;
+            label25.ForeColor = System.Drawing.Color.White;
             label25.Location = new System.Drawing.Point(33, 82);
             label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label25.Name = "label25";
@@ -770,6 +794,7 @@
             // label26
             // 
             label26.AutoSize = true;
+            label26.ForeColor = System.Drawing.Color.White;
             label26.Location = new System.Drawing.Point(33, 119);
             label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label26.Name = "label26";
@@ -780,6 +805,7 @@
             // label27
             // 
             label27.AutoSize = true;
+            label27.ForeColor = System.Drawing.Color.White;
             label27.Location = new System.Drawing.Point(33, 156);
             label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label27.Name = "label27";
@@ -790,6 +816,7 @@
             // label28
             // 
             label28.AutoSize = true;
+            label28.ForeColor = System.Drawing.Color.White;
             label28.Location = new System.Drawing.Point(33, 193);
             label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label28.Name = "label28";
@@ -800,6 +827,7 @@
             // label29
             // 
             label29.AutoSize = true;
+            label29.ForeColor = System.Drawing.Color.White;
             label29.Location = new System.Drawing.Point(33, 230);
             label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label29.Name = "label29";
@@ -819,6 +847,7 @@
             // label30
             // 
             label30.AutoSize = true;
+            label30.ForeColor = System.Drawing.Color.White;
             label30.Location = new System.Drawing.Point(33, 267);
             label30.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label30.Name = "label30";
@@ -828,6 +857,7 @@
             // 
             // tabPage5
             // 
+            tabPage5.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage5.Controls.Add(label31);
             tabPage5.Controls.Add(label32);
             tabPage5.Controls.Add(radioButton2);
@@ -842,12 +872,12 @@
             tabPage5.Size = new System.Drawing.Size(1337, 623);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "UI and User Preferences";
-            tabPage5.UseVisualStyleBackColor = true;
             // 
             // label31
             // 
             label31.AutoSize = true;
             label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label31.ForeColor = System.Drawing.Color.White;
             label31.Location = new System.Drawing.Point(4, 3);
             label31.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label31.Name = "label31";
@@ -858,6 +888,7 @@
             // label32
             // 
             label32.AutoSize = true;
+            label32.ForeColor = System.Drawing.Color.White;
             label32.Location = new System.Drawing.Point(33, 45);
             label32.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label32.Name = "label32";
@@ -880,6 +911,7 @@
             // label33
             // 
             label33.AutoSize = true;
+            label33.ForeColor = System.Drawing.Color.White;
             label33.Location = new System.Drawing.Point(33, 82);
             label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label33.Name = "label33";
@@ -903,6 +935,7 @@
             // label34
             // 
             label34.AutoSize = true;
+            label34.ForeColor = System.Drawing.Color.White;
             label34.Location = new System.Drawing.Point(33, 119);
             label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label34.Name = "label34";
@@ -921,6 +954,7 @@
             // 
             // tabPage6
             // 
+            tabPage6.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage6.Controls.Add(label35);
             tabPage6.Controls.Add(label36);
             tabPage6.Controls.Add(label37);
@@ -934,12 +968,12 @@
             tabPage6.Size = new System.Drawing.Size(1337, 623);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Security";
-            tabPage6.UseVisualStyleBackColor = true;
             // 
             // label35
             // 
             label35.AutoSize = true;
             label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
+            label35.ForeColor = System.Drawing.Color.White;
             label35.Location = new System.Drawing.Point(4, 3);
             label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label35.Name = "label35";
@@ -950,6 +984,7 @@
             // label36
             // 
             label36.AutoSize = true;
+            label36.ForeColor = System.Drawing.Color.White;
             label36.Location = new System.Drawing.Point(33, 45);
             label36.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label36.Name = "label36";
@@ -960,6 +995,7 @@
             // label37
             // 
             label37.AutoSize = true;
+            label37.ForeColor = System.Drawing.Color.White;
             label37.Location = new System.Drawing.Point(33, 82);
             label37.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label37.Name = "label37";
@@ -970,6 +1006,7 @@
             // checkBox8
             // 
             checkBox8.AutoSize = true;
+            checkBox8.ForeColor = System.Drawing.Color.White;
             checkBox8.Location = new System.Drawing.Point(337, 118);
             checkBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             checkBox8.Name = "checkBox8";
@@ -981,6 +1018,7 @@
             // label38
             // 
             label38.AutoSize = true;
+            label38.ForeColor = System.Drawing.Color.White;
             label38.Location = new System.Drawing.Point(33, 119);
             label38.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label38.Name = "label38";
@@ -1013,6 +1051,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             Controls.Add(btnApply);
             Controls.Add(btnSave);
             Controls.Add(btnCancel);

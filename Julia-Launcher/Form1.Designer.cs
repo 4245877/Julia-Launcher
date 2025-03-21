@@ -52,6 +52,7 @@
             // 
             // panel2
             // 
+            panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel2.Controls.Add(SetingButton);
             panel2.Controls.Add(btnModelVoiceSettings);
             panel2.Controls.Add(button3);
@@ -109,6 +110,7 @@
             // 
             // panel3
             // 
+            panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
             panel3.Location = new System.Drawing.Point(169, 741);
             panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -118,19 +120,21 @@
             // 
             // button1
             // 
+            button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
             button1.Location = new System.Drawing.Point(574, 0);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(218, 80);
             button1.TabIndex = 0;
             button1.Text = "Start";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(19, 19, 19);
             ClientSize = new System.Drawing.Size(1575, 841);
             Controls.Add(panel3);
             Controls.Add(panel2);

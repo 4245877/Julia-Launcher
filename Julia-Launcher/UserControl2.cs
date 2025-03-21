@@ -87,7 +87,7 @@ namespace Julia_Launcher
                 camera = new Camera(new Vector3(0, 0, 3), glControl.Width / (float)glControl.Height);
 
                 // Load the specific model
-                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\hero_spy_orange_body_0001.fbx";
+                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\Untitled 1.fbx";
                 LoadModel(modelPath);
 
                 loaded = true;
@@ -762,7 +762,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Empty event handlers - implementing them with basic functionality
+        // Empty event handlers - implementing them with basic functionality camera 
         private void glControl1_Click(object sender, EventArgs e)
         {
             // Forward to main click handler
@@ -785,6 +785,11 @@ namespace Julia_Launcher
         {
             // Implement if needed or remove
             // Currently empty as trackBar7 is handling scale
+        }
+
+        private void UserControl2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
