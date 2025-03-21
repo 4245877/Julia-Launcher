@@ -67,11 +67,9 @@ namespace Julia_Launcher
         {
             try
             {
-                // Initialize OpenGL settings
                 GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
 
-                // Load shaders
                 string vertexPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\vertex.glsl";
                 string fragmentPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\fragment.glsl";
 
@@ -83,10 +81,11 @@ namespace Julia_Launcher
 
                 shader = new Shader(vertexPath, fragmentPath);
 
-                // Initialize camera
-                camera = new Camera(new Vector3(0, 0, 3), glControl.Width / (float)glControl.Height);
+                // Инициализация камеры с новой позицией
+                camera = new Camera(new Vector3(1, 1, 1), glControl.Width / (float)glControl.Height);
+                // Указываем камере смотреть на точку (0, 1, 0)
+                camera.LookAt(new Vector3(0, 1, 0));
 
-                // Load the specific model
                 string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\Untitled 1.fbx";
                 LoadModel(modelPath);
 
@@ -249,8 +248,18 @@ namespace Julia_Launcher
                 Position = position;
                 AspectRatio = aspectRatio;
                 UpdateCameraVectors();
-            }
 
+            }
+            public void LookAt(Vector3 target)
+            {
+                Vector3 direction = Vector3.Normalize(target - Position);
+                if (direction.LengthSquared > 0)
+                {
+                    pitch = MathHelper.RadiansToDegrees((float)Math.Asin(direction.Y));
+                    yaw = MathHelper.RadiansToDegrees((float)Math.Atan2(direction.Z, direction.X));
+                    UpdateCameraVectors();
+                }
+            }
             public Matrix4 GetViewMatrix()
             {
                 return Matrix4.LookAt(Position, Position + Front, Up);
