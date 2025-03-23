@@ -23,6 +23,10 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Shaders\fragment.glsl" />
+    <None Remove="Shaders\vertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="UserControl1.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -44,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo.ico" />
+    <Content Include="Shaders\fragment.glsl" />
+    <Content Include="Shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />

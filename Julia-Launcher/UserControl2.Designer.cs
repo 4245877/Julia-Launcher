@@ -44,6 +44,8 @@
             label13 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             glControl1 = new OpenTK.GLControl.GLControl();
+            label7 = new System.Windows.Forms.Label();
+            btnModel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
@@ -210,19 +212,40 @@
             glControl1.APIVersion = new System.Version(3, 3, 0, 0);
             glControl1.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
             glControl1.IsEventDriven = true;
-            glControl1.Location = new System.Drawing.Point(629, 8);
+            glControl1.Location = new System.Drawing.Point(499, 3);
             glControl1.Name = "glControl1";
             glControl1.Profile = OpenTK.Windowing.Common.ContextProfile.Core;
             glControl1.SharedContext = null;
-            glControl1.Size = new System.Drawing.Size(718, 684);
+            glControl1.Size = new System.Drawing.Size(848, 689);
             glControl1.TabIndex = 21;
             glControl1.Click += glControl1_Click_2;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(33, 387);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(38, 15);
+            label7.TabIndex = 22;
+            label7.Text = "label7";
+            // 
+            // btnModel
+            // 
+            btnModel.Location = new System.Drawing.Point(182, 383);
+            btnModel.Name = "btnModel";
+            btnModel.Size = new System.Drawing.Size(75, 23);
+            btnModel.TabIndex = 23;
+            btnModel.Text = "button1";
+            btnModel.UseVisualStyleBackColor = true;
+            btnModel.Click += btnModel_Click;
             // 
             // UserControl2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            Controls.Add(btnModel);
+            Controls.Add(label7);
             Controls.Add(glControl1);
             Controls.Add(label6);
             Controls.Add(label13);
@@ -271,5 +294,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label6;
         private OpenTK.GLControl.GLControl glControl1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnModel;
     }
 }

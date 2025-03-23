@@ -86,7 +86,7 @@ namespace Julia_Launcher
                 // Указываем камере смотреть на точку (0, 1, 0)
                 camera.LookAt(new Vector3(0, 1, 0));
 
-                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\Untitled 1.fbx";
+                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\Untitled.obj";
                 LoadModel(modelPath);
 
                 loaded = true;
@@ -211,17 +211,8 @@ namespace Julia_Launcher
 
         private void GlControl_Click(object sender, EventArgs e)
         {
-            // Use open file dialog to select FBX file
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "3D Models|*.fbx;*.obj;*.3ds;*.dae|FBX files (*.fbx)|*.fbx|OBJ files (*.obj)|*.obj|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    LoadModel(openFileDialog.FileName);
-                }
-            }
+            // Empty implementation or different functionality if needed
+            // The model selection has been moved to btnModel_Click
         }
 
         private void trackBar7_Scroll(object sender, EventArgs e)
@@ -343,7 +334,7 @@ namespace Julia_Launcher
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
 
-                
+
 
                 // Cache all uniform locations
                 GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out int uniformCount);
@@ -801,6 +792,21 @@ namespace Julia_Launcher
         private void UserControl2_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnModel_Click(object sender, EventArgs e)
+        {
+            // Use open file dialog to select 3D model file
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "3D Models|*.fbx;*.obj;*.3ds;*.dae|FBX files (*.fbx)|*.fbx|OBJ files (*.obj)|*.obj|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    LoadModel(openFileDialog.FileName);
+                }
+            }
         }
     }
 }
