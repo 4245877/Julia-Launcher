@@ -46,11 +46,13 @@
             glControl1 = new OpenTK.GLControl.GLControl();
             label7 = new System.Windows.Forms.Label();
             btnModel = new System.Windows.Forms.Button();
+            trackBar7 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -239,11 +241,19 @@
             btnModel.UseVisualStyleBackColor = true;
             btnModel.Click += btnModel_Click;
             // 
+            // trackBar7
+            // 
+            trackBar7.Location = new System.Drawing.Point(157, 503);
+            trackBar7.Name = "trackBar7";
+            trackBar7.Size = new System.Drawing.Size(104, 45);
+            trackBar7.TabIndex = 24;
+            // 
             // UserControl2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            Controls.Add(trackBar7);
             Controls.Add(btnModel);
             Controls.Add(label7);
             Controls.Add(glControl1);
@@ -271,6 +281,7 @@
             ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar7).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -296,5 +307,6 @@
         private OpenTK.GLControl.GLControl glControl1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnModel;
+        private System.Windows.Forms.TrackBar trackBar7;
     }
 }

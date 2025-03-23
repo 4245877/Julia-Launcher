@@ -22,7 +22,6 @@ namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
     {
-        private GLControl glControl;
         private bool loaded = false;
         private Model model;
         private Camera camera;
@@ -41,27 +40,18 @@ namespace Julia_Launcher
         public UserControl2()
         {
             InitializeComponent();
-            InitializeOpenGL(); // Uncommented this line
+
+            // Use existing glControl1 instead of creating a new one
+            this.glControl1.Load += GlControl_Load;
+            this.glControl1.Paint += GlControl_Paint;
+            this.glControl1.Resize += GlControl_Resize;
+            this.glControl1.MouseDown += GlControl_MouseDown;
+            this.glControl1.MouseMove += GlControl_MouseMove;
+            this.glControl1.MouseUp += GlControl_MouseUp;
+            this.glControl1.MouseWheel += GlControl_MouseWheel;
         }
 
-        private void InitializeOpenGL()
-        {
-            // Create GLControl with appropriate settings
-            glControl = new GLControl();
-            glControl.Dock = DockStyle.Fill;
-            glControl.Name = "glControl1";
-            glControl.Load += GlControl_Load;
-            glControl.Paint += GlControl_Paint;
-            glControl.Resize += GlControl_Resize;
-            glControl.MouseDown += GlControl_MouseDown;
-            glControl.MouseMove += GlControl_MouseMove;
-            glControl.MouseUp += GlControl_MouseUp;
-            glControl.MouseWheel += GlControl_MouseWheel;
-            glControl.Click += GlControl_Click;
-
-            // Add the control to the form
-            this.Controls.Add(glControl);
-        }
+        // Remove the InitializeOpenGL method entirely
 
         private void GlControl_Load(object sender, EventArgs e)
         {
@@ -70,25 +60,36 @@ namespace Julia_Launcher
                 GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
 
+                // Get application directory for relative paths
+                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                // Use relative paths with fallback to absolute paths
                 string vertexPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\vertex.glsl";
                 string fragmentPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\fragment.glsl";
 
+                // Fallback to hardcoded paths if files don't exist
                 if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
                 {
-                    MessageBox.Show("Не удалось найти файлы шейдеров!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    string hardcodedPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders";
+                    vertexPath = Path.Combine(hardcodedPath, "vertex.glsl");
+                    fragmentPath = Path.Combine(hardcodedPath, "fragment.glsl");
+
+                    if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
+                    {
+                        MessageBox.Show("Не удалось найти файлы шейдеров!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
 
                 shader = new Shader(vertexPath, fragmentPath);
 
-                // Инициализация камеры с новой позицией
-                camera = new Camera(new Vector3(1, 1, 1), glControl.Width / (float)glControl.Height);
-                // Указываем камере смотреть на точку (0, 1, 0)
-                camera.LookAt(new Vector3(0, 1, 0));
+                // Initialize camera
+                camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
+                camera.LookAt(new Vector3(0, 0, 0));
 
-                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\Untitled.obj";
+                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\hero_spy_orange_body_0001.fbx";
+
                 LoadModel(modelPath);
-
                 loaded = true;
             }
             catch (Exception ex)
@@ -96,7 +97,14 @@ namespace Julia_Launcher
                 MessageBox.Show($"Ошибка инициализации OpenGL: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        private void ResetCamera()
+        {
+            // Сбросить положение камеры к исходному
+            camera.Position = new Vector3(0, 0, 3);
+            camera.LookAt(new Vector3(0, 0, 0));
+            rotation = 0.0f;
+            glControl1.Invalidate();
+        }
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
             if (!loaded) return;
@@ -134,16 +142,16 @@ namespace Julia_Launcher
                 model.Draw(shader);
             }
 
-            glControl.SwapBuffers();
+            glControl1.SwapBuffers();
         }
 
         private void GlControl_Resize(object sender, EventArgs e)
         {
             if (!loaded) return;
 
-            GL.Viewport(0, 0, glControl.Width, glControl.Height);
-            camera.AspectRatio = glControl.Width / (float)glControl.Height;
-            glControl.Invalidate();
+            GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
+            camera.AspectRatio = glControl1.Width / (float)glControl1.Height;
+            glControl1.Invalidate();
         }
 
         private void GlControl_MouseDown(object sender, MouseEventArgs e)
@@ -171,13 +179,18 @@ namespace Julia_Launcher
                 float yOffset = lastMousePos.Y - e.Y;
                 lastMousePos = e.Location;
 
-                // Rotate the model based on mouse movement
-                rotation += xOffset * 0.5f;
+                // При удерживании Shift или Ctrl - вращаем модель
+                if (ModifierKeys.HasFlag(Keys.Shift) || ModifierKeys.HasFlag(Keys.Control))
+                {
+                    rotation += xOffset * 0.5f;
+                }
+                else
+                {
+                    // Иначе перемещаем камеру вокруг модели
+                    camera.ProcessMouseMovement(xOffset * 0.1f, yOffset * 0.1f);
+                }
 
-                // Update camera position vertically
-                camera.ProcessMouseMovement(0, yOffset * 0.1f);
-
-                glControl.Invalidate();
+                glControl1.Invalidate();
             }
         }
 
@@ -185,14 +198,14 @@ namespace Julia_Launcher
         {
             // Adjust zoom based on mouse wheel
             camera.ProcessMouseScroll(e.Delta / 120.0f);
-            glControl.Invalidate();
+            glControl1.Invalidate();
         }
 
         public void LoadModel(string path)
         {
             try
             {
-                // Dispose previous model if exists GlControl_Load
+                // Dispose previous model if exists
                 model?.Dispose();
 
                 model = new Model(path);
@@ -201,7 +214,11 @@ namespace Julia_Launcher
                 modelScale = 1.0f;
                 modelPosition = Vector3.Zero;
                 rotation = 0.0f;
-                glControl.Invalidate();
+
+                // Reset camera position when loading a new model
+                ResetCamera();
+
+                glControl1.Invalidate();
             }
             catch (Exception ex)
             {
@@ -212,12 +229,16 @@ namespace Julia_Launcher
         private void GlControl_Click(object sender, EventArgs e)
         {
             // Empty implementation or different functionality if needed
-            // The model selection has been moved to btnModel_Click
         }
 
         private void trackBar7_Scroll(object sender, EventArgs e)
         {
-
+            if (loaded && model != null)
+            {
+                // Assume trackBar7 controls model scale
+                modelScale = trackBar7.Value / 100.0f;
+                glControl1.Invalidate();
+            }
         }
 
         // Camera class to handle camera transformations
@@ -239,8 +260,8 @@ namespace Julia_Launcher
                 Position = position;
                 AspectRatio = aspectRatio;
                 UpdateCameraVectors();
-
             }
+
             public void LookAt(Vector3 target)
             {
                 Vector3 direction = Vector3.Normalize(target - Position);
@@ -251,6 +272,7 @@ namespace Julia_Launcher
                     UpdateCameraVectors();
                 }
             }
+
             public Matrix4 GetViewMatrix()
             {
                 return Matrix4.LookAt(Position, Position + Front, Up);
@@ -333,8 +355,6 @@ namespace Julia_Launcher
                 GL.DetachShader(Handle, fragmentShader);
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
-
-
 
                 // Cache all uniform locations
                 GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out int uniformCount);
@@ -540,6 +560,7 @@ namespace Julia_Launcher
                 return textureId;
             }
         }
+
 
         // Model class to load and render 3D models
         public class Model
