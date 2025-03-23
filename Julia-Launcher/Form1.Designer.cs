@@ -121,6 +121,8 @@
             // button1
             // 
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
+            button1.Font = new System.Drawing.Font("Intro Friday", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            button1.ForeColor = System.Drawing.Color.White;
             button1.Location = new System.Drawing.Point(574, 0);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button1.Name = "button1";

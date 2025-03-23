@@ -343,6 +343,8 @@ namespace Julia_Launcher
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
 
+                
+
                 // Cache all uniform locations
                 GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out int uniformCount);
                 uniformLocations = new Dictionary<string, int>();
