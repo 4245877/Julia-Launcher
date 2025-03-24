@@ -133,7 +133,7 @@ namespace Julia_Launcher
                                      Matrix4.CreateTranslation(modelPosition);
                 shader.SetMatrix4("model", modelMatrix);
 
-                // Вычисление матрицы нормалей (только вращение, так как масштабирование равномерное)
+                // Матрица нормалей
                 Matrix4 rotationMatrix = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation));
                 Matrix3 normalMatrix = new Matrix3(
                     rotationMatrix.Row0.Xyz,
@@ -576,57 +576,61 @@ namespace Julia_Launcher
             private List<Mesh> meshes = new List<Mesh>();
             private string directory;
             private Dictionary<string, int> loadedTextures = new Dictionary<string, int>();
+            private int defaultDiffuseTexture;
+            private int defaultSpecularTexture;
 
             public Model(string path)
             {
+                // Инициализация стандартных текстур
+                defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255); // Белая
+                defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);      // Чёрная
                 LoadModel(path);
             }
-
-            public void Draw(Shader shader)
+            private int CreateDefaultTexture(byte r, byte g, byte b, byte a)
             {
-                foreach (var mesh in meshes)
-                {
-                    mesh.Draw(shader);
-                }
-            }
+                GL.GenTextures(1, out int textureId);
+                GL.BindTexture(TextureTarget.Texture2D, textureId);
+                byte[] data = new byte[4] { r, g, b, a };
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 1, 1, 0,
+                    PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
+                // Используем полное имя типа для устранения неоднозначности
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
+
+                return textureId;
+            }
             private void LoadModel(string path)
             {
                 var importer = new AssimpContext();
                 importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
+                Scene scene = importer.ImportFile(path,
+                    PostProcessSteps.Triangulate |
+                    PostProcessSteps.GenerateSmoothNormals |
+                    PostProcessSteps.FlipUVs |
+                    PostProcessSteps.CalculateTangentSpace);
 
-                try
+                if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
                 {
-                    Scene scene = importer.ImportFile(path,
-                        PostProcessSteps.Triangulate |
-                        PostProcessSteps.GenerateSmoothNormals |
-                        PostProcessSteps.FlipUVs |
-                        PostProcessSteps.CalculateTangentSpace);
-
-                    if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
-                    {
-                        throw new Exception("Не удалось загрузить модель с помощью Assimp. Проверьте путь к файлу и формат.");
-                    }
-
-                    directory = Path.GetDirectoryName(path);
-                    ProcessNode(scene.RootNode, scene);
+                    throw new Exception("Не удалось загрузить модель с помощью Assimp.");
                 }
-                catch (AssimpException ex)
-                {
-                    throw new Exception($"Ошибка Assimp: {ex.Message}");
-                }
+
+                directory = Path.GetDirectoryName(path);
+                ProcessNode(scene.RootNode, scene);
             }
 
             private void ProcessNode(Node node, Scene scene)
             {
-                // Process all meshes in this node
+                // Обработка всех мешей в текущем узле
                 for (int i = 0; i < node.MeshCount; i++)
                 {
                     Assimp.Mesh mesh = scene.Meshes[node.MeshIndices[i]];
                     meshes.Add(ProcessMesh(mesh, scene));
                 }
 
-                // Process all child nodes recursively
+                // Рекурсивная обработка дочерних узлов
                 for (int i = 0; i < node.ChildCount; i++)
                 {
                     ProcessNode(node.Children[i], scene);
@@ -639,15 +643,13 @@ namespace Julia_Launcher
                 List<uint> indices = new List<uint>();
                 List<Texture> textures = new List<Texture>();
 
-                // Process vertices
+                // Обработка вершин
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    // Position
                     vertices.Add(mesh.Vertices[i].X);
                     vertices.Add(mesh.Vertices[i].Y);
                     vertices.Add(mesh.Vertices[i].Z);
 
-                    // Normals
                     if (mesh.HasNormals)
                     {
                         vertices.Add(mesh.Normals[i].X);
@@ -661,7 +663,6 @@ namespace Julia_Launcher
                         vertices.Add(1.0f);
                     }
 
-                    // Texture coordinates
                     if (mesh.HasTextureCoords(0))
                     {
                         vertices.Add(mesh.TextureCoordinateChannels[0][i].X);
@@ -674,7 +675,7 @@ namespace Julia_Launcher
                     }
                 }
 
-                // Process indices
+                // Обработка индексов
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
                     Face face = mesh.Faces[i];
@@ -684,18 +685,24 @@ namespace Julia_Launcher
                     }
                 }
 
-                // Process materials
+                // Загрузка материалов
                 if (mesh.MaterialIndex >= 0)
                 {
                     Material material = scene.Materials[mesh.MaterialIndex];
-
-                    // Load diffuse textures
                     List<Texture> diffuseMaps = LoadMaterialTextures(material, TextureType.Diffuse, "texture_diffuse");
-                    textures.AddRange(diffuseMaps);
-
-                    // Load specular textures
                     List<Texture> specularMaps = LoadMaterialTextures(material, TextureType.Specular, "texture_specular");
+                    textures.AddRange(diffuseMaps);
                     textures.AddRange(specularMaps);
+                }
+
+                // Добавление стандартных текстур, если их нет
+                if (!textures.Any(t => t.Type == "texture_diffuse"))
+                {
+                    textures.Add(new Texture(defaultDiffuseTexture, "texture_diffuse", "default_diffuse"));
+                }
+                if (!textures.Any(t => t.Type == "texture_specular"))
+                {
+                    textures.Add(new Texture(defaultSpecularTexture, "texture_specular", "default_specular"));
                 }
 
                 return new Mesh(vertices.ToArray(), indices.ToArray(), textures);
@@ -710,30 +717,11 @@ namespace Julia_Launcher
                     material.GetMaterialTexture(type, i, out TextureSlot textureSlot);
                     string path = textureSlot.FilePath;
 
-                    // Check if texture was already loaded
                     if (!loadedTextures.ContainsKey(path))
                     {
-                        // If texture not loaded already, load it
                         string fullPath = Path.Combine(directory, path);
+                        int id;
 
-                        // If file doesn't exist, try to find it with a different extension
-                        if (!File.Exists(fullPath))
-                        {
-                            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(path);
-                            string[] possibleExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".tga" };
-
-                            foreach (string ext in possibleExtensions)
-                            {
-                                string alternatePath = Path.Combine(directory, fileNameWithoutExt + ext);
-                                if (File.Exists(alternatePath))
-                                {
-                                    fullPath = alternatePath;
-                                    break;
-                                }
-                            }
-                        }
-
-                        int id = 0;
                         if (File.Exists(fullPath))
                         {
                             id = Texture.LoadTextureFromFile(fullPath);
@@ -741,42 +729,27 @@ namespace Julia_Launcher
                         }
                         else
                         {
-                            // Create a default texture if file not found
-                            id = CreateDefaultTexture();
+                            id = typeName == "texture_diffuse" ? defaultDiffuseTexture : defaultSpecularTexture;
                             loadedTextures[path] = id;
                         }
 
-                        Texture texture = new Texture(id, typeName, path);
-                        textures.Add(texture);
+                        textures.Add(new Texture(id, typeName, path));
                     }
                     else
                     {
-                        // Texture already loaded, use the existing ID
-                        Texture texture = new Texture(loadedTextures[path], typeName, path);
-                        textures.Add(texture);
+                        textures.Add(new Texture(loadedTextures[path], typeName, path));
                     }
                 }
 
                 return textures;
             }
 
-            private int CreateDefaultTexture()
+            public void Draw(Shader shader)
             {
-                GL.GenTextures(1, out int textureId);
-                GL.BindTexture(TextureTarget.Texture2D, textureId);
-
-                // Create a simple white texture as default
-                byte[] data = new byte[4] { 255, 255, 255, 255 }; // White pixel
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 1, 1, 0,
-                    PixelFormat.Rgba, PixelType.UnsignedByte, data);
-
-                // Set texture parameters
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
-
-                return textureId;
+                foreach (var mesh in meshes)
+                {
+                    mesh.Draw(shader);
+                }
             }
 
             public void Dispose()
@@ -785,11 +758,12 @@ namespace Julia_Launcher
                 {
                     mesh.Dispose();
                 }
-
                 foreach (var textureId in loadedTextures.Values)
                 {
                     GL.DeleteTexture(textureId);
                 }
+                GL.DeleteTexture(defaultDiffuseTexture);
+                GL.DeleteTexture(defaultSpecularTexture);
             }
         }
 
