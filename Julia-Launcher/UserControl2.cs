@@ -84,7 +84,7 @@ namespace Julia_Launcher
                 shader = new Shader(vertexPath, fragmentPath);
 
                 // Initialize camera
-                camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
+                camera = new Camera(new Vector3(2, 1, 0), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
                 string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\hero_spy_orange_body_0001.fbx";
@@ -101,7 +101,7 @@ namespace Julia_Launcher
         {
             // Сбросить положение камеры к исходному
             camera.Position = new Vector3(0, 0, 3);
-            camera.LookAt(new Vector3(0, 0, 0));
+            camera.LookAt(new Vector3(0, 2, 0));
             rotation = 0.0f;
             glControl1.Invalidate();
         }
