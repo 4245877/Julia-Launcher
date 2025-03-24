@@ -47,12 +47,14 @@
             label7 = new System.Windows.Forms.Label();
             btnModel = new System.Windows.Forms.Button();
             trackBar7 = new System.Windows.Forms.TrackBar();
+            trackBar4 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -69,10 +71,10 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new System.Drawing.Point(182, 309);
+            trackBar1.Location = new System.Drawing.Point(182, 298);
             trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar1.Name = "trackBar1";
-            trackBar1.Size = new System.Drawing.Size(121, 45);
+            trackBar1.Size = new System.Drawing.Size(290, 45);
             trackBar1.TabIndex = 1;
             trackBar1.Scroll += trackBar1_Scroll;
             // 
@@ -81,7 +83,7 @@
             trackBar2.Location = new System.Drawing.Point(182, 67);
             trackBar2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar2.Name = "trackBar2";
-            trackBar2.Size = new System.Drawing.Size(121, 45);
+            trackBar2.Size = new System.Drawing.Size(290, 45);
             trackBar2.TabIndex = 2;
             // 
             // trackBar3
@@ -89,23 +91,23 @@
             trackBar3.Location = new System.Drawing.Point(182, 118);
             trackBar3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar3.Name = "trackBar3";
-            trackBar3.Size = new System.Drawing.Size(121, 45);
+            trackBar3.Size = new System.Drawing.Size(290, 45);
             trackBar3.TabIndex = 3;
             // 
             // trackBar5
             // 
-            trackBar5.Location = new System.Drawing.Point(182, 215);
+            trackBar5.Location = new System.Drawing.Point(182, 178);
             trackBar5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar5.Name = "trackBar5";
-            trackBar5.Size = new System.Drawing.Size(121, 45);
+            trackBar5.Size = new System.Drawing.Size(290, 45);
             trackBar5.TabIndex = 5;
             // 
             // trackBar6
             // 
-            trackBar6.Location = new System.Drawing.Point(182, 258);
+            trackBar6.Location = new System.Drawing.Point(182, 247);
             trackBar6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackBar6.Name = "trackBar6";
-            trackBar6.Size = new System.Drawing.Size(121, 45);
+            trackBar6.Size = new System.Drawing.Size(290, 45);
             trackBar6.TabIndex = 6;
             // 
             // label2
@@ -123,7 +125,7 @@
             // 
             label3.AutoSize = true;
             label3.ForeColor = System.Drawing.Color.White;
-            label3.Location = new System.Drawing.Point(33, 141);
+            label3.Location = new System.Drawing.Point(33, 169);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(50, 15);
@@ -134,7 +136,7 @@
             // 
             label4.AutoSize = true;
             label4.ForeColor = System.Drawing.Color.White;
-            label4.Location = new System.Drawing.Point(33, 215);
+            label4.Location = new System.Drawing.Point(33, 247);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(28, 15);
@@ -145,7 +147,7 @@
             // 
             label5.AutoSize = true;
             label5.ForeColor = System.Drawing.Color.White;
-            label5.Location = new System.Drawing.Point(33, 288);
+            label5.Location = new System.Drawing.Point(33, 349);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(89, 15);
@@ -156,7 +158,7 @@
             // 
             label10.AutoSize = true;
             label10.ForeColor = System.Drawing.Color.White;
-            label10.Location = new System.Drawing.Point(33, 104);
+            label10.Location = new System.Drawing.Point(33, 118);
             label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(26, 15);
@@ -168,7 +170,7 @@
             label11.AutoSize = true;
             label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
             label11.ForeColor = System.Drawing.Color.White;
-            label11.Location = new System.Drawing.Point(15, 178);
+            label11.Location = new System.Drawing.Point(15, 210);
             label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(116, 13);
@@ -179,7 +181,7 @@
             // 
             label12.AutoSize = true;
             label12.ForeColor = System.Drawing.Color.White;
-            label12.Location = new System.Drawing.Point(33, 252);
+            label12.Location = new System.Drawing.Point(33, 298);
             label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(43, 15);
@@ -190,7 +192,7 @@
             // 
             label13.AutoSize = true;
             label13.ForeColor = System.Drawing.Color.White;
-            label13.Location = new System.Drawing.Point(33, 325);
+            label13.Location = new System.Drawing.Point(33, 400);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(66, 15);
@@ -225,7 +227,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(33, 387);
+            label7.Location = new System.Drawing.Point(33, 482);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(38, 15);
             label7.TabIndex = 22;
@@ -233,7 +235,7 @@
             // 
             // btnModel
             // 
-            btnModel.Location = new System.Drawing.Point(182, 383);
+            btnModel.Location = new System.Drawing.Point(60, 567);
             btnModel.Name = "btnModel";
             btnModel.Size = new System.Drawing.Size(75, 23);
             btnModel.TabIndex = 23;
@@ -243,16 +245,24 @@
             // 
             // trackBar7
             // 
-            trackBar7.Location = new System.Drawing.Point(157, 503);
+            trackBar7.Location = new System.Drawing.Point(182, 349);
             trackBar7.Name = "trackBar7";
-            trackBar7.Size = new System.Drawing.Size(104, 45);
+            trackBar7.Size = new System.Drawing.Size(290, 45);
             trackBar7.TabIndex = 24;
+            // 
+            // trackBar4
+            // 
+            trackBar4.Location = new System.Drawing.Point(182, 400);
+            trackBar4.Name = "trackBar4";
+            trackBar4.Size = new System.Drawing.Size(290, 45);
+            trackBar4.TabIndex = 25;
             // 
             // UserControl2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            Controls.Add(trackBar4);
             Controls.Add(trackBar7);
             Controls.Add(btnModel);
             Controls.Add(label7);
@@ -282,6 +292,7 @@
             ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar6).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar4).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -308,5 +319,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnModel;
         private System.Windows.Forms.TrackBar trackBar7;
+        private System.Windows.Forms.TrackBar trackBar4;
     }
 }

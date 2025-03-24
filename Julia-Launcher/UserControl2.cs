@@ -41,7 +41,7 @@ namespace Julia_Launcher
         {
             InitializeComponent();
 
-            // Use existing glControl1 instead of creating a new one
+            // Use existing glControl1 instead of creating a new one 
             this.glControl1.Load += GlControl_Load;
             this.glControl1.Paint += GlControl_Paint;
             this.glControl1.Resize += GlControl_Resize;
@@ -113,32 +113,35 @@ namespace Julia_Launcher
 
             if (model != null)
             {
-                // Use shader
                 shader.Use();
 
-                // Camera/view transformation
                 Matrix4 view = camera.GetViewMatrix();
                 Matrix4 projection = camera.GetProjectionMatrix();
-
-                // Pass transformation matrices to shader
                 shader.SetMatrix4("view", view);
                 shader.SetMatrix4("projection", projection);
 
-                // Lighting
+                // Освещение
                 shader.SetVector3("lightPos", lightPos);
                 shader.SetVector3("lightColor", lightColor);
                 shader.SetFloat("ambientStrength", ambientStrength);
                 shader.SetFloat("specularStrength", specularStrength);
                 shader.SetVector3("viewPos", camera.Position);
 
-                // Model transformations (position, rotation, scale)
+                // Матрица модели
                 Matrix4 modelMatrix = Matrix4.CreateScale(modelScale) *
                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                      Matrix4.CreateTranslation(modelPosition);
-
                 shader.SetMatrix4("model", modelMatrix);
 
-                // Draw model
+                // Вычисление матрицы нормалей (только вращение, так как масштабирование равномерное)
+                Matrix4 rotationMatrix = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation));
+                Matrix3 normalMatrix = new Matrix3(
+                    rotationMatrix.Row0.Xyz,
+                    rotationMatrix.Row1.Xyz,
+                    rotationMatrix.Row2.Xyz
+                );
+                shader.SetMatrix3("normalMatrix", normalMatrix);
+
                 model.Draw(shader);
             }
 
@@ -367,7 +370,12 @@ namespace Julia_Launcher
                     uniformLocations[name] = location;
                 }
             }
-
+            public void SetMatrix3(string name, Matrix3 value)
+            {
+                GL.UseProgram(Handle);
+                int location = GetUniformLocation(name);
+                GL.UniformMatrix3(location, false, ref value);
+            }
             private int CompileShader(ShaderType type, string source)
             {
                 int shader = GL.CreateShader(type);
