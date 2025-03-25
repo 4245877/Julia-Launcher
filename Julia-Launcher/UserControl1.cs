@@ -378,6 +378,21 @@ namespace Julia_Launcher
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
         {
+            
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -43,6 +43,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel1.Location = new System.Drawing.Point(169, 14);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
@@ -52,6 +53,7 @@
             // 
             // panel2
             // 
+            panel2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
             panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel2.Controls.Add(SetingButton);
             panel2.Controls.Add(btnModelVoiceSettings);
@@ -66,6 +68,7 @@
             // 
             // SetingButton
             // 
+            SetingButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             SetingButton.Location = new System.Drawing.Point(4, 762);
             SetingButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             SetingButton.Name = "SetingButton";
@@ -77,6 +80,7 @@
             // 
             // btnModelVoiceSettings
             // 
+            btnModelVoiceSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
             btnModelVoiceSettings.Location = new System.Drawing.Point(4, 706);
             btnModelVoiceSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnModelVoiceSettings.Name = "btnModelVoiceSettings";
@@ -88,6 +92,8 @@
             // 
             // button3
             // 
+            button3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
             button3.Location = new System.Drawing.Point(4, 651);
             button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button3.Name = "button3";
@@ -99,6 +105,7 @@
             // 
             // button2
             // 
+            button2.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             button2.Location = new System.Drawing.Point(0, 3);
             button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button2.Name = "button2";
@@ -110,6 +117,7 @@
             // 
             // panel3
             // 
+            panel3.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
             panel3.Location = new System.Drawing.Point(169, 741);
@@ -120,6 +128,7 @@
             // 
             // button1
             // 
+            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
             button1.Font = new System.Drawing.Font("Intro Friday", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             button1.ForeColor = System.Drawing.Color.White;
@@ -143,6 +152,7 @@
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MinimumSize = new System.Drawing.Size(800, 600);
             Name = "Form1";
             Text = "Julia Launcher ";
             Load += Form1_Load;
