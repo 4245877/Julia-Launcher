@@ -59,33 +59,27 @@ namespace Julia_Launcher
             {
                 GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
+                GL.Viewport(0, 0, glControl1.Width, glControl1.Height); // Добавлен Viewport
 
-                // Get application directory for relative paths
-                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string appDirectory = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher";
 
-                // Use relative paths with fallback to absolute paths
-                string vertexPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\vertex.glsl";
-                string fragmentPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders\\fragment.glsl";
+                // Исправлены пути на относительные
+                string shadersDirectory = Path.Combine(appDirectory, "Shaders");
+                string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
+                string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
-                // Fallback to hardcoded paths if files don't exist
                 if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
                 {
-                    string hardcodedPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Shaders";
-                    vertexPath = Path.Combine(hardcodedPath, "vertex.glsl");
-                    fragmentPath = Path.Combine(hardcodedPath, "fragment.glsl");
-
-                    if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
-                    {
-                        MessageBox.Show("Не удалось найти файлы шейдеров!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 shader = new Shader(vertexPath, fragmentPath);
 
-                // Initialize camera
-                camera = new Camera(new Vector3(2, 1, 0), glControl1.Width / (float)glControl1.Height);
+                camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
+
+                // Исправлен путь к модели
 
                 string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\Raphtalia\\hero_spy_orange_body_0001\\hero_spy_orange_body_0001.fbx";
 
@@ -94,7 +88,7 @@ namespace Julia_Launcher
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка инициализации OpenGL: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка инициализации: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void ResetCamera()
@@ -107,6 +101,7 @@ namespace Julia_Launcher
         }
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
+
             if (!loaded) return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
