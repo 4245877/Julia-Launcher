@@ -216,11 +216,11 @@
             glControl1.APIVersion = new System.Version(3, 3, 0, 0);
             glControl1.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
             glControl1.IsEventDriven = true;
-            glControl1.Location = new System.Drawing.Point(530, 3);
+            glControl1.Location = new System.Drawing.Point(478, 0);
             glControl1.Name = "glControl1";
             glControl1.Profile = OpenTK.Windowing.Common.ContextProfile.Core;
             glControl1.SharedContext = null;
-            glControl1.Size = new System.Drawing.Size(859, 714);
+            glControl1.Size = new System.Drawing.Size(693, 667);
             glControl1.TabIndex = 21;
             glControl1.Click += glControl1_Click_2;
             // 
@@ -235,9 +235,9 @@
             // 
             // btnModel
             // 
-            btnModel.Location = new System.Drawing.Point(15, 672);
+            btnModel.Location = new System.Drawing.Point(15, 520);
             btnModel.Name = "btnModel";
-            btnModel.Size = new System.Drawing.Size(509, 45);
+            btnModel.Size = new System.Drawing.Size(457, 45);
             btnModel.TabIndex = 23;
             btnModel.Text = "button1";
             btnModel.UseVisualStyleBackColor = true;
@@ -284,7 +284,7 @@
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
-            Size = new System.Drawing.Size(1392, 720);
+            Size = new System.Drawing.Size(1171, 667);
             Load += UserControl2_Load;
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();

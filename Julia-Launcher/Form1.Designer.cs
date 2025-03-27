@@ -44,10 +44,10 @@
             // panel1
             // 
             panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panel1.Location = new System.Drawing.Point(169, 14);
+            panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(1392, 720);
+            panel1.Size = new System.Drawing.Size(1171, 667);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
@@ -59,17 +59,17 @@
             panel2.Controls.Add(btnModelVoiceSettings);
             panel2.Controls.Add(button3);
             panel2.Controls.Add(button2);
-            panel2.Location = new System.Drawing.Point(14, 14);
+            panel2.Location = new System.Drawing.Point(10, 12);
             panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(148, 813);
+            panel2.Size = new System.Drawing.Size(148, 760);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
             // SetingButton
             // 
             SetingButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            SetingButton.Location = new System.Drawing.Point(4, 762);
+            SetingButton.Location = new System.Drawing.Point(4, 709);
             SetingButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             SetingButton.Name = "SetingButton";
             SetingButton.Size = new System.Drawing.Size(141, 48);
@@ -81,7 +81,7 @@
             // btnModelVoiceSettings
             // 
             btnModelVoiceSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-            btnModelVoiceSettings.Location = new System.Drawing.Point(4, 706);
+            btnModelVoiceSettings.Location = new System.Drawing.Point(4, 655);
             btnModelVoiceSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnModelVoiceSettings.Name = "btnModelVoiceSettings";
             btnModelVoiceSettings.Size = new System.Drawing.Size(141, 48);
@@ -94,7 +94,7 @@
             // 
             button3.Anchor = System.Windows.Forms.AnchorStyles.None;
             button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            button3.Location = new System.Drawing.Point(4, 651);
+            button3.Location = new System.Drawing.Point(3, 601);
             button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(145, 48);
@@ -120,11 +120,12 @@
             panel3.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
-            panel3.Location = new System.Drawing.Point(169, 741);
+            panel3.Location = new System.Drawing.Point(166, 685);
             panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(1392, 87);
+            panel3.Size = new System.Drawing.Size(1171, 87);
             panel3.TabIndex = 2;
+            panel3.Paint += panel3_Paint;
             // 
             // button1
             // 
@@ -132,10 +133,10 @@
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
             button1.Font = new System.Drawing.Font("Intro Friday", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             button1.ForeColor = System.Drawing.Color.White;
-            button1.Location = new System.Drawing.Point(574, 0);
+            button1.Location = new System.Drawing.Point(464, 3);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(218, 80);
+            button1.Size = new System.Drawing.Size(216, 81);
             button1.TabIndex = 0;
             button1.Text = "Start";
             button1.UseVisualStyleBackColor = false;
@@ -146,7 +147,7 @@
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(19, 19, 19);
-            ClientSize = new System.Drawing.Size(1575, 841);
+            ClientSize = new System.Drawing.Size(1350, 784);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);

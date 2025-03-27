@@ -121,7 +121,7 @@
             // 
             // btnApply
             // 
-            btnApply.Location = new System.Drawing.Point(1299, 690);
+            btnApply.Location = new System.Drawing.Point(1079, 637);
             btnApply.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnApply.Name = "btnApply";
             btnApply.Size = new System.Drawing.Size(88, 27);
@@ -132,7 +132,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new System.Drawing.Point(1110, 690);
+            btnSave.Location = new System.Drawing.Point(890, 637);
             btnSave.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(88, 27);
@@ -143,7 +143,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new System.Drawing.Point(1205, 690);
+            btnCancel.Location = new System.Drawing.Point(985, 637);
             btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(88, 27);
@@ -164,7 +164,7 @@
             tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1383, 681);
+            tabControl1.Size = new System.Drawing.Size(1163, 628);
             tabControl1.TabIndex = 127;
             // 
             // tabPage1
@@ -187,7 +187,7 @@
             tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage1.Size = new System.Drawing.Size(1375, 653);
+            tabPage1.Size = new System.Drawing.Size(1155, 600);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "File and Folder Paths";
             // 
@@ -1061,7 +1061,7 @@
             Controls.Add(tabControl1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl1";
-            Size = new System.Drawing.Size(1392, 720);
+            Size = new System.Drawing.Size(1171, 667);
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();

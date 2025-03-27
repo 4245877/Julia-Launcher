@@ -57,7 +57,7 @@ namespace Julia_Launcher
         {
             try
             {
-                GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+                GL.ClearColor(0.7f, 0.9f, 0.5f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
                 GL.Viewport(0, 0, glControl1.Width, glControl1.Height); // Добавлен Viewport
 
@@ -101,7 +101,6 @@ namespace Julia_Launcher
         }
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
-
             if (!loaded) return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -115,27 +114,20 @@ namespace Julia_Launcher
                 shader.SetMatrix4("view", view);
                 shader.SetMatrix4("projection", projection);
 
-                // Освещение
-                shader.SetVector3("lightPos", lightPos);
-                shader.SetVector3("lightColor", lightColor);
-                shader.SetFloat("ambientStrength", ambientStrength);
-                shader.SetFloat("specularStrength", specularStrength);
-                shader.SetVector3("viewPos", camera.Position);
-
-                // Матрица модели
                 Matrix4 modelMatrix = Matrix4.CreateScale(modelScale) *
                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                      Matrix4.CreateTranslation(modelPosition);
-                shader.SetMatrix4("model", modelMatrix);
 
-                // Матрица нормалей
-                Matrix4 rotationMatrix = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation));
+                // Исправлено вычисление матрицы нормалей
+                Matrix4 modelView = view * modelMatrix;
                 Matrix3 normalMatrix = new Matrix3(
-                    rotationMatrix.Row0.Xyz,
-                    rotationMatrix.Row1.Xyz,
-                    rotationMatrix.Row2.Xyz
+                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row0.Xyz,
+                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row1.Xyz,
+                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row2.Xyz
                 );
+
                 shader.SetMatrix3("normalMatrix", normalMatrix);
+                shader.SetMatrix4("model", modelMatrix);
 
                 model.Draw(shader);
             }
