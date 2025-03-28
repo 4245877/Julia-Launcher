@@ -352,7 +352,7 @@
             tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage2.Size = new System.Drawing.Size(1375, 653);
+            tabPage2.Size = new System.Drawing.Size(1155, 600);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Resource Allocation";
             // 
@@ -466,7 +466,7 @@
             // 
             // trackRamUsage
             // 
-            trackRamUsage.Location = new System.Drawing.Point(178, 8);
+            trackRamUsage.Location = new System.Drawing.Point(523, 45);
             trackRamUsage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trackRamUsage.Name = "trackRamUsage";
             trackRamUsage.Size = new System.Drawing.Size(288, 45);
@@ -548,7 +548,7 @@
             tabPage3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage3.Size = new System.Drawing.Size(1375, 653);
+            tabPage3.Size = new System.Drawing.Size(1155, 600);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Startup and Update Settings";
             // 
@@ -713,7 +713,7 @@
             tabPage4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage4.Size = new System.Drawing.Size(1375, 653);
+            tabPage4.Size = new System.Drawing.Size(1155, 600);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
             // 
@@ -872,7 +872,7 @@
             tabPage5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage5.Size = new System.Drawing.Size(1375, 653);
+            tabPage5.Size = new System.Drawing.Size(1155, 600);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "UI and User Preferences";
             // 
@@ -968,7 +968,7 @@
             tabPage6.Location = new System.Drawing.Point(4, 24);
             tabPage6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new System.Drawing.Size(1375, 653);
+            tabPage6.Size = new System.Drawing.Size(1155, 600);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Security";
             // 
