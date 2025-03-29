@@ -51,51 +51,22 @@ namespace Julia_Launcher
                 var settings = ReadSettings();
                 switch (key)
                 {
-                    case "InstallDirectory":
-                        settings.InstallDirectory = (string)value;
-                        break;
-                    case "LogDirectory":
-                        settings.LogDirectory = (string)value;
-                        break;
-                    case "ModulesDirectory":
-                        settings.ModulesDirectory = (string)value;
-                        break;
-                    case "CacheDirectory":
-                        settings.CacheDirectory = (string)value;
-                        break;
-                    case "CPULimit":
-                        settings.CPULimit = (string)value;
-                        break;
-                    case "CpuLoad":
-                        settings.CpuLoad = (string)value;
-                        break;
-                    case "GPULimit":
-                        settings.GPULimit = (string)value;
-                        break;
-                    case "NetworkSpeed":
-                        settings.NetworkSpeed = (string)value;
-                        break;
-                    case "CpuCores":
-                        settings.CpuCores = (string)value;
-                        break;
-                    case "GpuSelection":
-                        settings.GpuSelection = (string)value;
-                        break;
-                    case "GPUEnable":
-                        settings.GPUEnable = (bool)value;
-                        break;
-                    case "AutoStart":
-                        settings.AutoStart = (bool)value;
-                        break;
-                    case "UpdateBranch":
-                        settings.UpdateBranch = (string)value;
-                        break;
-                    case "LogLevel":
-                        settings.LogLevel = (string)value;
-                        break;
-                    case "Language":
-                        settings.Language = (string)value;
-                        break;
+                    case "InstallDirectory": settings.InstallDirectory = (string)value; break;
+                    case "LogDirectory": settings.LogDirectory = (string)value; break;
+                    case "ModulesDirectory": settings.ModulesDirectory = (string)value; break;
+                    case "CacheDirectory": settings.CacheDirectory = (string)value; break;
+                    case "CPULimit": settings.CPULimit = (string)value; break;
+                    case "RAMUsage": settings.RAMUsage = (int)value; break;
+                    case "CpuLoad": settings.CpuLoad = (string)value; break;
+                    case "GPULimit": settings.GPULimit = (string)value; break;
+                    case "NetworkSpeed": settings.NetworkSpeed = (string)value; break;
+                    case "CpuCores": settings.CpuCores = (string)value; break;
+                    case "GpuSelection": settings.GpuSelection = (string)value; break;
+                    case "GPUEnable": settings.GPUEnable = (bool)value; break;
+                    case "AutoStart": settings.AutoStart = (bool)value; break;
+                    case "UpdateBranch": settings.UpdateBranch = (string)value; break;
+                    case "LogLevel": settings.LogLevel = (string)value; break;
+                    case "Language": settings.Language = (string)value; break;
                 }
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(settingsFilePath, json);
@@ -152,7 +123,11 @@ namespace Julia_Launcher
             public string NetworkSpeed { get; set; } = string.Empty;
             public string GPULimit { get; set; } = string.Empty;
             public string CpuLoad { get; set; } = string.Empty;
-            public string CPULimit { get; set; } = string.Empty; // Добавлено для txtCPULimit
+            public string CPULimit { get; set; } = string.Empty;
+
+            // Свойства для TrackBar
+
+            public int RAMUsage { get; set; } = 0;
 
             public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
         }
@@ -166,18 +141,12 @@ namespace Julia_Launcher
             txtModulesDirectory.Text = settings.ModulesDirectory;
             txtCacheDirectory.Text = settings.CacheDirectory;
 
-
             // Загрузка для CheckBox
             chkGPUEnable.Checked = settings.GPUEnable;
             chkAutoStart.Checked = settings.AutoStart;
 
-
-            // Загрузка для ComboBox
-
-            // Загрузка для RadioButton
-
-
-
+            // Загрузка для ComboBox (отсутствует!)
+            // Загрузка для RadioButton (отсутствует!)
         }
 
 
@@ -317,7 +286,7 @@ namespace Julia_Launcher
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("AutoStart", chkAutoStart.Checked);
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -373,12 +342,12 @@ namespace Julia_Launcher
 
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("RAMUsage", trackRamUsage.Value); 
         }
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
         {
-            
+            SaveSettings("NetworkSpeed", txtNetworkSpeed.Text);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -394,6 +363,11 @@ namespace Julia_Launcher
         private void btnApply_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void chkGPUEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveSettings("GPUEnable", chkGPUEnable.Checked);
         }
     }
 }

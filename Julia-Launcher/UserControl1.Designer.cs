@@ -501,6 +501,7 @@
             chkGPUEnable.Size = new System.Drawing.Size(15, 14);
             chkGPUEnable.TabIndex = 111;
             chkGPUEnable.UseVisualStyleBackColor = true;
+            chkGPUEnable.CheckedChanged += chkGPUEnable_CheckedChanged;
             // 
             // txtCPULimit
             // 
