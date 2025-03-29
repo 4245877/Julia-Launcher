@@ -98,7 +98,7 @@ namespace Julia_Launcher
         // Класс для хранения настроек
         private class Settings
         {
-            // Существующие свойства
+            // Свойства для TextBox
             public string InstallDirectory { get; set; } = string.Empty;
             public string LogDirectory { get; set; } = string.Empty;
             public string ModulesDirectory { get; set; } = string.Empty;
@@ -111,13 +111,23 @@ namespace Julia_Launcher
             // Свойства для CheckBox
             public bool GPUEnable { get; set; } = false;
             public bool AutoStart { get; set; } = false;
+            public bool UpdPreferen { get; set; } = false;
+            public bool AutoUpdate { get; set; } = false;
+            public bool UpdateSrartup { get; set; } = false;
+            public bool ManUpdate { get; set; } = false;
+
+
 
             // Свойства для ComboBox (храним выбранное значение как string)
             public string CpuCores { get; set; } = string.Empty;
             public string GpuSelection { get; set; } = string.Empty;
             public string UpdateBranch { get; set; } = string.Empty;
             public string LogLevel { get; set; } = string.Empty;
+            public string Errors { get; set; } = string.Empty;
             public string Language { get; set; } = string.Empty;
+            public string Warnings { get; set; } = string.Empty;
+            public string InfoMassages { get; set; } = string.Empty;
+            public string LogFormat { get; set; } = string.Empty;
 
             // Свойства для TextBox
             public string NetworkSpeed { get; set; } = string.Empty;
@@ -342,7 +352,7 @@ namespace Julia_Launcher
 
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
-            SaveSettings("RAMUsage", trackRamUsage.Value); 
+            SaveSettings("RAMUsage", trackRamUsage.Value);
         }
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
@@ -368,6 +378,31 @@ namespace Julia_Launcher
         private void chkGPUEnable_CheckedChanged(object sender, EventArgs e)
         {
             SaveSettings("GPUEnable", chkGPUEnable.Checked);
+        }
+
+        private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox10_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

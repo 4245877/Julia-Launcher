@@ -72,7 +72,7 @@
             label21 = new System.Windows.Forms.Label();
             label17 = new System.Windows.Forms.Label();
             label22 = new System.Windows.Forms.Label();
-            checkBox10 = new System.Windows.Forms.CheckBox();
+            chkUpdateSrartup = new System.Windows.Forms.CheckBox();
             chkManUpdate = new System.Windows.Forms.CheckBox();
             cmbUpdateBranch = new System.Windows.Forms.ComboBox();
             chkAutoUpdate = new System.Windows.Forms.CheckBox();
@@ -84,7 +84,7 @@
             cmbLogFormat = new System.Windows.Forms.ComboBox();
             label23 = new System.Windows.Forms.Label();
             label24 = new System.Windows.Forms.Label();
-            comboBox4 = new System.Windows.Forms.ComboBox();
+            cmbErrors = new System.Windows.Forms.ComboBox();
             label25 = new System.Windows.Forms.Label();
             cmbLogLevel = new System.Windows.Forms.ComboBox();
             label26 = new System.Windows.Forms.Label();
@@ -466,11 +466,14 @@
             // 
             // trackRamUsage
             // 
-            trackRamUsage.Location = new System.Drawing.Point(523, 45);
+            trackRamUsage.Location = new System.Drawing.Point(109, 27);
             trackRamUsage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trackRamUsage.Maximum = 4096;
+            trackRamUsage.Minimum = 4096;
             trackRamUsage.Name = "trackRamUsage";
             trackRamUsage.Size = new System.Drawing.Size(288, 45);
             trackRamUsage.TabIndex = 100;
+            trackRamUsage.Value = 4096;
             trackRamUsage.Scroll += trackRamUsage_Scroll;
             // 
             // cmbGpuSelection
@@ -539,7 +542,7 @@
             tabPage3.Controls.Add(label21);
             tabPage3.Controls.Add(label17);
             tabPage3.Controls.Add(label22);
-            tabPage3.Controls.Add(checkBox10);
+            tabPage3.Controls.Add(chkUpdateSrartup);
             tabPage3.Controls.Add(chkManUpdate);
             tabPage3.Controls.Add(cmbUpdateBranch);
             tabPage3.Controls.Add(chkAutoUpdate);
@@ -631,16 +634,17 @@
             label22.TabIndex = 77;
             label22.Text = "Choose update branch (Stable, Beta, Nightly).";
             // 
-            // checkBox10
+            // chkUpdateSrartup
             // 
-            checkBox10.AutoSize = true;
-            checkBox10.Location = new System.Drawing.Point(204, 155);
-            checkBox10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox10.Name = "checkBox10";
-            checkBox10.Size = new System.Drawing.Size(88, 19);
-            checkBox10.TabIndex = 114;
-            checkBox10.Text = "checkBox10";
-            checkBox10.UseVisualStyleBackColor = true;
+            chkUpdateSrartup.AutoSize = true;
+            chkUpdateSrartup.Location = new System.Drawing.Point(204, 155);
+            chkUpdateSrartup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkUpdateSrartup.Name = "chkUpdateSrartup";
+            chkUpdateSrartup.Size = new System.Drawing.Size(88, 19);
+            chkUpdateSrartup.TabIndex = 114;
+            chkUpdateSrartup.Text = "checkBox10";
+            chkUpdateSrartup.UseVisualStyleBackColor = true;
+            chkUpdateSrartup.CheckedChanged += checkBox10_CheckedChanged;
             // 
             // chkManUpdate
             // 
@@ -661,6 +665,7 @@
             cmbUpdateBranch.Name = "cmbUpdateBranch";
             cmbUpdateBranch.Size = new System.Drawing.Size(140, 23);
             cmbUpdateBranch.TabIndex = 96;
+            cmbUpdateBranch.SelectedIndexChanged += cmbUpdateBranch_SelectedIndexChanged;
             // 
             // chkAutoUpdate
             // 
@@ -671,6 +676,7 @@
             chkAutoUpdate.Size = new System.Drawing.Size(15, 14);
             chkAutoUpdate.TabIndex = 98;
             chkAutoUpdate.UseVisualStyleBackColor = true;
+            chkAutoUpdate.CheckedChanged += chkAutoUpdate_CheckedChanged;
             // 
             // chkUpdPreferen
             // 
@@ -701,7 +707,7 @@
             tabPage4.Controls.Add(cmbLogFormat);
             tabPage4.Controls.Add(label23);
             tabPage4.Controls.Add(label24);
-            tabPage4.Controls.Add(comboBox4);
+            tabPage4.Controls.Add(cmbErrors);
             tabPage4.Controls.Add(label25);
             tabPage4.Controls.Add(cmbLogLevel);
             tabPage4.Controls.Add(label26);
@@ -766,14 +772,15 @@
             label24.TabIndex = 80;
             label24.Text = "Log Detail Level";
             // 
-            // comboBox4
+            // cmbErrors
             // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new System.Drawing.Point(140, 78);
-            comboBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new System.Drawing.Size(140, 23);
-            comboBox4.TabIndex = 124;
+            cmbErrors.FormattingEnabled = true;
+            cmbErrors.Location = new System.Drawing.Point(140, 78);
+            cmbErrors.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbErrors.Name = "cmbErrors";
+            cmbErrors.Size = new System.Drawing.Size(140, 23);
+            cmbErrors.TabIndex = 124;
+            cmbErrors.SelectedIndexChanged += cmbErrors_SelectedIndexChanged;
             // 
             // label25
             // 
@@ -794,6 +801,7 @@
             cmbLogLevel.Name = "cmbLogLevel";
             cmbLogLevel.Size = new System.Drawing.Size(140, 23);
             cmbLogLevel.TabIndex = 123;
+            cmbLogLevel.SelectedIndexChanged += cmbLogLevel_SelectedIndexChanged;
             // 
             // label26
             // 
@@ -1127,7 +1135,7 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckBox checkBox10;
+        private System.Windows.Forms.CheckBox chkUpdateSrartup;
         private System.Windows.Forms.CheckBox chkManUpdate;
         private System.Windows.Forms.ComboBox cmbUpdateBranch;
         private System.Windows.Forms.CheckBox chkAutoUpdate;
@@ -1136,7 +1144,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cmbErrors;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.ComboBox cmbLogLevel;
         private System.Windows.Forms.Label label26;
