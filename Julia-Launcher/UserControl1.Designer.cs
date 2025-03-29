@@ -744,10 +744,12 @@
             // cmbLogFormat
             // 
             cmbLogFormat.FormattingEnabled = true;
+            cmbLogFormat.Items.AddRange(new object[] { ".txt ", ".json ", ".etc" });
             cmbLogFormat.Location = new System.Drawing.Point(202, 227);
             cmbLogFormat.Name = "cmbLogFormat";
             cmbLogFormat.Size = new System.Drawing.Size(121, 23);
             cmbLogFormat.TabIndex = 125;
+            cmbLogFormat.SelectedIndexChanged += cmbLogFormat_SelectedIndexChanged;
             // 
             // label23
             // 
@@ -919,6 +921,7 @@
             radioButton2.TabStop = true;
             radioButton2.Text = "radioButton2";
             radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged_1;
             // 
             // label33
             // 
