@@ -457,6 +457,8 @@ namespace Julia_Launcher
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
             SaveSettings("RAMUsage", trackRamUsage.Value);
+
+
         }
 
         private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
@@ -465,6 +467,16 @@ namespace Julia_Launcher
         }
 
         private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

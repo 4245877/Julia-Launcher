@@ -36,10 +36,10 @@
             label1 = new System.Windows.Forms.Label();
             txtLogDirectory = new System.Windows.Forms.TextBox();
             txtInstallDirectory = new System.Windows.Forms.TextBox();
-            label6 = new System.Windows.Forms.Label();
-            label5 = new System.Windows.Forms.Label();
+            lblExternalModulesPath = new System.Windows.Forms.Label();
+            lbl = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
-            label3 = new System.Windows.Forms.Label();
+            lblInstallationDirectory = new System.Windows.Forms.Label();
             btnSelectModulesDirectory = new System.Windows.Forms.Button();
             btnSelectInstallDirectory = new System.Windows.Forms.Button();
             txtModulesDirectory = new System.Windows.Forms.TextBox();
@@ -48,14 +48,14 @@
             btnSelectLogDirectory = new System.Windows.Forms.Button();
             tabPage2 = new System.Windows.Forms.TabPage();
             label7 = new System.Windows.Forms.Label();
-            label15 = new System.Windows.Forms.Label();
-            label14 = new System.Windows.Forms.Label();
-            label13 = new System.Windows.Forms.Label();
-            label12 = new System.Windows.Forms.Label();
-            label11 = new System.Windows.Forms.Label();
-            label10 = new System.Windows.Forms.Label();
-            label9 = new System.Windows.Forms.Label();
-            label8 = new System.Windows.Forms.Label();
+            lblMaxSpeed = new System.Windows.Forms.Label();
+            lblSelectGPU = new System.Windows.Forms.Label();
+            lblLimitGPU = new System.Windows.Forms.Label();
+            lblGPUAcceleration = new System.Windows.Forms.Label();
+            lblCPULoad = new System.Windows.Forms.Label();
+            lblNumberCores = new System.Windows.Forms.Label();
+            lblCPULimit = new System.Windows.Forms.Label();
+            lblRAMLimit = new System.Windows.Forms.Label();
             txtNetworkSpeed = new System.Windows.Forms.TextBox();
             trackRamUsage = new System.Windows.Forms.TrackBar();
             cmbGpuSelection = new System.Windows.Forms.ComboBox();
@@ -79,6 +79,7 @@
             chkUpdPreferen = new System.Windows.Forms.CheckBox();
             chkAutoStart = new System.Windows.Forms.CheckBox();
             tabPage4 = new System.Windows.Forms.TabPage();
+            cmbDebugging = new System.Windows.Forms.ComboBox();
             cmbInfoMassages = new System.Windows.Forms.ComboBox();
             chkLogRetention = new System.Windows.Forms.CheckBox();
             cmbLogFormat = new System.Windows.Forms.ComboBox();
@@ -94,6 +95,7 @@
             cmbWarnings = new System.Windows.Forms.ComboBox();
             label30 = new System.Windows.Forms.Label();
             tabPage5 = new System.Windows.Forms.TabPage();
+            txtHotkeyLounch = new System.Windows.Forms.TextBox();
             label31 = new System.Windows.Forms.Label();
             label32 = new System.Windows.Forms.Label();
             radioButton2 = new System.Windows.Forms.RadioButton();
@@ -173,10 +175,10 @@
             tabPage1.Controls.Add(label1);
             tabPage1.Controls.Add(txtLogDirectory);
             tabPage1.Controls.Add(txtInstallDirectory);
-            tabPage1.Controls.Add(label6);
-            tabPage1.Controls.Add(label5);
+            tabPage1.Controls.Add(lblExternalModulesPath);
+            tabPage1.Controls.Add(lbl);
             tabPage1.Controls.Add(label4);
-            tabPage1.Controls.Add(label3);
+            tabPage1.Controls.Add(lblInstallationDirectory);
             tabPage1.Controls.Add(btnSelectModulesDirectory);
             tabPage1.Controls.Add(btnSelectInstallDirectory);
             tabPage1.Controls.Add(txtModulesDirectory);
@@ -221,27 +223,27 @@
             txtInstallDirectory.TabIndex = 64;
             txtInstallDirectory.TextChanged += txtInstallDirectory_TextChanged;
             // 
-            // label6
+            // lblExternalModulesPath
             // 
-            label6.AutoSize = true;
-            label6.ForeColor = System.Drawing.Color.White;
-            label6.Location = new System.Drawing.Point(33, 119);
-            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(124, 15);
-            label6.TabIndex = 60;
-            label6.Text = "External Modules Path";
+            lblExternalModulesPath.AutoSize = true;
+            lblExternalModulesPath.ForeColor = System.Drawing.Color.White;
+            lblExternalModulesPath.Location = new System.Drawing.Point(33, 119);
+            lblExternalModulesPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblExternalModulesPath.Name = "lblExternalModulesPath";
+            lblExternalModulesPath.Size = new System.Drawing.Size(124, 15);
+            lblExternalModulesPath.TabIndex = 60;
+            lblExternalModulesPath.Text = "External Modules Path";
             // 
-            // label5
+            // lbl
             // 
-            label5.AutoSize = true;
-            label5.ForeColor = System.Drawing.Color.White;
-            label5.Location = new System.Drawing.Point(33, 156);
-            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(94, 15);
-            label5.TabIndex = 59;
-            label5.Text = "Cache Directory ";
+            lbl.AutoSize = true;
+            lbl.ForeColor = System.Drawing.Color.White;
+            lbl.Location = new System.Drawing.Point(33, 156);
+            lbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lbl.Name = "lbl";
+            lbl.Size = new System.Drawing.Size(94, 15);
+            lbl.TabIndex = 59;
+            lbl.Text = "Cache Directory ";
             // 
             // label4
             // 
@@ -254,16 +256,16 @@
             label4.TabIndex = 58;
             label4.Text = "Log Folder";
             // 
-            // label3
+            // lblInstallationDirectory
             // 
-            label3.AutoSize = true;
-            label3.ForeColor = System.Drawing.Color.White;
-            label3.Location = new System.Drawing.Point(33, 45);
-            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(116, 15);
-            label3.TabIndex = 57;
-            label3.Text = "Installation Directory";
+            lblInstallationDirectory.AutoSize = true;
+            lblInstallationDirectory.ForeColor = System.Drawing.Color.White;
+            lblInstallationDirectory.Location = new System.Drawing.Point(33, 45);
+            lblInstallationDirectory.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblInstallationDirectory.Name = "lblInstallationDirectory";
+            lblInstallationDirectory.Size = new System.Drawing.Size(116, 15);
+            lblInstallationDirectory.TabIndex = 57;
+            lblInstallationDirectory.Text = "Installation Directory";
             // 
             // btnSelectModulesDirectory
             // 
@@ -331,14 +333,14 @@
             // 
             tabPage2.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
             tabPage2.Controls.Add(label7);
-            tabPage2.Controls.Add(label15);
-            tabPage2.Controls.Add(label14);
-            tabPage2.Controls.Add(label13);
-            tabPage2.Controls.Add(label12);
-            tabPage2.Controls.Add(label11);
-            tabPage2.Controls.Add(label10);
-            tabPage2.Controls.Add(label9);
-            tabPage2.Controls.Add(label8);
+            tabPage2.Controls.Add(lblMaxSpeed);
+            tabPage2.Controls.Add(lblSelectGPU);
+            tabPage2.Controls.Add(lblLimitGPU);
+            tabPage2.Controls.Add(lblGPUAcceleration);
+            tabPage2.Controls.Add(lblCPULoad);
+            tabPage2.Controls.Add(lblNumberCores);
+            tabPage2.Controls.Add(lblCPULimit);
+            tabPage2.Controls.Add(lblRAMLimit);
             tabPage2.Controls.Add(txtNetworkSpeed);
             tabPage2.Controls.Add(trackRamUsage);
             tabPage2.Controls.Add(cmbGpuSelection);
@@ -367,93 +369,93 @@
             label7.TabIndex = 61;
             label7.Text = "Resource Allocation";
             // 
-            // label15
+            // lblMaxSpeed
             // 
-            label15.AutoSize = true;
-            label15.ForeColor = System.Drawing.Color.White;
-            label15.Location = new System.Drawing.Point(33, 303);
-            label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label15.Name = "label15";
-            label15.Size = new System.Drawing.Size(196, 15);
-            label15.TabIndex = 70;
-            label15.Text = "Maximum download/upload speed.";
+            lblMaxSpeed.AutoSize = true;
+            lblMaxSpeed.ForeColor = System.Drawing.Color.White;
+            lblMaxSpeed.Location = new System.Drawing.Point(33, 303);
+            lblMaxSpeed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblMaxSpeed.Name = "lblMaxSpeed";
+            lblMaxSpeed.Size = new System.Drawing.Size(196, 15);
+            lblMaxSpeed.TabIndex = 70;
+            lblMaxSpeed.Text = "Maximum download/upload speed.";
             // 
-            // label14
+            // lblSelectGPU
             // 
-            label14.AutoSize = true;
-            label14.ForeColor = System.Drawing.Color.White;
-            label14.Location = new System.Drawing.Point(33, 267);
-            label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label14.Name = "label14";
-            label14.Size = new System.Drawing.Size(244, 15);
-            label14.TabIndex = 69;
-            label14.Text = "Select a specific GPU if multiple are available.";
+            lblSelectGPU.AutoSize = true;
+            lblSelectGPU.ForeColor = System.Drawing.Color.White;
+            lblSelectGPU.Location = new System.Drawing.Point(33, 267);
+            lblSelectGPU.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblSelectGPU.Name = "lblSelectGPU";
+            lblSelectGPU.Size = new System.Drawing.Size(244, 15);
+            lblSelectGPU.TabIndex = 69;
+            lblSelectGPU.Text = "Select a specific GPU if multiple are available.";
             // 
-            // label13
+            // lblLimitGPU
             // 
-            label13.AutoSize = true;
-            label13.ForeColor = System.Drawing.Color.White;
-            label13.Location = new System.Drawing.Point(33, 230);
-            label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(208, 15);
-            label13.TabIndex = 68;
-            label13.Text = "Limit GPU usage (e.g., by percentage).";
+            lblLimitGPU.AutoSize = true;
+            lblLimitGPU.ForeColor = System.Drawing.Color.White;
+            lblLimitGPU.Location = new System.Drawing.Point(33, 230);
+            lblLimitGPU.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblLimitGPU.Name = "lblLimitGPU";
+            lblLimitGPU.Size = new System.Drawing.Size(208, 15);
+            lblLimitGPU.TabIndex = 68;
+            lblLimitGPU.Text = "Limit GPU usage (e.g., by percentage).";
             // 
-            // label12
+            // lblGPUAcceleration
             // 
-            label12.AutoSize = true;
-            label12.ForeColor = System.Drawing.Color.White;
-            label12.Location = new System.Drawing.Point(33, 193);
-            label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(180, 15);
-            label12.TabIndex = 67;
-            label12.Text = "Enable/disable GPU acceleration.";
+            lblGPUAcceleration.AutoSize = true;
+            lblGPUAcceleration.ForeColor = System.Drawing.Color.White;
+            lblGPUAcceleration.Location = new System.Drawing.Point(33, 193);
+            lblGPUAcceleration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblGPUAcceleration.Name = "lblGPUAcceleration";
+            lblGPUAcceleration.Size = new System.Drawing.Size(180, 15);
+            lblGPUAcceleration.TabIndex = 67;
+            lblGPUAcceleration.Text = "Enable/disable GPU acceleration.";
             // 
-            // label11
+            // lblCPULoad
             // 
-            label11.AutoSize = true;
-            label11.ForeColor = System.Drawing.Color.White;
-            label11.Location = new System.Drawing.Point(33, 156);
-            label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(121, 15);
-            label11.TabIndex = 66;
-            label11.Text = "CPU load percentage.";
+            lblCPULoad.AutoSize = true;
+            lblCPULoad.ForeColor = System.Drawing.Color.White;
+            lblCPULoad.Location = new System.Drawing.Point(33, 156);
+            lblCPULoad.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblCPULoad.Name = "lblCPULoad";
+            lblCPULoad.Size = new System.Drawing.Size(121, 15);
+            lblCPULoad.TabIndex = 66;
+            lblCPULoad.Text = "CPU load percentage.";
             // 
-            // label10
+            // lblNumberCores
             // 
-            label10.AutoSize = true;
-            label10.ForeColor = System.Drawing.Color.White;
-            label10.Location = new System.Drawing.Point(33, 119);
-            label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(160, 15);
-            label10.TabIndex = 65;
-            label10.Text = "Number of CPU cores to use.";
+            lblNumberCores.AutoSize = true;
+            lblNumberCores.ForeColor = System.Drawing.Color.White;
+            lblNumberCores.Location = new System.Drawing.Point(33, 119);
+            lblNumberCores.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblNumberCores.Name = "lblNumberCores";
+            lblNumberCores.Size = new System.Drawing.Size(160, 15);
+            lblNumberCores.TabIndex = 65;
+            lblNumberCores.Text = "Number of CPU cores to use.";
             // 
-            // label9
+            // lblCPULimit
             // 
-            label9.AutoSize = true;
-            label9.ForeColor = System.Drawing.Color.White;
-            label9.Location = new System.Drawing.Point(33, 82);
-            label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(116, 15);
-            label9.TabIndex = 63;
-            label9.Text = "CPU Load Limitation";
+            lblCPULimit.AutoSize = true;
+            lblCPULimit.ForeColor = System.Drawing.Color.White;
+            lblCPULimit.Location = new System.Drawing.Point(33, 82);
+            lblCPULimit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblCPULimit.Name = "lblCPULimit";
+            lblCPULimit.Size = new System.Drawing.Size(116, 15);
+            lblCPULimit.TabIndex = 63;
+            lblCPULimit.Text = "CPU Load Limitation";
             // 
-            // label8
+            // lblRAMLimit
             // 
-            label8.AutoSize = true;
-            label8.ForeColor = System.Drawing.Color.White;
-            label8.Location = new System.Drawing.Point(33, 45);
-            label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(68, 15);
-            label8.TabIndex = 62;
-            label8.Text = "RAM Usage";
+            lblRAMLimit.AutoSize = true;
+            lblRAMLimit.ForeColor = System.Drawing.Color.White;
+            lblRAMLimit.Location = new System.Drawing.Point(33, 45);
+            lblRAMLimit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblRAMLimit.Name = "lblRAMLimit";
+            lblRAMLimit.Size = new System.Drawing.Size(68, 15);
+            lblRAMLimit.TabIndex = 62;
+            lblRAMLimit.Text = "RAM Usage";
             // 
             // txtNetworkSpeed
             // 
@@ -701,6 +703,7 @@
             // tabPage4
             // 
             tabPage4.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            tabPage4.Controls.Add(cmbDebugging);
             tabPage4.Controls.Add(cmbInfoMassages);
             tabPage4.Controls.Add(chkLogRetention);
             tabPage4.Controls.Add(cmbLogFormat);
@@ -722,6 +725,16 @@
             tabPage4.Size = new System.Drawing.Size(1155, 600);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
+            // 
+            // cmbDebugging
+            // 
+            cmbDebugging.FormattingEnabled = true;
+            cmbDebugging.Items.AddRange(new object[] { "verbose", "info", "error" });
+            cmbDebugging.Location = new System.Drawing.Point(140, 190);
+            cmbDebugging.Name = "cmbDebugging";
+            cmbDebugging.Size = new System.Drawing.Size(140, 23);
+            cmbDebugging.TabIndex = 128;
+            cmbDebugging.SelectedIndexChanged += cmbDebugging_SelectedIndexChanged;
             // 
             // cmbInfoMassages
             // 
@@ -871,6 +884,7 @@
             // tabPage5
             // 
             tabPage5.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            tabPage5.Controls.Add(txtHotkeyLounch);
             tabPage5.Controls.Add(label31);
             tabPage5.Controls.Add(label32);
             tabPage5.Controls.Add(radioButton2);
@@ -885,6 +899,14 @@
             tabPage5.Size = new System.Drawing.Size(1155, 600);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "UI and User Preferences";
+            // 
+            // txtHotkeyLounch
+            // 
+            txtHotkeyLounch.Location = new System.Drawing.Point(159, 116);
+            txtHotkeyLounch.Name = "txtHotkeyLounch";
+            txtHotkeyLounch.Size = new System.Drawing.Size(374, 23);
+            txtHotkeyLounch.TabIndex = 123;
+            txtHotkeyLounch.TextChanged += txtHotkeyLounch_TextChanged;
             // 
             // label31
             // 
@@ -1101,10 +1123,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtLogDirectory;
         private System.Windows.Forms.TextBox txtInstallDirectory;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblExternalModulesPath;
+        private System.Windows.Forms.Label lbl;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblInstallationDirectory;
         private System.Windows.Forms.Button btnSelectModulesDirectory;
         private System.Windows.Forms.Button btnSelectInstallDirectory;
         private System.Windows.Forms.TextBox txtModulesDirectory;
@@ -1113,14 +1135,14 @@
         private System.Windows.Forms.Button btnSelectLogDirectory;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblMaxSpeed;
+        private System.Windows.Forms.Label lblSelectGPU;
+        private System.Windows.Forms.Label lblLimitGPU;
+        private System.Windows.Forms.Label lblGPUAcceleration;
+        private System.Windows.Forms.Label lblCPULoad;
+        private System.Windows.Forms.Label lblNumberCores;
+        private System.Windows.Forms.Label lblCPULimit;
+        private System.Windows.Forms.Label lblRAMLimit;
         private System.Windows.Forms.TextBox txtNetworkSpeed;
         private System.Windows.Forms.TrackBar trackRamUsage;
         private System.Windows.Forms.ComboBox cmbGpuSelection;
@@ -1174,5 +1196,7 @@
         private System.Windows.Forms.ComboBox cmbLogFormat;
         private System.Windows.Forms.CheckBox chkLogRetention;
         private System.Windows.Forms.ComboBox cmbInfoMassages;
+        private System.Windows.Forms.TextBox txtHotkeyLounch;
+        private System.Windows.Forms.ComboBox cmbDebugging;
     }
 }
