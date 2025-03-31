@@ -370,7 +370,10 @@ namespace Julia_Launcher
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            if (this.ParentForm != null)
+            {
+                this.ParentForm.Close();
+            }
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -456,5 +459,14 @@ namespace Julia_Launcher
             SaveSettings("RAMUsage", trackRamUsage.Value);
         }
 
+        private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

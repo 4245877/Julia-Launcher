@@ -105,9 +105,9 @@
             label35 = new System.Windows.Forms.Label();
             label36 = new System.Windows.Forms.Label();
             label37 = new System.Windows.Forms.Label();
-            checkBox8 = new System.Windows.Forms.CheckBox();
+            chkAllowedIPAddresses = new System.Windows.Forms.CheckBox();
             label38 = new System.Windows.Forms.Label();
-            checkBox7 = new System.Windows.Forms.CheckBox();
+            chkProtectionWithaPassword = new System.Windows.Forms.CheckBox();
             chkEncryptLogs = new System.Windows.Forms.CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -637,12 +637,11 @@
             // chkUpdateSrartup
             // 
             chkUpdateSrartup.AutoSize = true;
-            chkUpdateSrartup.Location = new System.Drawing.Point(204, 155);
+            chkUpdateSrartup.Location = new System.Drawing.Point(204, 157);
             chkUpdateSrartup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             chkUpdateSrartup.Name = "chkUpdateSrartup";
-            chkUpdateSrartup.Size = new System.Drawing.Size(88, 19);
+            chkUpdateSrartup.Size = new System.Drawing.Size(15, 14);
             chkUpdateSrartup.TabIndex = 114;
-            chkUpdateSrartup.Text = "checkBox10";
             chkUpdateSrartup.UseVisualStyleBackColor = true;
             chkUpdateSrartup.CheckedChanged += checkBox10_CheckedChanged;
             // 
@@ -973,9 +972,9 @@
             tabPage6.Controls.Add(label35);
             tabPage6.Controls.Add(label36);
             tabPage6.Controls.Add(label37);
-            tabPage6.Controls.Add(checkBox8);
+            tabPage6.Controls.Add(chkAllowedIPAddresses);
             tabPage6.Controls.Add(label38);
-            tabPage6.Controls.Add(checkBox7);
+            tabPage6.Controls.Add(chkProtectionWithaPassword);
             tabPage6.Controls.Add(chkEncryptLogs);
             tabPage6.Location = new System.Drawing.Point(4, 24);
             tabPage6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -1018,17 +1017,17 @@
             label37.TabIndex = 93;
             label37.Text = "Settings Protection with a Password (to prevent accidental changes).";
             // 
-            // checkBox8
+            // chkAllowedIPAddresses
             // 
-            checkBox8.AutoSize = true;
-            checkBox8.ForeColor = System.Drawing.Color.White;
-            checkBox8.Location = new System.Drawing.Point(337, 118);
-            checkBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox8.Name = "checkBox8";
-            checkBox8.Size = new System.Drawing.Size(82, 19);
-            checkBox8.TabIndex = 106;
-            checkBox8.Text = "checkBox8";
-            checkBox8.UseVisualStyleBackColor = true;
+            chkAllowedIPAddresses.AutoSize = true;
+            chkAllowedIPAddresses.ForeColor = System.Drawing.Color.White;
+            chkAllowedIPAddresses.Location = new System.Drawing.Point(324, 120);
+            chkAllowedIPAddresses.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkAllowedIPAddresses.Name = "chkAllowedIPAddresses";
+            chkAllowedIPAddresses.Size = new System.Drawing.Size(15, 14);
+            chkAllowedIPAddresses.TabIndex = 106;
+            chkAllowedIPAddresses.UseVisualStyleBackColor = true;
+            chkAllowedIPAddresses.CheckedChanged += chkAllowedIPAddresses_CheckedChanged;
             // 
             // label38
             // 
@@ -1041,16 +1040,16 @@
             label38.TabIndex = 94;
             label38.Text = "Allowed IP Addresses (if there’s a server component)";
             // 
-            // checkBox7
+            // chkProtectionWithaPassword
             // 
-            checkBox7.AutoSize = true;
-            checkBox7.Location = new System.Drawing.Point(427, 77);
-            checkBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            checkBox7.Name = "checkBox7";
-            checkBox7.Size = new System.Drawing.Size(82, 19);
-            checkBox7.TabIndex = 105;
-            checkBox7.Text = "checkBox7";
-            checkBox7.UseVisualStyleBackColor = true;
+            chkProtectionWithaPassword.AutoSize = true;
+            chkProtectionWithaPassword.Location = new System.Drawing.Point(408, 83);
+            chkProtectionWithaPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkProtectionWithaPassword.Name = "chkProtectionWithaPassword";
+            chkProtectionWithaPassword.Size = new System.Drawing.Size(15, 14);
+            chkProtectionWithaPassword.TabIndex = 105;
+            chkProtectionWithaPassword.UseVisualStyleBackColor = true;
+            chkProtectionWithaPassword.CheckedChanged += chkProtectionWithaPassword_CheckedChanged;
             // 
             // chkEncryptLogs
             // 
@@ -1168,9 +1167,9 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox chkAllowedIPAddresses;
         private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox chkProtectionWithaPassword;
         private System.Windows.Forms.CheckBox chkEncryptLogs;
         private System.Windows.Forms.ComboBox cmbLogFormat;
         private System.Windows.Forms.CheckBox chkLogRetention;
