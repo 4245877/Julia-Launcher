@@ -65,6 +65,10 @@ namespace Julia_Launcher
                     case "UpdateBranch": settings.UpdateBranch = (string)value; break;
                     case "LogLevel": settings.LogLevel = (string)value; break;
                     case "Language": settings.Language = (string)value; break;
+                    case "RadioButton1Checked": settings.RadioButton1Checked = (bool)value; break;
+                    case "RadioButton2Checked": settings.RadioButton2Checked = (bool)value; break;
+
+                    
                 }
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(settingsFilePath, json);

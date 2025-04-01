@@ -250,7 +250,7 @@
             // 
             btnModel.Location = new System.Drawing.Point(15, 520);
             btnModel.Name = "btnModel";
-            btnModel.Size = new System.Drawing.Size(457, 45);
+            btnModel.Size = new System.Drawing.Size(457, 71);
             btnModel.TabIndex = 23;
             btnModel.Text = "button1";
             btnModel.UseVisualStyleBackColor = true;
