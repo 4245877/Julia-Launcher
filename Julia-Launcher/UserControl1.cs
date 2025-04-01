@@ -83,9 +83,9 @@ namespace Julia_Launcher
                     case "Language": settings.Language = (string)value; break;
 
                     // RadioButton
-                    case "ThemeWhite": settings.RadioButton1Checked = (bool)value; break;
-                    case "ThemeDark": settings.RadioButton2Checked = (bool)value; break;
-                    case "ThemeSystem": settings.RadioButton2Checked = (bool)value; break;
+                    case "ThemeWhite": settings.radWhite = (bool)value; break;
+                    case "ThemeDark": settings.radDark = (bool)value; break;
+                    case "ThemeSystem": settings.radSystem = (bool)value; break;
 
                 }
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
@@ -124,6 +124,7 @@ namespace Julia_Launcher
             public string ModulesDirectory { get; set; } = string.Empty;
             public string CacheDirectory { get; set; } = string.Empty;
 
+
             public bool SomeCheckboxState { get; set; } = false;
             public int SelectedComboBoxIndex { get; set; } = 0;
             public int SelectedRadioButtonIndex { get; set; } = 0;
@@ -135,7 +136,6 @@ namespace Julia_Launcher
             public bool AutoUpdate { get; set; } = false;
             public bool UpdateSrartup { get; set; } = false;
             public bool ManUpdate { get; set; } = false;
-
 
 
             // Свойства для ComboBox (храним выбранное значение как string)
@@ -158,10 +158,10 @@ namespace Julia_Launcher
             // Свойства для TrackBar
             public int RAMUsage { get; set; } = 0;
 
-            // Свойства для RadioButton 1 и 2
-            public bool RadioButton1Checked { get; set; } = false;
-            public bool RadioButton2Checked { get; set; } = false;
-
+            // Свойства для RadioButton
+            public bool radWhite { get; set; } = false;
+            public bool radDark { get; set; } = false;
+            public bool radSystem { get; set; } = false;
 
             public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
         }
@@ -199,8 +199,9 @@ namespace Julia_Launcher
             //trackRamUsage.Value = settings.RAMUsage;
 
             // RadioButton controls
-            radWhite.Checked = settings.RadioButton1Checked;
-            radDark.Checked = settings.RadioButton2Checked;
+            radWhite.Checked = settings.radWhite;
+            radDark.Checked = settings.radDark;
+            radSystem.Checked = settings.radSystem;
         }
 
 
