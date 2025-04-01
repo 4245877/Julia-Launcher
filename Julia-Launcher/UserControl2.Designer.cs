@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             label1 = new System.Windows.Forms.Label();
-            trackBar1 = new System.Windows.Forms.TrackBar();
-            trackBar2 = new System.Windows.Forms.TrackBar();
-            trackBar3 = new System.Windows.Forms.TrackBar();
-            trackBar5 = new System.Windows.Forms.TrackBar();
-            trackBar6 = new System.Windows.Forms.TrackBar();
+            trkTimbre = new System.Windows.Forms.TrackBar();
+            trkHeight = new System.Windows.Forms.TrackBar();
+            trkWeight = new System.Windows.Forms.TrackBar();
+            trkAge = new System.Windows.Forms.TrackBar();
+            trkTone = new System.Windows.Forms.TrackBar();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -46,15 +46,15 @@
             glControl1 = new OpenTK.GLControl.GLControl();
             label7 = new System.Windows.Forms.Label();
             btnModel = new System.Windows.Forms.Button();
-            trackBar7 = new System.Windows.Forms.TrackBar();
-            trackBar4 = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
+            trkSpeechRate = new System.Windows.Forms.TrackBar();
+            trkVolume = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)trkTimbre).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkHeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkWeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkAge).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkTone).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkSpeechRate).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trkVolume).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -69,46 +69,59 @@
             label1.TabIndex = 0;
             label1.Text = "Model & Voice Settings";
             // 
-            // trackBar1
+            // trkTimbre
             // 
-            trackBar1.Location = new System.Drawing.Point(182, 298);
-            trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar1.Name = "trackBar1";
-            trackBar1.Size = new System.Drawing.Size(290, 45);
-            trackBar1.TabIndex = 1;
-            trackBar1.Scroll += trackBar1_Scroll;
+            trkTimbre.Location = new System.Drawing.Point(182, 298);
+            trkTimbre.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trkTimbre.Name = "trkTimbre";
+            trkTimbre.Size = new System.Drawing.Size(290, 45);
+            trkTimbre.TabIndex = 1;
+            trkTimbre.Scroll += trackBar1_Scroll;
             // 
-            // trackBar2
+            // trkHeight
             // 
-            trackBar2.Location = new System.Drawing.Point(182, 67);
-            trackBar2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar2.Name = "trackBar2";
-            trackBar2.Size = new System.Drawing.Size(290, 45);
-            trackBar2.TabIndex = 2;
+            trkHeight.Location = new System.Drawing.Point(182, 67);
+            trkHeight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trkHeight.Maximum = 210;
+            trkHeight.Minimum = 145;
+            trkHeight.Name = "trkHeight";
+            trkHeight.Size = new System.Drawing.Size(290, 45);
+            trkHeight.TabIndex = 2;
+            trkHeight.Value = 145;
+            trkHeight.Scroll += trkHeight_Scroll;
             // 
-            // trackBar3
+            // trkWeight
             // 
-            trackBar3.Location = new System.Drawing.Point(182, 118);
-            trackBar3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar3.Name = "trackBar3";
-            trackBar3.Size = new System.Drawing.Size(290, 45);
-            trackBar3.TabIndex = 3;
+            trkWeight.Location = new System.Drawing.Point(182, 118);
+            trkWeight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trkWeight.Maximum = 120;
+            trkWeight.Minimum = 39;
+            trkWeight.Name = "trkWeight";
+            trkWeight.Size = new System.Drawing.Size(290, 45);
+            trkWeight.TabIndex = 3;
+            trkWeight.Value = 39;
+            trkWeight.Scroll += trkWeight_Scroll;
             // 
-            // trackBar5
+            // trkAge
             // 
-            trackBar5.Location = new System.Drawing.Point(182, 178);
-            trackBar5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar5.Name = "trackBar5";
-            trackBar5.Size = new System.Drawing.Size(290, 45);
-            trackBar5.TabIndex = 5;
+            trkAge.Location = new System.Drawing.Point(182, 178);
+            trkAge.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trkAge.Maximum = 105;
+            trkAge.Minimum = 4;
+            trkAge.Name = "trkAge";
+            trkAge.Size = new System.Drawing.Size(290, 45);
+            trkAge.TabIndex = 5;
+            trkAge.Value = 105;
+            trkAge.Scroll += trkAge_Scroll;
             // 
-            // trackBar6
+            // trkTone
             // 
-            trackBar6.Location = new System.Drawing.Point(182, 247);
-            trackBar6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackBar6.Name = "trackBar6";
-            trackBar6.Size = new System.Drawing.Size(290, 45);
-            trackBar6.TabIndex = 6;
+            trkTone.Location = new System.Drawing.Point(182, 247);
+            trkTone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            trkTone.Name = "trkTone";
+            trkTone.Size = new System.Drawing.Size(290, 45);
+            trkTone.TabIndex = 6;
+            trkTone.Scroll += trkTone_Scroll;
             // 
             // label2
             // 
@@ -243,27 +256,32 @@
             btnModel.UseVisualStyleBackColor = true;
             btnModel.Click += btnModel_Click;
             // 
-            // trackBar7
+            // trkSpeechRate
             // 
-            trackBar7.Location = new System.Drawing.Point(182, 349);
-            trackBar7.Name = "trackBar7";
-            trackBar7.Size = new System.Drawing.Size(290, 45);
-            trackBar7.TabIndex = 24;
+            trkSpeechRate.Location = new System.Drawing.Point(182, 349);
+            trkSpeechRate.Name = "trkSpeechRate";
+            trkSpeechRate.Size = new System.Drawing.Size(290, 45);
+            trkSpeechRate.TabIndex = 24;
+            trkSpeechRate.Scroll += trkSpeechRate_Scroll;
             // 
-            // trackBar4
+            // trkVolume
             // 
-            trackBar4.Location = new System.Drawing.Point(182, 400);
-            trackBar4.Name = "trackBar4";
-            trackBar4.Size = new System.Drawing.Size(290, 45);
-            trackBar4.TabIndex = 25;
+            trkVolume.Location = new System.Drawing.Point(182, 400);
+            trkVolume.Maximum = 100;
+            trkVolume.Minimum = 1;
+            trkVolume.Name = "trkVolume";
+            trkVolume.Size = new System.Drawing.Size(290, 45);
+            trkVolume.TabIndex = 25;
+            trkVolume.Value = 1;
+            trkVolume.Scroll += trackBar4_Scroll;
             // 
             // UserControl2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
-            Controls.Add(trackBar4);
-            Controls.Add(trackBar7);
+            Controls.Add(trkVolume);
+            Controls.Add(trkSpeechRate);
             Controls.Add(btnModel);
             Controls.Add(label7);
             Controls.Add(glControl1);
@@ -276,23 +294,23 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(trackBar6);
-            Controls.Add(trackBar5);
-            Controls.Add(trackBar3);
-            Controls.Add(trackBar2);
-            Controls.Add(trackBar1);
+            Controls.Add(trkTone);
+            Controls.Add(trkAge);
+            Controls.Add(trkWeight);
+            Controls.Add(trkHeight);
+            Controls.Add(trkTimbre);
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
             Size = new System.Drawing.Size(1171, 667);
             Load += UserControl2_Load;
-            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkTimbre).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkHeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkWeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkAge).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkTone).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkSpeechRate).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trkVolume).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -301,11 +319,11 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.TrackBar trackBar3;
-        private System.Windows.Forms.TrackBar trackBar5;
-        private System.Windows.Forms.TrackBar trackBar6;
+        private System.Windows.Forms.TrackBar trkTimbre;
+        private System.Windows.Forms.TrackBar trkHeight;
+        private System.Windows.Forms.TrackBar trkWeight;
+        private System.Windows.Forms.TrackBar trkAge;
+        private System.Windows.Forms.TrackBar trkTone;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -318,7 +336,7 @@
         private OpenTK.GLControl.GLControl glControl1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnModel;
-        private System.Windows.Forms.TrackBar trackBar7;
-        private System.Windows.Forms.TrackBar trackBar4;
+        private System.Windows.Forms.TrackBar trkSpeechRate;
+        private System.Windows.Forms.TrackBar trkVolume;
     }
 }

@@ -226,7 +226,7 @@ namespace Julia_Launcher
             if (loaded && model != null)
             {
                 // Assume trackBar7 controls model scale
-                modelScale = trackBar7.Value / 100.0f;
+                modelScale = trkSpeechRate.Value / 100.0f;
                 glControl1.Invalidate();
             }
         }
@@ -867,6 +867,39 @@ namespace Julia_Launcher
                     LoadModel(openFileDialog.FileName);
                 }
             }
+        }
+
+
+        // Trackbars
+
+        private void trackBar4_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkHeight_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkWeight_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkAge_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkTone_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trkSpeechRate_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }
