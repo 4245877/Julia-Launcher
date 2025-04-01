@@ -39,7 +39,14 @@ namespace Julia_Launcher
 
             // Получаем ссылку на информацию о характеристиках
             hardwareInfo = Form1.ComputerInfo;
-            LoadHardwareInfo();
+            if (hardwareInfo != null)
+            {
+                LoadHardwareInfo();
+            }
+            else
+            {
+                MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SaveSettings(string key, object value)
@@ -49,26 +56,37 @@ namespace Julia_Launcher
                 var settings = ReadSettings();
                 switch (key)
                 {
+                    // TextBox
                     case "InstallDirectory": settings.InstallDirectory = (string)value; break;
                     case "LogDirectory": settings.LogDirectory = (string)value; break;
                     case "ModulesDirectory": settings.ModulesDirectory = (string)value; break;
                     case "CacheDirectory": settings.CacheDirectory = (string)value; break;
                     case "CPULimit": settings.CPULimit = (string)value; break;
-                    case "RAMUsage": settings.RAMUsage = (int)value; break;
-                    case "CpuLoad": settings.CpuLoad = (string)value; break;
                     case "GPULimit": settings.GPULimit = (string)value; break;
                     case "NetworkSpeed": settings.NetworkSpeed = (string)value; break;
-                    case "CpuCores": settings.CpuCores = (string)value; break;
-                    case "GpuSelection": settings.GpuSelection = (string)value; break;
+                    //case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
+
+                    // CheckBox
+                    case "RAMUsage": settings.RAMUsage = (int)value; break;
+                    case "CpuLoad": settings.CpuLoad = (string)value; break;
                     case "GPUEnable": settings.GPUEnable = (bool)value; break;
                     case "AutoStart": settings.AutoStart = (bool)value; break;
+
+
+
+
+                    // ComboBox
+                    case "GpuSelection": settings.GpuSelection = (string)value; break;
+                    case "CpuCores": settings.CpuCores = (string)value; break;
                     case "UpdateBranch": settings.UpdateBranch = (string)value; break;
                     case "LogLevel": settings.LogLevel = (string)value; break;
                     case "Language": settings.Language = (string)value; break;
-                    case "RadioButton1Checked": settings.RadioButton1Checked = (bool)value; break;
-                    case "RadioButton2Checked": settings.RadioButton2Checked = (bool)value; break;
 
-                    
+                    // RadioButton
+                    case "ThemeWhite": settings.RadioButton1Checked = (bool)value; break;
+                    case "ThemeDark": settings.RadioButton2Checked = (bool)value; break;
+
+
                 }
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(settingsFilePath, json);
@@ -181,8 +199,8 @@ namespace Julia_Launcher
             //trackRamUsage.Value = settings.RAMUsage;
 
             // RadioButton controls
-            radioButton1.Checked = settings.RadioButton1Checked;
-            radioButton2.Checked = settings.RadioButton2Checked;
+            radWhite.Checked = settings.RadioButton1Checked;
+            radDark.Checked = settings.RadioButton2Checked;
         }
 
 
@@ -231,7 +249,6 @@ namespace Julia_Launcher
 
         private void txtCPULimit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Разрешаем только цифры и управляющие клавиши
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
@@ -274,6 +291,8 @@ namespace Julia_Launcher
                 }
             }
         }
+
+
 
         // Обработчики событий изменения текста
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e)
@@ -339,14 +358,19 @@ namespace Julia_Launcher
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
         {
-            string text = txtNetworkSpeed.Text;          
-            string trimmedText = text.TrimStart('0');    
-            if (trimmedText == "")                       
+            string text = txtNetworkSpeed.Text;
+            string trimmedText = text.TrimStart('0');
+            if (trimmedText == "")
             {
-                trimmedText = "0";                       
+                trimmedText = "0";
             }
             SaveSettings("NetworkSpeed", trimmedText);
         }
+        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
+        {
+            SaveSettings("HotkeyLounch", txtHotkeyLounch.Text);
+        }
+
 
 
         //Button 
@@ -389,6 +413,9 @@ namespace Julia_Launcher
 
         }
 
+
+
+
         // ComboBox
 
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
@@ -417,10 +444,16 @@ namespace Julia_Launcher
         {
 
         }
+        private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+
 
 
         // CheckBox
-
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
         {
@@ -436,39 +469,6 @@ namespace Julia_Launcher
         {
 
         }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void checkBox10_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        // RadioButton
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            SaveSettings("RadioButton1Checked", radioButton1.Checked);
-        }
-
-        private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
-        {
-            SaveSettings("RadioButton2Checked", radioButton2.Checked);
-        }
-
-        // TrackBar
-
-
-
-        private void trackRamUsage_Scroll(object sender, EventArgs e)
-        {
-            SaveSettings("RAMUsage", trackRamUsage.Value);
-
-
-        }
-
         private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -478,15 +478,59 @@ namespace Julia_Launcher
         {
 
         }
+        private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
+        {
 
-        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
+        }
+        private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+        }
+        private void chkLogRetention_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
+
+
+
+        // RadioButton
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveSettings("ThemeWhite", radWhite.Checked);
+        }
+
+        private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
+        {
+            SaveSettings("ThemeDark", radDark.Checked);
+        }
+
+        private void radSystem_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveSettings("ThemeSystem", radSystem.Checked);
+        }
+
+        // TrackBar
+
+        private void trackRamUsage_Scroll(object sender, EventArgs e)
+        {
+            SaveSettings("RAMUsage", trackRamUsage.Value);
+        }
+
+        private void tabPage3_Click(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }

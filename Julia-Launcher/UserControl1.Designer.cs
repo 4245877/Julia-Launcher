@@ -65,6 +65,8 @@
             txtGPULimit = new System.Windows.Forms.TextBox();
             txtCpuLoad = new System.Windows.Forms.TextBox();
             tabPage3 = new System.Windows.Forms.TabPage();
+            chkUpdateSrartup = new System.Windows.Forms.CheckBox();
+            chkManUpdate = new System.Windows.Forms.CheckBox();
             label16 = new System.Windows.Forms.Label();
             label19 = new System.Windows.Forms.Label();
             label20 = new System.Windows.Forms.Label();
@@ -72,8 +74,6 @@
             label21 = new System.Windows.Forms.Label();
             label17 = new System.Windows.Forms.Label();
             label22 = new System.Windows.Forms.Label();
-            chkUpdateSrartup = new System.Windows.Forms.CheckBox();
-            chkManUpdate = new System.Windows.Forms.CheckBox();
             cmbUpdateBranch = new System.Windows.Forms.ComboBox();
             chkAutoUpdate = new System.Windows.Forms.CheckBox();
             chkUpdPreferen = new System.Windows.Forms.CheckBox();
@@ -95,12 +95,13 @@
             cmbWarnings = new System.Windows.Forms.ComboBox();
             label30 = new System.Windows.Forms.Label();
             tabPage5 = new System.Windows.Forms.TabPage();
+            radSystem = new System.Windows.Forms.RadioButton();
             txtHotkeyLounch = new System.Windows.Forms.TextBox();
             label31 = new System.Windows.Forms.Label();
             label32 = new System.Windows.Forms.Label();
-            radioButton2 = new System.Windows.Forms.RadioButton();
+            radDark = new System.Windows.Forms.RadioButton();
             label33 = new System.Windows.Forms.Label();
-            radioButton1 = new System.Windows.Forms.RadioButton();
+            radWhite = new System.Windows.Forms.RadioButton();
             label34 = new System.Windows.Forms.Label();
             cmbLanguage = new System.Windows.Forms.ComboBox();
             tabPage6 = new System.Windows.Forms.TabPage();
@@ -537,6 +538,8 @@
             // tabPage3
             // 
             tabPage3.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            tabPage3.Controls.Add(chkUpdateSrartup);
+            tabPage3.Controls.Add(chkManUpdate);
             tabPage3.Controls.Add(label16);
             tabPage3.Controls.Add(label19);
             tabPage3.Controls.Add(label20);
@@ -544,8 +547,6 @@
             tabPage3.Controls.Add(label21);
             tabPage3.Controls.Add(label17);
             tabPage3.Controls.Add(label22);
-            tabPage3.Controls.Add(chkUpdateSrartup);
-            tabPage3.Controls.Add(chkManUpdate);
             tabPage3.Controls.Add(cmbUpdateBranch);
             tabPage3.Controls.Add(chkAutoUpdate);
             tabPage3.Controls.Add(chkUpdPreferen);
@@ -557,6 +558,27 @@
             tabPage3.Size = new System.Drawing.Size(1155, 600);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Startup and Update Settings";
+            tabPage3.Click += tabPage3_Click;
+            // 
+            // chkUpdateSrartup
+            // 
+            chkUpdateSrartup.AutoSize = true;
+            chkUpdateSrartup.Location = new System.Drawing.Point(203, 157);
+            chkUpdateSrartup.Name = "chkUpdateSrartup";
+            chkUpdateSrartup.Size = new System.Drawing.Size(15, 14);
+            chkUpdateSrartup.TabIndex = 105;
+            chkUpdateSrartup.UseVisualStyleBackColor = true;
+            chkUpdateSrartup.CheckedChanged += chkUpdateSrartup_CheckedChanged_1;
+            // 
+            // chkManUpdate
+            // 
+            chkManUpdate.AutoSize = true;
+            chkManUpdate.Location = new System.Drawing.Point(132, 192);
+            chkManUpdate.Name = "chkManUpdate";
+            chkManUpdate.Size = new System.Drawing.Size(15, 14);
+            chkManUpdate.TabIndex = 104;
+            chkManUpdate.UseVisualStyleBackColor = true;
+            chkManUpdate.CheckedChanged += chkManUpdate_CheckedChanged;
             // 
             // label16
             // 
@@ -636,28 +658,6 @@
             label22.TabIndex = 77;
             label22.Text = "Choose update branch (Stable, Beta, Nightly).";
             // 
-            // chkUpdateSrartup
-            // 
-            chkUpdateSrartup.AutoSize = true;
-            chkUpdateSrartup.Location = new System.Drawing.Point(204, 157);
-            chkUpdateSrartup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            chkUpdateSrartup.Name = "chkUpdateSrartup";
-            chkUpdateSrartup.Size = new System.Drawing.Size(15, 14);
-            chkUpdateSrartup.TabIndex = 114;
-            chkUpdateSrartup.UseVisualStyleBackColor = true;
-            chkUpdateSrartup.CheckedChanged += checkBox10_CheckedChanged;
-            // 
-            // chkManUpdate
-            // 
-            chkManUpdate.AutoSize = true;
-            chkManUpdate.Location = new System.Drawing.Point(136, 192);
-            chkManUpdate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            chkManUpdate.Name = "chkManUpdate";
-            chkManUpdate.Size = new System.Drawing.Size(15, 14);
-            chkManUpdate.TabIndex = 53;
-            chkManUpdate.UseVisualStyleBackColor = true;
-            chkManUpdate.CheckedChanged += checkBox1_CheckedChanged;
-            // 
             // cmbUpdateBranch
             // 
             cmbUpdateBranch.FormattingEnabled = true;
@@ -688,6 +688,7 @@
             chkUpdPreferen.Size = new System.Drawing.Size(15, 14);
             chkUpdPreferen.TabIndex = 102;
             chkUpdPreferen.UseVisualStyleBackColor = true;
+            chkUpdPreferen.CheckedChanged += chkUpdPreferen_CheckedChanged;
             // 
             // chkAutoStart
             // 
@@ -752,6 +753,7 @@
             chkLogRetention.Size = new System.Drawing.Size(15, 14);
             chkLogRetention.TabIndex = 126;
             chkLogRetention.UseVisualStyleBackColor = true;
+            chkLogRetention.CheckedChanged += chkLogRetention_CheckedChanged;
             // 
             // cmbLogFormat
             // 
@@ -884,12 +886,13 @@
             // tabPage5
             // 
             tabPage5.BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            tabPage5.Controls.Add(radSystem);
             tabPage5.Controls.Add(txtHotkeyLounch);
             tabPage5.Controls.Add(label31);
             tabPage5.Controls.Add(label32);
-            tabPage5.Controls.Add(radioButton2);
+            tabPage5.Controls.Add(radDark);
             tabPage5.Controls.Add(label33);
-            tabPage5.Controls.Add(radioButton1);
+            tabPage5.Controls.Add(radWhite);
             tabPage5.Controls.Add(label34);
             tabPage5.Controls.Add(cmbLanguage);
             tabPage5.Location = new System.Drawing.Point(4, 24);
@@ -899,6 +902,17 @@
             tabPage5.Size = new System.Drawing.Size(1155, 600);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "UI and User Preferences";
+            // 
+            // radSystem
+            // 
+            radSystem.AutoSize = true;
+            radSystem.Location = new System.Drawing.Point(167, 46);
+            radSystem.Name = "radSystem";
+            radSystem.Size = new System.Drawing.Size(14, 13);
+            radSystem.TabIndex = 124;
+            radSystem.TabStop = true;
+            radSystem.UseVisualStyleBackColor = true;
+            radSystem.CheckedChanged += radSystem_CheckedChanged;
             // 
             // txtHotkeyLounch
             // 
@@ -931,18 +945,17 @@
             label32.TabIndex = 88;
             label32.Text = "Theme ";
             // 
-            // radioButton2
+            // radDark
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new System.Drawing.Point(230, 43);
-            radioButton2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new System.Drawing.Size(94, 19);
-            radioButton2.TabIndex = 122;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "radioButton2";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.CheckedChanged += radioButton2_CheckedChanged_1;
+            radDark.AutoSize = true;
+            radDark.Location = new System.Drawing.Point(146, 46);
+            radDark.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            radDark.Name = "radDark";
+            radDark.Size = new System.Drawing.Size(14, 13);
+            radDark.TabIndex = 122;
+            radDark.TabStop = true;
+            radDark.UseVisualStyleBackColor = true;
+            radDark.CheckedChanged += radioButton2_CheckedChanged_1;
             // 
             // label33
             // 
@@ -955,18 +968,17 @@
             label33.TabIndex = 89;
             label33.Text = "Language Selection";
             // 
-            // radioButton1
+            // radWhite
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new System.Drawing.Point(124, 43);
-            radioButton1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new System.Drawing.Size(94, 19);
-            radioButton1.TabIndex = 121;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "radioButton1";
-            radioButton1.UseVisualStyleBackColor = true;
-            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
+            radWhite.AutoSize = true;
+            radWhite.Location = new System.Drawing.Point(124, 46);
+            radWhite.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            radWhite.Name = "radWhite";
+            radWhite.Size = new System.Drawing.Size(14, 13);
+            radWhite.TabIndex = 121;
+            radWhite.TabStop = true;
+            radWhite.UseVisualStyleBackColor = true;
+            radWhite.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // label34
             // 
@@ -1159,8 +1171,6 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckBox chkUpdateSrartup;
-        private System.Windows.Forms.CheckBox chkManUpdate;
         private System.Windows.Forms.ComboBox cmbUpdateBranch;
         private System.Windows.Forms.CheckBox chkAutoUpdate;
         private System.Windows.Forms.CheckBox chkUpdPreferen;
@@ -1180,9 +1190,9 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radDark;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radWhite;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.ComboBox cmbLanguage;
         private System.Windows.Forms.TabPage tabPage6;
@@ -1198,5 +1208,8 @@
         private System.Windows.Forms.ComboBox cmbInfoMassages;
         private System.Windows.Forms.TextBox txtHotkeyLounch;
         private System.Windows.Forms.ComboBox cmbDebugging;
+        private System.Windows.Forms.RadioButton radSystem;
+        private System.Windows.Forms.CheckBox chkManUpdate;
+        private System.Windows.Forms.CheckBox chkUpdateSrartup;
     }
 }
