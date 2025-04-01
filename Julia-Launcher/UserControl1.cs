@@ -335,13 +335,17 @@ namespace Julia_Launcher
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("NetworkSpeed", txtNetworkSpeed.Text);
+            string text = txtNetworkSpeed.Text;          
+            string trimmedText = text.TrimStart('0');    
+            if (trimmedText == "")                       
+            {
+                trimmedText = "0";                       
+            }
+            SaveSettings("NetworkSpeed", trimmedText);
         }
 
 
         //Button 
-
-
 
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
         {
