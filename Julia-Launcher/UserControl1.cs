@@ -79,6 +79,9 @@ namespace Julia_Launcher
                     case "ChkLogRetention": settings.CheckLogRetention = (bool)value; break;
                     case "AutoUpdate": settings.AutoUpdate = (bool)value; break;
                     case "AllowedIPAddresses": settings.AllowedIPAddresses = (bool)value; break;
+                    case "UpdPreferen": settings.UpdPreferen = (bool)value; break;
+
+
                     // ComboBox
                     case "GpuSelection": settings.GpuSelection = (string)value; break;
                     case "CpuCores": settings.CpuCores = (string)value; break;
@@ -489,7 +492,7 @@ namespace Julia_Launcher
         }
         private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("UpdPreferen", chkUpdPreferen.Checked);
         }
         private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
         {
