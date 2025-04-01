@@ -85,7 +85,7 @@ namespace Julia_Launcher
                     // RadioButton
                     case "ThemeWhite": settings.RadioButton1Checked = (bool)value; break;
                     case "ThemeDark": settings.RadioButton2Checked = (bool)value; break;
-
+                    case "ThemeSystem": settings.RadioButton2Checked = (bool)value; break;
 
                 }
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
