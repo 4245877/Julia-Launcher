@@ -64,16 +64,15 @@ namespace Julia_Launcher
                     case "CPULimit": settings.CPULimit = (string)value; break;
                     case "GPULimit": settings.GPULimit = (string)value; break;
                     case "NetworkSpeed": settings.NetworkSpeed = (string)value; break;
-                    //case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
+                    case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
 
                     // CheckBox
                     case "RAMUsage": settings.RAMUsage = (int)value; break;
                     case "CpuLoad": settings.CpuLoad = (string)value; break;
                     case "GPUEnable": settings.GPUEnable = (bool)value; break;
                     case "AutoStart": settings.AutoStart = (bool)value; break;
-
-
-
+                    case "Lenguage": settings.Language = (string)value; break;
+                    case "ManUpdate": settings.ManUpdate = (bool)value; break;
 
                     // ComboBox
                     case "GpuSelection": settings.GpuSelection = (string)value; break;
@@ -81,6 +80,12 @@ namespace Julia_Launcher
                     case "UpdateBranch": settings.UpdateBranch = (string)value; break;
                     case "LogLevel": settings.LogLevel = (string)value; break;
                     case "Language": settings.Language = (string)value; break;
+                    case "Errors": settings.Errors = (string)value; break;
+                    case "LogFormat": settings.LogFormat = (string)value; break;
+                    case "Warnings": settings.Warnings = (string)value; break;
+                    case "InfoMassages": settings.InfoMassages = (string)value; break;
+
+
 
                     // RadioButton
                     case "ThemeWhite": settings.radWhite = (bool)value; break;
@@ -123,7 +128,7 @@ namespace Julia_Launcher
             public string LogDirectory { get; set; } = string.Empty;
             public string ModulesDirectory { get; set; } = string.Empty;
             public string CacheDirectory { get; set; } = string.Empty;
-
+            public string HotkeyLounch { get; set; } = string.Empty;
 
             public bool SomeCheckboxState { get; set; } = false;
             public int SelectedComboBoxIndex { get; set; } = 0;
@@ -230,20 +235,6 @@ namespace Julia_Launcher
                 // в соответствии с их фактическими именами
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -426,12 +417,12 @@ namespace Julia_Launcher
 
         private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("UpdateBranch", cmbUpdateBranch.SelectedItem.ToString());
         }
 
         private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("LogLevel", cmbLogLevel.SelectedItem.ToString());
         }
 
         private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
@@ -443,15 +434,24 @@ namespace Julia_Launcher
         }
         private void cmbLogFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("LogFormat", cmbLogFormat.SelectedItem.ToString());
         }
         private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-
-
-
+        private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveSettings("Language", cmbLanguage.SelectedItem.ToString());
+        }
+        private void cmbWarnings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveSettings("Warnings", cmbWarnings.SelectedItem.ToString());
+        }
+        private void cmbInfoMassages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
+        }
 
 
         // CheckBox
@@ -489,7 +489,7 @@ namespace Julia_Launcher
         }
         private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("ManUpdate", chkManUpdate.Checked);
         }
         private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
         {
@@ -532,6 +532,9 @@ namespace Julia_Launcher
 
         }
 
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

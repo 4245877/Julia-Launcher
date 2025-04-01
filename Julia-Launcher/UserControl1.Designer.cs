@@ -573,7 +573,7 @@
             // chkManUpdate
             // 
             chkManUpdate.AutoSize = true;
-            chkManUpdate.Location = new System.Drawing.Point(132, 192);
+            chkManUpdate.Location = new System.Drawing.Point(132, 194);
             chkManUpdate.Name = "chkManUpdate";
             chkManUpdate.Size = new System.Drawing.Size(15, 14);
             chkManUpdate.TabIndex = 104;
@@ -661,6 +661,7 @@
             // cmbUpdateBranch
             // 
             cmbUpdateBranch.FormattingEnabled = true;
+            cmbUpdateBranch.Items.AddRange(new object[] { "Stable", "Beta", "Nightl" });
             cmbUpdateBranch.Location = new System.Drawing.Point(300, 226);
             cmbUpdateBranch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbUpdateBranch.Name = "cmbUpdateBranch";
@@ -726,6 +727,7 @@
             tabPage4.Size = new System.Drawing.Size(1155, 600);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
+            tabPage4.Click += tabPage4_Click;
             // 
             // cmbDebugging
             // 
@@ -744,6 +746,7 @@
             cmbInfoMassages.Name = "cmbInfoMassages";
             cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
             cmbInfoMassages.TabIndex = 127;
+            cmbInfoMassages.SelectedIndexChanged += cmbInfoMassages_SelectedIndexChanged;
             // 
             // chkLogRetention
             // 
@@ -812,6 +815,7 @@
             // cmbLogLevel
             // 
             cmbLogLevel.FormattingEnabled = true;
+            cmbLogLevel.Items.AddRange(new object[] { "Errors", "Warnings", "ALL" });
             cmbLogLevel.Location = new System.Drawing.Point(140, 40);
             cmbLogLevel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbLogLevel.Name = "cmbLogLevel";
@@ -871,6 +875,7 @@
             cmbWarnings.Name = "cmbWarnings";
             cmbWarnings.Size = new System.Drawing.Size(140, 23);
             cmbWarnings.TabIndex = 107;
+            cmbWarnings.SelectedIndexChanged += cmbWarnings_SelectedIndexChanged;
             // 
             // label30
             // 
@@ -994,11 +999,13 @@
             // cmbLanguage
             // 
             cmbLanguage.FormattingEnabled = true;
+            cmbLanguage.Items.AddRange(new object[] { "English", "Русский", "Українська " });
             cmbLanguage.Location = new System.Drawing.Point(159, 78);
             cmbLanguage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbLanguage.Name = "cmbLanguage";
             cmbLanguage.Size = new System.Drawing.Size(140, 23);
             cmbLanguage.TabIndex = 95;
+            cmbLanguage.SelectedIndexChanged += cmbLanguage_SelectedIndexChanged;
             // 
             // tabPage6
             // 
