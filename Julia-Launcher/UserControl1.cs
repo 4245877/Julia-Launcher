@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Julia_Launcher.Properties;
+using Microsoft.VisualBasic.Devices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -73,7 +75,10 @@ namespace Julia_Launcher
                     case "AutoStart": settings.AutoStart = (bool)value; break;
                     case "Lenguage": settings.Language = (string)value; break;
                     case "ManUpdate": settings.ManUpdate = (bool)value; break;
-
+                    case "UpdateSrartup": settings.UpdateSrartup = (bool)value; break;
+                    case "ChkLogRetention": settings.CheckLogRetention = (bool)value; break;
+                    case "AutoUpdate": settings.AutoUpdate = (bool)value; break;
+                    case "AllowedIPAddresses": settings.AllowedIPAddresses = (bool)value; break;
                     // ComboBox
                     case "GpuSelection": settings.GpuSelection = (string)value; break;
                     case "CpuCores": settings.CpuCores = (string)value; break;
@@ -84,7 +89,7 @@ namespace Julia_Launcher
                     case "LogFormat": settings.LogFormat = (string)value; break;
                     case "Warnings": settings.Warnings = (string)value; break;
                     case "InfoMassages": settings.InfoMassages = (string)value; break;
-
+                    case "Debugging": settings.Debugging = (string)value; break;
 
 
                     // RadioButton
@@ -141,7 +146,9 @@ namespace Julia_Launcher
             public bool AutoUpdate { get; set; } = false;
             public bool UpdateSrartup { get; set; } = false;
             public bool ManUpdate { get; set; } = false;
-
+            public bool CheckLogRetention { get; set; } = false;
+            public bool ProtectionWithaPassword { get; set; } = false;
+            public bool AllowedIPAddresses { get; set; } = false; 
 
             // Свойства для ComboBox (храним выбранное значение как string)
             public string CpuCores { get; set; } = string.Empty;
@@ -153,6 +160,8 @@ namespace Julia_Launcher
             public string Warnings { get; set; } = string.Empty;
             public string InfoMassages { get; set; } = string.Empty;
             public string LogFormat { get; set; } = string.Empty;
+            public string Debugging { get; set; } = string.Empty;
+
 
             // Свойства для TextBox
             public string NetworkSpeed { get; set; } = string.Empty;
@@ -407,12 +416,11 @@ namespace Julia_Launcher
 
 
 
-
         // ComboBox
 
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // ПОместить информацию сколько ядер выбрано
+            SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
         }
 
         private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
@@ -438,7 +446,7 @@ namespace Julia_Launcher
         }
         private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("Debugging", cmbDebugging.SelectedItem.ToString());
         }
         private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -468,16 +476,16 @@ namespace Julia_Launcher
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("AutoUpdate", chkAutoUpdate.Checked);
         }
         private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("ProtectionWithaPassword", chkProtectionWithaPassword.Checked);
         }
 
         private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("AllowedIPAddresses", chkAllowedIPAddresses.Checked);
         }
         private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
         {
@@ -485,7 +493,7 @@ namespace Julia_Launcher
         }
         private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
         }
         private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
         {
@@ -493,11 +501,11 @@ namespace Julia_Launcher
         }
         private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
         {
-
+            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
         }
         private void chkLogRetention_CheckedChanged(object sender, EventArgs e)
         {
-
+            SaveSettings("LogRetention", chkLogRetention.Checked);
         }
 
 
