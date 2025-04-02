@@ -448,7 +448,11 @@ namespace Julia_Launcher
 
                 return shader;
             }
-
+            public void SetInt(string name, int value)
+            {
+                GL.UseProgram(Handle);
+                GL.Uniform1(GetUniformLocation(name), value);
+            }
             public void Use()
             {
                 GL.UseProgram(Handle);
@@ -542,10 +546,10 @@ namespace Julia_Launcher
 
                 for (int i = 0; i < Textures.Count; i++)
                 {
-                    // Activate texture unit
+                    // Активируем текстурный блок
                     GL.ActiveTexture(TextureUnit.Texture0 + i);
 
-                    // Generate texture name based on type
+                    // Генерируем имя текстуры на основе типа
                     string number = "";
                     string name = Textures[i].Type;
 
@@ -554,19 +558,20 @@ namespace Julia_Launcher
                     else if (name == "texture_specular")
                         number = specularNr++.ToString();
 
-                    // Set the sampler to the correct texture unit
-                    shader.SetFloat($"{name}{number}", i);
+                    // Устанавливаем семплер на правильный текстурный блок
+                    // ИСПРАВЛЕНИЕ: Используем SetInt вместо SetFloat для текстурных сэмплеров
+                    shader.SetInt($"{name}{number}", i);
 
-                    // Bind the texture
+                    // Привязываем текстуру
                     GL.BindTexture(TextureTarget.Texture2D, Textures[i].Id);
                 }
 
-                // Draw mesh
+                // Отрисовка меша
                 GL.BindVertexArray(VAO);
                 GL.DrawElements(OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
                 GL.BindVertexArray(0);
 
-                // Reset active texture
+                // Сбрасываем активную текстуру
                 GL.ActiveTexture(TextureUnit.Texture0);
             }
 
