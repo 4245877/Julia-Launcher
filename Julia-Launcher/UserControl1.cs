@@ -69,7 +69,7 @@ namespace Julia_Launcher
                     case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
 
                     // CheckBox
-                    case "RAMUsage": settings.RAMUsage = (int)value; break;
+                    case "RAMUsage": settings.RAMUsage = (short)value; break;
                     case "CpuLoad": settings.CpuLoad = (string)value; break;
                     case "GPUEnable": settings.GPUEnable = (bool)value; break;
                     case "AutoStart": settings.AutoStart = (bool)value; break;
@@ -173,12 +173,24 @@ namespace Julia_Launcher
             public string CPULimit { get; set; } = string.Empty;
 
             // Свойства для TrackBar
-            public int RAMUsage { get; set; } = 0;
+            public short RAMUsage { get; set; } = 0;
 
             // Свойства для RadioButton
             public bool radWhite { get; set; } = false;
             public bool radDark { get; set; } = false;
             public bool radSystem { get; set; } = false;
+
+            //UserControl2
+            public short Height { get; set; } = 0;
+            public short Weight { get; set; } = 0;
+            public short Age { get; set; } = 0;
+            public short Tone { get; set; } = 0;
+            public short Timbre { get; set; } = 0;
+            public short SpeechRate { get; set; } = 0;
+            public short Volume { get; set; } = 0;
+
+
+
 
             public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
         }

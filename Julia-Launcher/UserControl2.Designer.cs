@@ -71,7 +71,7 @@
             // 
             // trkTimbre
             // 
-            trkTimbre.Location = new System.Drawing.Point(182, 298);
+            trkTimbre.Location = new System.Drawing.Point(182, 309);
             trkTimbre.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trkTimbre.Name = "trkTimbre";
             trkTimbre.Size = new System.Drawing.Size(290, 45);
@@ -104,7 +104,7 @@
             // 
             // trkAge
             // 
-            trkAge.Location = new System.Drawing.Point(182, 178);
+            trkAge.Location = new System.Drawing.Point(182, 169);
             trkAge.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trkAge.Maximum = 105;
             trkAge.Minimum = 4;
@@ -116,7 +116,7 @@
             // 
             // trkTone
             // 
-            trkTone.Location = new System.Drawing.Point(182, 247);
+            trkTone.Location = new System.Drawing.Point(182, 258);
             trkTone.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             trkTone.Name = "trkTone";
             trkTone.Size = new System.Drawing.Size(290, 45);
@@ -149,7 +149,7 @@
             // 
             label4.AutoSize = true;
             label4.ForeColor = System.Drawing.Color.White;
-            label4.Location = new System.Drawing.Point(33, 247);
+            label4.Location = new System.Drawing.Point(33, 258);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(28, 15);
@@ -160,7 +160,7 @@
             // 
             label5.AutoSize = true;
             label5.ForeColor = System.Drawing.Color.White;
-            label5.Location = new System.Drawing.Point(33, 349);
+            label5.Location = new System.Drawing.Point(33, 360);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(89, 15);
@@ -183,7 +183,7 @@
             label11.AutoSize = true;
             label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 204);
             label11.ForeColor = System.Drawing.Color.White;
-            label11.Location = new System.Drawing.Point(15, 210);
+            label11.Location = new System.Drawing.Point(15, 221);
             label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(116, 13);
@@ -194,7 +194,7 @@
             // 
             label12.AutoSize = true;
             label12.ForeColor = System.Drawing.Color.White;
-            label12.Location = new System.Drawing.Point(33, 298);
+            label12.Location = new System.Drawing.Point(33, 309);
             label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(43, 15);
@@ -205,7 +205,7 @@
             // 
             label13.AutoSize = true;
             label13.ForeColor = System.Drawing.Color.White;
-            label13.Location = new System.Drawing.Point(33, 400);
+            label13.Location = new System.Drawing.Point(33, 411);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(66, 15);
@@ -240,7 +240,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(33, 482);
+            label7.Location = new System.Drawing.Point(33, 503);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(38, 15);
             label7.TabIndex = 22;
@@ -258,7 +258,7 @@
             // 
             // trkSpeechRate
             // 
-            trkSpeechRate.Location = new System.Drawing.Point(182, 349);
+            trkSpeechRate.Location = new System.Drawing.Point(182, 360);
             trkSpeechRate.Name = "trkSpeechRate";
             trkSpeechRate.Size = new System.Drawing.Size(290, 45);
             trkSpeechRate.TabIndex = 24;
@@ -266,7 +266,7 @@
             // 
             // trkVolume
             // 
-            trkVolume.Location = new System.Drawing.Point(182, 400);
+            trkVolume.Location = new System.Drawing.Point(182, 411);
             trkVolume.Maximum = 100;
             trkVolume.Minimum = 1;
             trkVolume.Name = "trkVolume";
