@@ -248,7 +248,7 @@
             // 
             // btnModel
             // 
-            btnModel.Location = new System.Drawing.Point(15, 520);
+            btnModel.Location = new System.Drawing.Point(15, 540);
             btnModel.Name = "btnModel";
             btnModel.Size = new System.Drawing.Size(457, 71);
             btnModel.TabIndex = 23;

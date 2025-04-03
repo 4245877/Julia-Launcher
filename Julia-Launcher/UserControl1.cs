@@ -1,4 +1,6 @@
-﻿using Julia_Launcher.Properties;
+﻿using static Julia_Launcher.SettingsManager;
+using static Julia_Launcher.Settings;
+using Julia_Launcher;
 using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
+
 
 namespace Julia_Launcher
 {
@@ -51,150 +54,6 @@ namespace Julia_Launcher
             }
         }
 
-        private void SaveSettings(string key, object value)
-        {
-            try
-            {
-                var settings = ReadSettings();
-                switch (key)
-                {
-                    // TextBox
-                    case "InstallDirectory": settings.InstallDirectory = (string)value; break;
-                    case "LogDirectory": settings.LogDirectory = (string)value; break;
-                    case "ModulesDirectory": settings.ModulesDirectory = (string)value; break;
-                    case "CacheDirectory": settings.CacheDirectory = (string)value; break;
-                    case "CPULimit": settings.CPULimit = (string)value; break;
-                    case "GPULimit": settings.GPULimit = (string)value; break;
-                    case "NetworkSpeed": settings.NetworkSpeed = (string)value; break;
-                    case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
-
-                    // CheckBox
-                    case "RAMUsage": settings.RAMUsage = (short)value; break;
-                    case "CpuLoad": settings.CpuLoad = (string)value; break;
-                    case "GPUEnable": settings.GPUEnable = (bool)value; break;
-                    case "AutoStart": settings.AutoStart = (bool)value; break;
-                    case "Lenguage": settings.Language = (string)value; break;
-                    case "ManUpdate": settings.ManUpdate = (bool)value; break;
-                    case "UpdateSrartup": settings.UpdateSrartup = (bool)value; break;
-                    case "ChkLogRetention": settings.CheckLogRetention = (bool)value; break;
-                    case "AutoUpdate": settings.AutoUpdate = (bool)value; break;
-                    case "AllowedIPAddresses": settings.AllowedIPAddresses = (bool)value; break;
-                    case "UpdPreferen": settings.UpdPreferen = (bool)value; break;
-
-
-                    // ComboBox
-                    case "GpuSelection": settings.GpuSelection = (string)value; break;
-                    case "CpuCores": settings.CpuCores = (string)value; break;
-                    case "UpdateBranch": settings.UpdateBranch = (string)value; break;
-                    case "LogLevel": settings.LogLevel = (string)value; break;
-                    case "Language": settings.Language = (string)value; break;
-                    case "Errors": settings.Errors = (string)value; break;
-                    case "LogFormat": settings.LogFormat = (string)value; break;
-                    case "Warnings": settings.Warnings = (string)value; break;
-                    case "InfoMassages": settings.InfoMassages = (string)value; break;
-                    case "Debugging": settings.Debugging = (string)value; break;
-
-
-                    // RadioButton
-                    case "ThemeWhite": settings.radWhite = (bool)value; break;
-                    case "ThemeDark": settings.radDark = (bool)value; break;
-                    case "ThemeSystem": settings.radSystem = (bool)value; break;
-
-                }
-                string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(settingsFilePath, json);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении настроек: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private Settings ReadSettings()
-        {
-            if (File.Exists(settingsFilePath))
-            {
-                try
-                {
-                    string json = File.ReadAllText(settingsFilePath);
-                    return JsonSerializer.Deserialize<Settings>(json) ?? new Settings();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при чтении настроек: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return new Settings();
-                }
-            }
-            return new Settings();
-        }
-
-        // Класс для хранения настроек
-        private class Settings
-        {
-            // Свойства для TextBox
-            public string InstallDirectory { get; set; } = string.Empty;
-            public string LogDirectory { get; set; } = string.Empty;
-            public string ModulesDirectory { get; set; } = string.Empty;
-            public string CacheDirectory { get; set; } = string.Empty;
-            public string HotkeyLounch { get; set; } = string.Empty;
-
-            public bool SomeCheckboxState { get; set; } = false;
-            public int SelectedComboBoxIndex { get; set; } = 0;
-            public int SelectedRadioButtonIndex { get; set; } = 0;
-
-            // Свойства для CheckBox
-            public bool GPUEnable { get; set; } = false;
-            public bool AutoStart { get; set; } = false;
-            public bool UpdPreferen { get; set; } = false;
-            public bool AutoUpdate { get; set; } = false;
-            public bool UpdateSrartup { get; set; } = false;
-            public bool ManUpdate { get; set; } = false;
-            public bool CheckLogRetention { get; set; } = false;
-            public bool ProtectionWithaPassword { get; set; } = false;
-            public bool AllowedIPAddresses { get; set; } = false; 
-
-            // Свойства для ComboBox (храним выбранное значение как string)
-            public string CpuCores { get; set; } = string.Empty;
-            public string GpuSelection { get; set; } = string.Empty;
-            public string UpdateBranch { get; set; } = string.Empty;
-            public string LogLevel { get; set; } = string.Empty;
-            public string Errors { get; set; } = string.Empty;
-            public string Language { get; set; } = string.Empty;
-            public string Warnings { get; set; } = string.Empty;
-            public string InfoMassages { get; set; } = string.Empty;
-            public string LogFormat { get; set; } = string.Empty;
-            public string Debugging { get; set; } = string.Empty;
-
-
-            // Свойства для TextBox
-            public string NetworkSpeed { get; set; } = string.Empty;
-            public string GPULimit { get; set; } = string.Empty;
-            public string CpuLoad { get; set; } = string.Empty;
-            public string CPULimit { get; set; } = string.Empty;
-
-            // Свойства для TrackBar
-            public short RAMUsage { get; set; } = 0;
-
-            // Свойства для RadioButton
-            public bool radWhite { get; set; } = false;
-            public bool radDark { get; set; } = false;
-            public bool radSystem { get; set; } = false;
-
-            //UserControl2
-            public short Height { get; set; } = 0;
-            public short Weight { get; set; } = 0;
-            public short Age { get; set; } = 0;
-            public short Tone { get; set; } = 0;
-            public short Timbre { get; set; } = 0;
-            public short SpeechRate { get; set; } = 0;
-            public short Volume { get; set; } = 0;
-
-
-
-
-            public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
-        }
-
         // Загрузка сохраненных настроек 
         private void LoadSettings()
         {
@@ -234,7 +93,6 @@ namespace Julia_Launcher
         }
 
 
-
         private void LoadHardwareInfo()
         {
             // Получаем доступ к информации о железе через статический экземпляр
@@ -259,8 +117,6 @@ namespace Julia_Launcher
                 // в соответствии с их фактическими именами
             }
         }
-
-
 
 
         private void txtCPULimit_KeyPress(object sender, KeyPressEventArgs e)
@@ -307,7 +163,6 @@ namespace Julia_Launcher
                 }
             }
         }
-
 
 
         // Обработчики событий изменения текста
@@ -387,8 +242,6 @@ namespace Julia_Launcher
             SaveSettings("HotkeyLounch", txtHotkeyLounch.Text);
         }
 
-
-
         //Button 
 
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
@@ -428,11 +281,9 @@ namespace Julia_Launcher
         {
 
         }
-
-
-
+      
         // ComboBox
-
+  
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
             SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
@@ -475,7 +326,6 @@ namespace Julia_Launcher
         {
             SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
         }
-
 
         // CheckBox
 

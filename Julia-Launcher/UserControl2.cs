@@ -16,6 +16,7 @@ using Assimp;
 using Assimp.Configs;
 using OpenTK.GLControl;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static Julia_Launcher.SettingsManager;
 using System.Reflection;
 
 namespace Julia_Launcher
@@ -55,7 +56,7 @@ namespace Julia_Launcher
 
         private void GlControl_Load(object sender, EventArgs e)
         {
-            try
+            try 
             {
                 GL.ClearColor(0.7f, 0.9f, 0.5f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
@@ -879,32 +880,32 @@ namespace Julia_Launcher
 
         private void trackBar4_Scroll(object sender, EventArgs e)
         {
-
+            
         }
 
         private void trkHeight_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("Height", trkHeight.Value);
         }
 
         private void trkWeight_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("Weight", trkWeight.Value);
         }
 
         private void trkAge_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("Age", trkAge.Value);
         }
 
         private void trkTone_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("Tone", trkTone.Value);
         }
 
         private void trkSpeechRate_Scroll(object sender, EventArgs e)
         {
-
+            SaveSettings("SpeechRate", trkSpeechRate.Value);
         }
     }
 }
