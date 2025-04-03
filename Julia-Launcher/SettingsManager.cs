@@ -40,7 +40,6 @@ namespace Julia_Launcher
                     case "HotkeyLounch": settings.HotkeyLounch = (string)value; break;
 
                     // CheckBox
-                    case "RAMUsage": settings.RAMUsage = (short)value; break;
                     case "CpuLoad": settings.CpuLoad = (string)value; break;
                     case "GPUEnable": settings.GPUEnable = (bool)value; break;
                     case "AutoStart": settings.AutoStart = (bool)value; break;
@@ -63,6 +62,16 @@ namespace Julia_Launcher
                     case "Warnings": settings.Warnings = (string)value; break;
                     case "InfoMassages": settings.InfoMassages = (string)value; break;
                     case "Debugging": settings.Debugging = (string)value; break;
+
+                    //TrackBar
+                    case "RAMUsage": settings.RAMUsage = (int)value; break;
+                    case "Height": settings.Height = (short)value; break;
+                    case "Weight": settings.Weight = (short)value; break;
+                    case "Age": settings.Age = (short)value; break;
+                    case "Tone": settings.Age = (short)value; break;
+                    case "SpeechRate": settings.Tone = (short)value; break;
+                    case "Volume": settings.Volume = (short)value; break;
+                    case "Timbre": settings.Timbre = (short)value; break;
 
                     // RadioButton
                     case "ThemeWhite": settings.radWhite = (bool)value; break;

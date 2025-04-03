@@ -56,7 +56,7 @@ namespace Julia_Launcher
 
         private void GlControl_Load(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 GL.ClearColor(0.7f, 0.9f, 0.5f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
@@ -849,11 +849,7 @@ namespace Julia_Launcher
             GlControl_Click(sender, e);
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            // Implement if needed or remove
-            // Currently empty as trackBar7 is handling scale
-        }
+
 
         private void UserControl2_Load(object sender, EventArgs e)
         {
@@ -878,10 +874,7 @@ namespace Julia_Launcher
 
         // Trackbars
 
-        private void trackBar4_Scroll(object sender, EventArgs e)
-        {
-            
-        }
+
 
         private void trkHeight_Scroll(object sender, EventArgs e)
         {
@@ -906,6 +899,16 @@ namespace Julia_Launcher
         private void trkSpeechRate_Scroll(object sender, EventArgs e)
         {
             SaveSettings("SpeechRate", trkSpeechRate.Value);
+        }
+
+        private void trkVolume_Scroll(object sender, EventArgs e)
+        {
+            SaveSettings("Volume", trkVolume.Value);
+        }
+
+        private void trkTimbre_Scroll(object sender, EventArgs e)
+        {
+            SaveSettings("Timbre", trkTimbre.Value);
         }
     }
 }
