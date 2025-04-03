@@ -192,13 +192,14 @@ namespace Julia_Launcher
             glControl1.Invalidate();
         }
 
-        public void LoadModel(string path)
+        private void LoadModel(string path)
         {
             try
             {
                 // Dispose previous model if exists
                 model?.Dispose();
 
+                // Load the model
                 model = new Model(path);
 
                 // Center and scale model to fit view
@@ -206,14 +207,61 @@ namespace Julia_Launcher
                 modelPosition = Vector3.Zero;
                 rotation = 0.0f;
 
-                // Reset camera position when loading a new model
-                ResetCamera();
+                // Try to load camera settings from the file 
+                LoadCameraFromFile(path);
 
                 glControl1.Invalidate();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load model: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadCameraFromFile(string path)
+        {
+            try
+            {
+                var importer = new AssimpContext();
+                Scene scene = importer.ImportFile(path,
+                    PostProcessSteps.Triangulate |
+                    PostProcessSteps.GenerateSmoothNormals |
+                    PostProcessSteps.FlipUVs |
+                    PostProcessSteps.CalculateTangentSpace);
+
+                if (scene != null && scene.CameraCount > 0)
+                {
+                    // Use the first camera from the file
+                    Assimp.Camera assimpCamera = scene.Cameras[0];
+
+                    // If we already have a camera instance, update it
+                    if (camera != null)
+                    {
+                        camera.SetFromAssimpCamera(assimpCamera);
+                    }
+                    else
+                    {
+                        // Create new camera from the file's camera
+                        camera = new Camera(
+                            new Vector3(0, 0, 3), // Default position, will be overwritten
+                            glControl1.Width / (float)glControl1.Height);
+                        camera.SetFromAssimpCamera(assimpCamera);
+                    }
+
+                    Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
+                }
+                else
+                {
+                    // No cameras in the file, reset to default
+                    ResetCamera();
+                    Console.WriteLine("No camera found in the file, using default camera");
+                }
+            }
+            catch (Exception ex)
+            {
+                // If there's an error loading the camera, use the default
+                Console.WriteLine($"Error loading camera: {ex.Message}. Using default camera.");
+                ResetCamera();
             }
         }
 
@@ -249,70 +297,76 @@ namespace Julia_Launcher
 
             public void SetFromAssimpCamera(Assimp.Camera assimpCamera)
             {
-                // Установка позиции
+                // Set position
                 Position = new Vector3(assimpCamera.Position.X, assimpCamera.Position.Y, assimpCamera.Position.Z);
 
-                // Вычисление вектора направления (Front)
-                Assimp.Vector3D lookAtVector;
-                var lookAtProperty = typeof(Assimp.Camera).GetProperty("LookAt");
-                if (lookAtProperty != null)
-                    lookAtVector = (Assimp.Vector3D)lookAtProperty.GetValue(assimpCamera);
+                // Get lookAt vector (may be called LookAt or Target depending on Assimp version)
+                Vector3 lookAt;
+                if (typeof(Assimp.Camera).GetProperty("LookAt") != null)
+                {
+                    var lookAtVector = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("LookAt").GetValue(assimpCamera);
+                    lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
+                }
+                else if (typeof(Assimp.Camera).GetProperty("Target") != null)
+                {
+                    var lookAtVector = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("Target").GetValue(assimpCamera);
+                    lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
+                }
                 else
                 {
-                    var targetProperty = typeof(Assimp.Camera).GetProperty("Target");
-                    if (targetProperty != null)
-                        lookAtVector = (Assimp.Vector3D)targetProperty.GetValue(assimpCamera);
-                    else
-                        throw new InvalidOperationException("Cannot find LookAt or Target property in Assimp.Camera");
+                    // If neither property exists, use a position in front of the camera
+                    lookAt = Position + new Vector3(0, 0, -1);
                 }
 
-                Vector3 lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
+                // Calculate Front vector
                 Front = Vector3.Normalize(lookAt - Position);
 
-                // Установка Up вектора
-                Assimp.Vector3D upVector;
-                var upVectorProperty = typeof(Assimp.Camera).GetProperty("UpVector");
-                if (upVectorProperty != null)
-                    upVector = (Assimp.Vector3D)upVectorProperty.GetValue(assimpCamera);
+                // Get Up vector
+                Vector3 upVector;
+                if (typeof(Assimp.Camera).GetProperty("UpVector") != null)
+                {
+                    var up = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("UpVector").GetValue(assimpCamera);
+                    upVector = new Vector3(up.X, up.Y, up.Z);
+                }
+                else if (typeof(Assimp.Camera).GetProperty("Up") != null)
+                {
+                    var up = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("Up").GetValue(assimpCamera);
+                    upVector = new Vector3(up.X, up.Y, up.Z);
+                }
                 else
                 {
-                    var upProperty = typeof(Assimp.Camera).GetProperty("Up");
-                    if (upProperty != null)
-                        upVector = (Assimp.Vector3D)upProperty.GetValue(assimpCamera);
-                    else
-                        throw new InvalidOperationException("Cannot find UpVector or Up property in Assimp.Camera");
+                    // Default up vector
+                    upVector = new Vector3(0, 1, 0);
                 }
 
-                Up = new Vector3(upVector.X, upVector.Y, upVector.Z);
-
-                // Вычисление Right вектора
-                Right = Vector3.Normalize(Vector3.Cross(Front, Up));
-
-                // Пересчитываем Up для обеспечения ортогональности
+                // Calculate Right and Up vectors to ensure orthogonality
+                Right = Vector3.Normalize(Vector3.Cross(Front, upVector));
                 Up = Vector3.Normalize(Vector3.Cross(Right, Front));
 
-                // Вычисляем углы yaw и pitch
+                // Calculate Yaw and Pitch from Front vector
                 yaw = MathHelper.RadiansToDegrees((float)Math.Atan2(Front.Z, Front.X));
                 pitch = MathHelper.RadiansToDegrees((float)Math.Asin(Front.Y));
 
-                // Установка поля зрения
-                float fov = 0;
-                var fovProperty = typeof(Assimp.Camera).GetProperty("FieldOfView");
-                if (fovProperty != null)
-                    fov = (float)fovProperty.GetValue(assimpCamera);
+                // Get FOV
+                if (typeof(Assimp.Camera).GetProperty("FieldOfView") != null)
+                {
+                    zoom = MathHelper.RadiansToDegrees((float)typeof(Assimp.Camera).GetProperty("FieldOfView").GetValue(assimpCamera));
+                }
+                else if (typeof(Assimp.Camera).GetProperty("FOV") != null)
+                {
+                    zoom = MathHelper.RadiansToDegrees((float)typeof(Assimp.Camera).GetProperty("FOV").GetValue(assimpCamera));
+                }
                 else
                 {
-                    var fovAltProperty = typeof(Assimp.Camera).GetProperty("FOV");
-                    if (fovAltProperty != null)
-                        fov = (float)fovAltProperty.GetValue(assimpCamera);
-                    else
-                        fov = MathHelper.DegreesToRadians(45.0f); // Значение по умолчанию
+                    // Default zoom/FOV
+                    zoom = 45.0f;
                 }
 
-                zoom = MathHelper.RadiansToDegrees(fov);
-
-                // Установка соотношения сторон
-                AspectRatio = assimpCamera.AspectRatio != 0 ? assimpCamera.AspectRatio : AspectRatio;
+                // Set aspect ratio if available
+                if (assimpCamera.AspectRatio > 0)
+                {
+                    AspectRatio = assimpCamera.AspectRatio;
+                }
             }
 
 

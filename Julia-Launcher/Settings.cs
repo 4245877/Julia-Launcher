@@ -27,7 +27,7 @@ namespace Julia_Launcher
         public bool ProtectionWithaPassword { get; set; } = false;
         public bool AllowedIPAddresses { get; set; } = false;
 
-        // Свойства для ComboBox (храним выбранное значение как string)
+        // Свойства для ComboBox
         public string CpuCores { get; set; } = string.Empty;
         public string GpuSelection { get; set; } = string.Empty;
         public string UpdateBranch { get; set; } = string.Empty;
