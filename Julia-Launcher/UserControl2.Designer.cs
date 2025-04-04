@@ -216,6 +216,7 @@
             // 
             // glControl1
             // 
+            glControl1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             glControl1.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
             glControl1.APIVersion = new System.Version(3, 3, 0, 0);
             glControl1.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
@@ -224,7 +225,7 @@
             glControl1.Name = "glControl1";
             glControl1.Profile = OpenTK.Windowing.Common.ContextProfile.Core;
             glControl1.SharedContext = null;
-            glControl1.Size = new System.Drawing.Size(693, 667);
+            glControl1.Size = new System.Drawing.Size(693, 626);
             glControl1.TabIndex = 21;
             glControl1.Click += glControl1_Click_2;
             // 
@@ -298,7 +299,7 @@
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
-            Size = new System.Drawing.Size(1171, 667);
+            Size = new System.Drawing.Size(1171, 626);
             Load += UserControl2_Load;
             ((System.ComponentModel.ISupportInitialize)trkHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkWeight).EndInit();

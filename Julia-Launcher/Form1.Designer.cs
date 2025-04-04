@@ -47,7 +47,7 @@
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(1171, 612);
+            panel1.Size = new System.Drawing.Size(1171, 626);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
@@ -120,10 +120,10 @@
             panel3.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
-            panel3.Location = new System.Drawing.Point(166, 630);
+            panel3.Location = new System.Drawing.Point(166, 644);
             panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(1171, 87);
+            panel3.Size = new System.Drawing.Size(1171, 73);
             panel3.TabIndex = 2;
             panel3.Paint += panel3_Paint;
             // 
@@ -136,7 +136,7 @@
             button1.Location = new System.Drawing.Point(464, 3);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(216, 81);
+            button1.Size = new System.Drawing.Size(216, 67);
             button1.TabIndex = 0;
             button1.Text = "Start";
             button1.UseVisualStyleBackColor = false;

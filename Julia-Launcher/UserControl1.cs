@@ -281,9 +281,9 @@ namespace Julia_Launcher
         {
 
         }
-      
+
         // ComboBox
-  
+
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
             SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
@@ -406,6 +406,11 @@ namespace Julia_Launcher
         }
 
         private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UserControl1_Load(object sender, EventArgs e)
         {
 
         }
