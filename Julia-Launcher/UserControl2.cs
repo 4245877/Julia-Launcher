@@ -237,6 +237,13 @@ namespace Julia_Launcher
 
                 if (scene != null && scene.CameraCount > 0)
                 {
+                    // Debug info about all cameras found
+                    Console.WriteLine($"Found {scene.CameraCount} cameras in the file:");
+                    for (int i = 0; i < scene.CameraCount; i++)
+                    {
+                        Console.WriteLine($"  Camera {i}: {scene.Cameras[i].Name}");
+                    }
+
                     // Use the first camera from the file
                     Assimp.Camera assimpCamera = scene.Cameras[0];
 
@@ -244,6 +251,14 @@ namespace Julia_Launcher
                     if (camera != null)
                     {
                         camera.SetFromAssimpCamera(assimpCamera);
+                        Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
+
+                        // Don't call these after setting from Assimp camera, as they may override values
+                          camera.Position = new Vector3(0, 0, 3);
+                          camera.LookAt(new Vector3(0, 0, 0));
+
+                        // Just refresh the UI
+                        glControl1.Invalidate();
                     }
                     else
                     {
@@ -253,19 +268,15 @@ namespace Julia_Launcher
                             glControl1.Width / (float)glControl1.Height);
                         camera.SetFromAssimpCamera(assimpCamera);
                     }
-
-                    Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
                 }
                 else
                 {
-                    // No cameras in the file, reset to default
-                    ResetCamera();
                     Console.WriteLine("No camera found in the file, using default camera");
+                    ResetCamera();
                 }
             }
             catch (Exception ex)
             {
-                // If there's an error loading the camera, use the default
                 Console.WriteLine($"Error loading camera: {ex.Message}. Using default camera.");
                 ResetCamera();
             }
@@ -286,7 +297,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Camera class to handle camera transformations
+        // Camera class to handle camera transformations 
         public class Camera
         {
             public Vector3 Position { get; set; }
@@ -530,7 +541,96 @@ namespace Julia_Launcher
                 GL.UseProgram(Handle);
                 GL.Uniform3(GetUniformLocation(name), value);
             }
+            public void SetVector2(string name, Vector2 value)
+            {
+                GL.UseProgram(Handle);
+                GL.Uniform2(GetUniformLocation(name), value);
+            }
 
+            public void SetVector4(string name, Vector4 value)
+            {
+                GL.UseProgram(Handle);
+                GL.Uniform4(GetUniformLocation(name), value);
+            }
+
+            public void SetBool(string name, bool value)
+            {
+                GL.UseProgram(Handle);
+                GL.Uniform1(GetUniformLocation(name), value ? 1 : 0);
+            }
+
+            // Texture binding helper methods
+            public void SetTexture(string name, int textureUnit, int textureId)
+            {
+                GL.UseProgram(Handle);
+                GL.ActiveTexture(TextureUnit.Texture0 + textureUnit);
+                GL.BindTexture(TextureTarget.Texture2D, textureId);
+                GL.Uniform1(GetUniformLocation(name), textureUnit);
+            }
+
+            // Methods to load common PBR material settings
+            public void SetPBRMaterial(
+                string materialName,
+                int diffuseMap,
+                int normalMap,
+                int specularMap,
+                int roughnessMap,
+                int aoMap,
+                float metallic = 0.0f)
+            {
+                Use();
+                SetTexture($"{materialName}_diffuse1", 0, diffuseMap);
+                SetTexture($"{materialName}_normal1", 1, normalMap);
+                SetTexture($"{materialName}_specular1", 2, specularMap);
+                SetTexture($"{materialName}_roughness1", 3, roughnessMap);
+                SetTexture($"{materialName}_ao1", 4, aoMap);
+                SetFloat("metallic", metallic);
+            }
+
+            // Method to set standard lighting properties
+            public void SetLightProperties(
+                Vector3 position,
+                Vector3 color,
+                float intensity,
+                Vector3 ambientLight,
+                float gamma = 2.2f)
+            {
+                Use();
+                SetVector3("lightPosition", position);
+                SetVector3("lightColor", color);
+                SetFloat("lightIntensity", intensity);
+                SetVector3("ambientLight", ambientLight);
+                SetFloat("gamma", gamma);
+            }
+
+            // Method to configure fog
+            public void SetFogProperties(bool enable, Vector3 color, float near, float far)
+            {
+                Use();
+                SetBool("enableFog", enable);
+                SetVector3("fogColor", color);
+                SetFloat("fogNear", near);
+                SetFloat("fogFar", far);
+            }
+
+            // Shadow mapping configuration
+            public void SetShadowMap(int shadowMapTextureId, Matrix4 lightSpaceMatrix)
+            {
+                Use();
+                SetTexture("shadowMap", 5, shadowMapTextureId);
+                SetMatrix4("lightSpaceMatrix", lightSpaceMatrix);
+            }
+
+            // Helper method to calculate normal matrix from model matrix
+            public static Matrix3 CalculateNormalMatrix(Matrix4 modelMatrix)
+            {
+                Matrix4 normalMatrix = Matrix4.Transpose(Matrix4.Invert(modelMatrix));
+                return new Matrix3(
+                    normalMatrix.M11, normalMatrix.M12, normalMatrix.M13,
+                    normalMatrix.M21, normalMatrix.M22, normalMatrix.M23,
+                    normalMatrix.M31, normalMatrix.M32, normalMatrix.M33
+                );
+            }
             public void SetMatrix4(string name, Matrix4 value)
             {
                 GL.UseProgram(Handle);
@@ -694,7 +794,6 @@ namespace Julia_Launcher
 
             public Model(string path)
             {
-                // Инициализация стандартных текстур
                 defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255); // Белая
                 defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);      // Чёрная
                 LoadModel(path);
@@ -731,43 +830,51 @@ namespace Julia_Launcher
                 }
 
                 directory = Path.GetDirectoryName(path);
-                ProcessNode(scene.RootNode, scene);
+                ProcessNode(scene.RootNode, scene, Matrix4.Identity);
             }
 
-            private void ProcessNode(Node node, Scene scene)
+            private void ProcessNode(Node node, Scene scene, Matrix4 parentTransform)
             {
-                // Обработка всех мешей в текущем узле
+                // Вычисляем глобальную трансформацию текущего узла
+                Matrix4 localTransform = ConvertMatrix(node.Transform);
+                Matrix4 globalTransform = localTransform * parentTransform;
+
+                // Обрабатываем все меши в текущем узле
                 for (int i = 0; i < node.MeshCount; i++)
                 {
                     Assimp.Mesh mesh = scene.Meshes[node.MeshIndices[i]];
-                    meshes.Add(ProcessMesh(mesh, scene));
+                    meshes.Add(ProcessMesh(mesh, scene, globalTransform));
                 }
 
-                // Рекурсивная обработка дочерних узлов
+                // Рекурсивно обрабатываем дочерние узлы
                 for (int i = 0; i < node.ChildCount; i++)
                 {
-                    ProcessNode(node.Children[i], scene);
+                    ProcessNode(node.Children[i], scene, globalTransform);
                 }
             }
 
-            private Mesh ProcessMesh(Assimp.Mesh mesh, Scene scene)
+            private Mesh ProcessMesh(Assimp.Mesh mesh, Scene scene, Matrix4 globalTransform)
             {
                 List<float> vertices = new List<float>();
                 List<uint> indices = new List<uint>();
                 List<Texture> textures = new List<Texture>();
 
-                // Обработка вершин
+                // Применяем глобальную трансформацию к вершинам и нормалям
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    vertices.Add(mesh.Vertices[i].X);
-                    vertices.Add(mesh.Vertices[i].Y);
-                    vertices.Add(mesh.Vertices[i].Z);
+                    Vector3 pos = new Vector3(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z);
+                    pos = Vector3.TransformPosition(pos, globalTransform);
+                    vertices.Add(pos.X);
+                    vertices.Add(pos.Y);
+                    vertices.Add(pos.Z);
 
                     if (mesh.HasNormals)
                     {
-                        vertices.Add(mesh.Normals[i].X);
-                        vertices.Add(mesh.Normals[i].Y);
-                        vertices.Add(mesh.Normals[i].Z);
+                        Vector3 normal = new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z);
+                        normal = Vector3.TransformNormal(normal, globalTransform);
+                        vertices.Add(normal.X);
+                        vertices.Add(normal.Y);
+                        vertices.Add(normal.Z);
                     }
                     else
                     {
@@ -788,7 +895,7 @@ namespace Julia_Launcher
                     }
                 }
 
-                // Обработка индексов
+                // Индексы остаются без изменений
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
                     Face face = mesh.Faces[i];
@@ -798,7 +905,7 @@ namespace Julia_Launcher
                     }
                 }
 
-                // Загрузка материалов
+                // Загрузка текстур (без изменений)
                 if (mesh.MaterialIndex >= 0)
                 {
                     Material material = scene.Materials[mesh.MaterialIndex];
@@ -808,7 +915,6 @@ namespace Julia_Launcher
                     textures.AddRange(specularMaps);
                 }
 
-                // Добавление стандартных текстур, если их нет
                 if (!textures.Any(t => t.Type == "texture_diffuse"))
                 {
                     textures.Add(new Texture(defaultDiffuseTexture, "texture_diffuse", "default_diffuse"));
@@ -819,6 +925,16 @@ namespace Julia_Launcher
                 }
 
                 return new Mesh(vertices.ToArray(), indices.ToArray(), textures);
+            }
+
+            private Matrix4 ConvertMatrix(Assimp.Matrix4x4 mat)
+            {
+                return new Matrix4(
+                    mat.A1, mat.A2, mat.A3, mat.A4,
+                    mat.B1, mat.B2, mat.B3, mat.B4,
+                    mat.C1, mat.C2, mat.C3, mat.C4,
+                    mat.D1, mat.D2, mat.D3, mat.D4
+                );
             }
 
             private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
@@ -923,9 +1039,6 @@ namespace Julia_Launcher
 
 
         // Trackbars
-
-
-
         private void trkHeight_Scroll(object sender, EventArgs e)
         {
             SaveSettings("Height", trkHeight.Value);
