@@ -37,6 +37,8 @@ namespace Julia_Launcher
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
         private float specularStrength = 0.5f;
+        private float diffuseStrength = 0.8f; // Сила диффузного освещения
+        private float shininess = 32.0f;      // Блеск (степень зеркальности)
 
         public UserControl2()
         {
@@ -102,6 +104,7 @@ namespace Julia_Launcher
         }
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
+
             if (!loaded) return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -119,16 +122,19 @@ namespace Julia_Launcher
                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                      Matrix4.CreateTranslation(modelPosition);
 
-                // Исправлено вычисление матрицы нормалей
-                Matrix4 modelView = view * modelMatrix;
-                Matrix3 normalMatrix = new Matrix3(
-                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row0.Xyz,
-                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row1.Xyz,
-                    Matrix4.Transpose(Matrix4.Invert(modelView)).Row2.Xyz
-                );
-
-                shader.SetMatrix3("normalMatrix", normalMatrix);
+                // Compute normal matrix
+                Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
                 shader.SetMatrix4("model", modelMatrix);
+                shader.SetMatrix3("normalMatrix", normalMatrix);
+
+                // Set lighting uniforms
+                shader.SetVector3("lightPosition", lightPos);
+                shader.SetVector3("lightColor", lightColor);
+                shader.SetVector3("viewPosition", camera.Position);
+                shader.SetFloat("ambientStrength", ambientStrength);
+                shader.SetFloat("diffuseStrength", diffuseStrength);
+                shader.SetFloat("specularStrength", specularStrength);
+                shader.SetFloat("shininess", shininess);
 
                 model.Draw(shader);
             }
@@ -595,16 +601,12 @@ namespace Julia_Launcher
 
             public void Draw(Shader shader)
             {
-                // Bind appropriate textures
                 uint diffuseNr = 1;
                 uint specularNr = 1;
 
                 for (int i = 0; i < Textures.Count; i++)
                 {
-                    // Активируем текстурный блок
                     GL.ActiveTexture(TextureUnit.Texture0 + i);
-
-                    // Генерируем имя текстуры на основе типа
                     string number = "";
                     string name = Textures[i].Type;
 
@@ -613,20 +615,14 @@ namespace Julia_Launcher
                     else if (name == "texture_specular")
                         number = specularNr++.ToString();
 
-                    // Устанавливаем семплер на правильный текстурный блок
-                    // ИСПРАВЛЕНИЕ: Используем SetInt вместо SetFloat для текстурных сэмплеров
                     shader.SetInt($"{name}{number}", i);
-
-                    // Привязываем текстуру
                     GL.BindTexture(TextureTarget.Texture2D, Textures[i].Id);
                 }
 
-                // Отрисовка меша
                 GL.BindVertexArray(VAO);
                 GL.DrawElements(OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
                 GL.BindVertexArray(0);
 
-                // Сбрасываем активную текстуру
                 GL.ActiveTexture(TextureUnit.Texture0);
             }
 

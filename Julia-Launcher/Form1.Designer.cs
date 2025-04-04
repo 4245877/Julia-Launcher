@@ -47,13 +47,13 @@
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(1171, 667);
+            panel1.Size = new System.Drawing.Size(1171, 612);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
             // panel2
             // 
-            panel2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom;
+            panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel2.Controls.Add(SetingButton);
             panel2.Controls.Add(btnModelVoiceSettings);
@@ -62,14 +62,14 @@
             panel2.Location = new System.Drawing.Point(10, 12);
             panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(148, 760);
+            panel2.Size = new System.Drawing.Size(148, 705);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
             // SetingButton
             // 
             SetingButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            SetingButton.Location = new System.Drawing.Point(4, 709);
+            SetingButton.Location = new System.Drawing.Point(3, 657);
             SetingButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             SetingButton.Name = "SetingButton";
             SetingButton.Size = new System.Drawing.Size(141, 48);
@@ -81,7 +81,7 @@
             // btnModelVoiceSettings
             // 
             btnModelVoiceSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-            btnModelVoiceSettings.Location = new System.Drawing.Point(4, 655);
+            btnModelVoiceSettings.Location = new System.Drawing.Point(3, 602);
             btnModelVoiceSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnModelVoiceSettings.Name = "btnModelVoiceSettings";
             btnModelVoiceSettings.Size = new System.Drawing.Size(141, 48);
@@ -94,7 +94,7 @@
             // 
             button3.Anchor = System.Windows.Forms.AnchorStyles.None;
             button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            button3.Location = new System.Drawing.Point(3, 601);
+            button3.Location = new System.Drawing.Point(3, 548);
             button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(145, 48);
@@ -105,8 +105,8 @@
             // 
             // button2
             // 
-            button2.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button2.Location = new System.Drawing.Point(0, 3);
+            button2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            button2.Location = new System.Drawing.Point(3, 3);
             button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(145, 48);
@@ -120,7 +120,7 @@
             panel3.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
-            panel3.Location = new System.Drawing.Point(166, 685);
+            panel3.Location = new System.Drawing.Point(166, 630);
             panel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(1171, 87);
@@ -147,7 +147,7 @@
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(19, 19, 19);
-            ClientSize = new System.Drawing.Size(1350, 784);
+            ClientSize = new System.Drawing.Size(1350, 729);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
