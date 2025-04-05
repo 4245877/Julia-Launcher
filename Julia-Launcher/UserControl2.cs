@@ -312,42 +312,48 @@ namespace Julia_Launcher
             private float zoom = 45.0f;
 
 
-            public void SetFromAssimpCamera(Assimp.Camera assimpCamera)
+            public void SetFromAssimpCamera(Assimp.Camera assimpCamera, bool convertCoordinateSystem = true)
             {
                 // Set position
                 Position = new Vector3(assimpCamera.Position.X, assimpCamera.Position.Y, assimpCamera.Position.Z);
 
-                // Get lookAt vector (may be called LookAt or Target depending on Assimp version)
+                // Get lookAt point
                 Vector3 lookAt;
-                if (typeof(Assimp.Camera).GetProperty("LookAt") != null)
+                var lookAtProp = typeof(Assimp.Camera).GetProperty("LookAt") ??
+                                 typeof(Assimp.Camera).GetProperty("Target");
+
+                if (lookAtProp != null)
                 {
-                    var lookAtVector = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("LookAt").GetValue(assimpCamera);
-                    lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
-                }
-                else if (typeof(Assimp.Camera).GetProperty("Target") != null)
-                {
-                    var lookAtVector = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("Target").GetValue(assimpCamera);
+                    var lookAtVector = (Assimp.Vector3D)lookAtProp.GetValue(assimpCamera);
                     lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
                 }
                 else
                 {
-                    // If neither property exists, use a position in front of the camera
+                    // Default direction
                     lookAt = Position + new Vector3(0, 0, -1);
                 }
 
-                // Calculate Front vector
+                // Calculate Front vector - direction from position to lookAt
                 Front = Vector3.Normalize(lookAt - Position);
+
+                // Apply coordinate system conversion if needed (FBX to OpenGL)
+                if (convertCoordinateSystem)
+                {
+                    // Convert from FBX/Assimp (Y-up) to OpenGL (Z-forward, Y-up)
+                    // This may need adjustment based on your specific import/export settings
+                    // Common transformation for FBX to OpenGL:
+                    Front = new Vector3(Front.X, Front.Y, -Front.Z);
+                    Position = new Vector3(Position.X, Position.Y, -Position.Z);
+                }
 
                 // Get Up vector
                 Vector3 upVector;
-                if (typeof(Assimp.Camera).GetProperty("UpVector") != null)
+                var upProp = typeof(Assimp.Camera).GetProperty("UpVector") ??
+                            typeof(Assimp.Camera).GetProperty("Up");
+
+                if (upProp != null)
                 {
-                    var up = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("UpVector").GetValue(assimpCamera);
-                    upVector = new Vector3(up.X, up.Y, up.Z);
-                }
-                else if (typeof(Assimp.Camera).GetProperty("Up") != null)
-                {
-                    var up = (Assimp.Vector3D)typeof(Assimp.Camera).GetProperty("Up").GetValue(assimpCamera);
+                    var up = (Assimp.Vector3D)upProp.GetValue(assimpCamera);
                     upVector = new Vector3(up.X, up.Y, up.Z);
                 }
                 else
@@ -357,21 +363,21 @@ namespace Julia_Launcher
                 }
 
                 // Calculate Right and Up vectors to ensure orthogonality
-                Right = Vector3.Normalize(Vector3.Cross(Front, upVector));
-                Up = Vector3.Normalize(Vector3.Cross(Right, Front));
+                Right = Vector3.Normalize(Vector3.Cross(upVector, Front));  // Note the order for right-handed system
+                Up = Vector3.Normalize(Vector3.Cross(Front, Right));
 
-                // Calculate Yaw and Pitch from Front vector
+                // Calculate Yaw and Pitch from Front vector after coordinate system conversion
                 yaw = MathHelper.RadiansToDegrees((float)Math.Atan2(Front.Z, Front.X));
                 pitch = MathHelper.RadiansToDegrees((float)Math.Asin(Front.Y));
 
                 // Get FOV
-                if (typeof(Assimp.Camera).GetProperty("FieldOfView") != null)
+                var fovProp = typeof(Assimp.Camera).GetProperty("FieldOfView") ??
+                             typeof(Assimp.Camera).GetProperty("FOV");
+
+                if (fovProp != null)
                 {
-                    zoom = MathHelper.RadiansToDegrees((float)typeof(Assimp.Camera).GetProperty("FieldOfView").GetValue(assimpCamera));
-                }
-                else if (typeof(Assimp.Camera).GetProperty("FOV") != null)
-                {
-                    zoom = MathHelper.RadiansToDegrees((float)typeof(Assimp.Camera).GetProperty("FOV").GetValue(assimpCamera));
+                    var fovValue = fovProp.GetValue(assimpCamera);
+                    zoom = MathHelper.RadiansToDegrees((float)Convert.ToDouble(fovValue));
                 }
                 else
                 {
@@ -384,6 +390,9 @@ namespace Julia_Launcher
                 {
                     AspectRatio = assimpCamera.AspectRatio;
                 }
+
+                // Update camera vectors based on calculated angles
+                UpdateCameraVectors();
             }
 
 
