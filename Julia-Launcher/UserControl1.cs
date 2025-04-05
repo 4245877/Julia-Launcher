@@ -55,7 +55,6 @@ namespace Julia_Launcher
         }
 
         // Загрузка сохраненных настроек 
-        // Загрузка сохраненных настроек 
         private void LoadSettings()
         {
             var settings = ReadSettings();
@@ -428,6 +427,9 @@ namespace Julia_Launcher
 
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
+
+
+
             SaveSettings("RAMUsage", trackRamUsage.Value);
         }
 
