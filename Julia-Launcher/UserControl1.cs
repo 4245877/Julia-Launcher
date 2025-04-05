@@ -55,6 +55,7 @@ namespace Julia_Launcher
         }
 
         // Загрузка сохраненных настроек 
+        // Загрузка сохраненных настроек 
         private void LoadSettings()
         {
             var settings = ReadSettings();
@@ -67,11 +68,19 @@ namespace Julia_Launcher
             txtCPULimit.Text = settings.CPULimit;
             txtGPULimit.Text = settings.GPULimit;
             txtNetworkSpeed.Text = settings.NetworkSpeed;
+            txtHotkeyLounch.Text = settings.HotkeyLounch; // Добавлено для свойства HotkeyLounch
 
             // CheckBox controls
             chkGPUEnable.Checked = settings.GPUEnable;
             chkAutoStart.Checked = settings.AutoStart;
-            // Add other checkboxes here
+            // Добавлены остальные флажки из класса Settings
+            chkUpdPreferen.Checked = settings.UpdPreferen;
+            chkAutoUpdate.Checked = settings.AutoUpdate;
+            chkUpdateSrartup.Checked = settings.UpdateSrartup;
+            chkManUpdate.Checked = settings.ManUpdate;
+            //chkCheckLogRetention.Checked = settings.CheckLogRetention;
+            chkProtectionWithaPassword.Checked = settings.ProtectionWithaPassword;
+            chkAllowedIPAddresses.Checked = settings.AllowedIPAddresses;
 
             // ComboBox controls
             if (!string.IsNullOrEmpty(settings.CpuCores) && cmbCpuCores.Items.Contains(settings.CpuCores))
@@ -83,8 +92,30 @@ namespace Julia_Launcher
             if (!string.IsNullOrEmpty(settings.LogLevel) && cmbLogLevel.Items.Contains(settings.LogLevel))
                 cmbLogLevel.SelectedItem = settings.LogLevel;
 
+            // Добавлены остальные выпадающие списки из класса Settings
+            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
+                cmbGpuSelection.SelectedItem = settings.GpuSelection;
+
+            if (!string.IsNullOrEmpty(settings.Language) && cmbLanguage.Items.Contains(settings.Language))
+                cmbLanguage.SelectedItem = settings.Language;
+
+            if (!string.IsNullOrEmpty(settings.Errors) && cmbErrors.Items.Contains(settings.Errors))
+                cmbErrors.SelectedItem = settings.Errors;
+
+            if (!string.IsNullOrEmpty(settings.Warnings) && cmbWarnings.Items.Contains(settings.Warnings))
+                cmbWarnings.SelectedItem = settings.Warnings;
+
+            if (!string.IsNullOrEmpty(settings.InfoMassages) && cmbInfoMassages.Items.Contains(settings.InfoMassages))
+                cmbInfoMassages.SelectedItem = settings.InfoMassages;
+
+            if (!string.IsNullOrEmpty(settings.LogFormat) && cmbLogFormat.Items.Contains(settings.LogFormat))
+                cmbLogFormat.SelectedItem = settings.LogFormat;
+
+            if (!string.IsNullOrEmpty(settings.Debugging) && cmbDebugging.Items.Contains(settings.Debugging))
+                cmbDebugging.SelectedItem = settings.Debugging;
+
             // TrackBar controls
-            //trackRamUsage.Value = settings.RAMUsage;
+            //trackRamUsage.Value = settings.RAMUsage; 
 
             // RadioButton controls
             radWhite.Checked = settings.radWhite;
