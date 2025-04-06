@@ -46,12 +46,15 @@ namespace Julia_Launcher
             hardwareInfo = Form1.ComputerInfo;
             if (hardwareInfo != null)
             {
+                // Устанавливаем максимальное значение для trackRamUsage (предполагая, что RamTotalSize в ГБ)
+                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalSize * 1024); // Преобразуем ГБ в МБ
                 LoadHardwareInfo();
             }
             else
             {
                 MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         // Загрузка сохраненных настроек 
@@ -142,6 +145,10 @@ namespace Julia_Launcher
                     if (cmbCpuCores.Items.Count > 0)
                         cmbCpuCores.SelectedIndex = 0;
                 }
+
+                
+
+
 
                 // Здесь заполните другие элементы управления
                 // в соответствии с их фактическими именами
