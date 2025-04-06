@@ -19,9 +19,13 @@ namespace Julia_Launcher
 
         // Ссылка на информацию о характеристиках
         private Form1.HardwareInfo hardwareInfo;
+        private int previousRamUsage; // Хранение предыдущего значения TrackBar
 
         public UserControl1()
         {
+
+
+
             InitializeComponent();
 
             // Создаем директорию settings, если она не существует
@@ -46,8 +50,8 @@ namespace Julia_Launcher
             hardwareInfo = Form1.ComputerInfo;
             if (hardwareInfo != null)
             {
-                // Устанавливаем максимальное значение для trackRamUsage (предполагая, что RamTotalSize в ГБ)
-                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalSize * 1024); // Преобразуем ГБ в МБ
+                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalSize * 1024); // Переводим ГБ в МБ
+                previousRamUsage = trackRamUsage.Value; // Инициализируем предыдущее значение
                 LoadHardwareInfo();
             }
             else
