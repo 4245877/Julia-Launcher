@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo.ico" />
+    <None Include="Style.cs" />
     <Resource Include="Shaders\fragment.glsl" />
     <Resource Include="Shaders\vertex.glsl" />
   </ItemGroup>
