@@ -91,7 +91,7 @@ namespace Julia_Launcher
             // Раскомментировано и добавлено свойство CheckLogRetention
             //chkCheckLogRetention.Checked = settings.CheckLogRetention;
 
-            // ComboBox controls
+            // ComboBox 
             if (!string.IsNullOrEmpty(settings.CpuCores) && cmbCpuCores.Items.Contains(settings.CpuCores))
                 cmbCpuCores.SelectedItem = settings.CpuCores;
 
