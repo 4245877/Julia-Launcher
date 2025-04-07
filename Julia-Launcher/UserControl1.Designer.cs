@@ -86,10 +86,10 @@
             label23 = new System.Windows.Forms.Label();
             label24 = new System.Windows.Forms.Label();
             cmbErrors = new System.Windows.Forms.ComboBox();
-            label25 = new System.Windows.Forms.Label();
+            lblErrors = new System.Windows.Forms.Label();
             cmbLogLevel = new System.Windows.Forms.ComboBox();
-            label26 = new System.Windows.Forms.Label();
-            label27 = new System.Windows.Forms.Label();
+            lblWarnings = new System.Windows.Forms.Label();
+            lblInfoMessag = new System.Windows.Forms.Label();
             label28 = new System.Windows.Forms.Label();
             label29 = new System.Windows.Forms.Label();
             cmbWarnings = new System.Windows.Forms.ComboBox();
@@ -355,7 +355,7 @@
             tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage2.Size = new System.Drawing.Size(1155, 600);
+            tabPage2.Size = new System.Drawing.Size(1155, 564);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Resource Allocation";
             // 
@@ -555,7 +555,7 @@
             tabPage3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage3.Size = new System.Drawing.Size(1155, 600);
+            tabPage3.Size = new System.Drawing.Size(1155, 564);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Startup and Update Settings";
             tabPage3.Click += tabPage3_Click;
@@ -712,10 +712,10 @@
             tabPage4.Controls.Add(label23);
             tabPage4.Controls.Add(label24);
             tabPage4.Controls.Add(cmbErrors);
-            tabPage4.Controls.Add(label25);
+            tabPage4.Controls.Add(lblErrors);
             tabPage4.Controls.Add(cmbLogLevel);
-            tabPage4.Controls.Add(label26);
-            tabPage4.Controls.Add(label27);
+            tabPage4.Controls.Add(lblWarnings);
+            tabPage4.Controls.Add(lblInfoMessag);
             tabPage4.Controls.Add(label28);
             tabPage4.Controls.Add(label29);
             tabPage4.Controls.Add(cmbWarnings);
@@ -724,7 +724,7 @@
             tabPage4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage4.Size = new System.Drawing.Size(1155, 600);
+            tabPage4.Size = new System.Drawing.Size(1155, 564);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
             tabPage4.Click += tabPage4_Click;
@@ -742,6 +742,7 @@
             // cmbInfoMassages
             // 
             cmbInfoMassages.FormattingEnabled = true;
+            cmbInfoMassages.Items.AddRange(new object[] { "All", "Basic", "Detailed", "Events", "Status", "None" });
             cmbInfoMassages.Location = new System.Drawing.Point(176, 153);
             cmbInfoMassages.Name = "cmbInfoMassages";
             cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
@@ -794,6 +795,7 @@
             // cmbErrors
             // 
             cmbErrors.FormattingEnabled = true;
+            cmbErrors.Items.AddRange(new object[] { "All", "Fatal", "Runtime", "Connection", "FileSystem", "Validation", "Recoverable", "None" });
             cmbErrors.Location = new System.Drawing.Point(140, 78);
             cmbErrors.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbErrors.Name = "cmbErrors";
@@ -801,16 +803,16 @@
             cmbErrors.TabIndex = 124;
             cmbErrors.SelectedIndexChanged += cmbErrors_SelectedIndexChanged;
             // 
-            // label25
+            // lblErrors
             // 
-            label25.AutoSize = true;
-            label25.ForeColor = System.Drawing.Color.White;
-            label25.Location = new System.Drawing.Point(33, 82);
-            label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label25.Name = "label25";
-            label25.Size = new System.Drawing.Size(40, 15);
-            label25.TabIndex = 81;
-            label25.Text = "Errors.";
+            lblErrors.AutoSize = true;
+            lblErrors.ForeColor = System.Drawing.Color.White;
+            lblErrors.Location = new System.Drawing.Point(33, 82);
+            lblErrors.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblErrors.Name = "lblErrors";
+            lblErrors.Size = new System.Drawing.Size(40, 15);
+            lblErrors.TabIndex = 81;
+            lblErrors.Text = "Errors.";
             // 
             // cmbLogLevel
             // 
@@ -823,27 +825,27 @@
             cmbLogLevel.TabIndex = 123;
             cmbLogLevel.SelectedIndexChanged += cmbLogLevel_SelectedIndexChanged;
             // 
-            // label26
+            // lblWarnings
             // 
-            label26.AutoSize = true;
-            label26.ForeColor = System.Drawing.Color.White;
-            label26.Location = new System.Drawing.Point(33, 119);
-            label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label26.Name = "label26";
-            label26.Size = new System.Drawing.Size(60, 15);
-            label26.TabIndex = 82;
-            label26.Text = "Warnings.";
+            lblWarnings.AutoSize = true;
+            lblWarnings.ForeColor = System.Drawing.Color.White;
+            lblWarnings.Location = new System.Drawing.Point(33, 119);
+            lblWarnings.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblWarnings.Name = "lblWarnings";
+            lblWarnings.Size = new System.Drawing.Size(60, 15);
+            lblWarnings.TabIndex = 82;
+            lblWarnings.Text = "Warnings.";
             // 
-            // label27
+            // lblInfoMessag
             // 
-            label27.AutoSize = true;
-            label27.ForeColor = System.Drawing.Color.White;
-            label27.Location = new System.Drawing.Point(33, 156);
-            label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label27.Name = "label27";
-            label27.Size = new System.Drawing.Size(136, 15);
-            label27.TabIndex = 83;
-            label27.Text = "Informational messages.";
+            lblInfoMessag.AutoSize = true;
+            lblInfoMessag.ForeColor = System.Drawing.Color.White;
+            lblInfoMessag.Location = new System.Drawing.Point(33, 156);
+            lblInfoMessag.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblInfoMessag.Name = "lblInfoMessag";
+            lblInfoMessag.Size = new System.Drawing.Size(136, 15);
+            lblInfoMessag.TabIndex = 83;
+            lblInfoMessag.Text = "Informational messages.";
             // 
             // label28
             // 
@@ -870,6 +872,7 @@
             // cmbWarnings
             // 
             cmbWarnings.FormattingEnabled = true;
+            cmbWarnings.Items.AddRange(new object[] { "All", "Critical", "Performance", "Configuration", "Security", "Minor", "None" });
             cmbWarnings.Location = new System.Drawing.Point(140, 115);
             cmbWarnings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbWarnings.Name = "cmbWarnings";
@@ -904,7 +907,7 @@
             tabPage5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabPage5.Size = new System.Drawing.Size(1155, 600);
+            tabPage5.Size = new System.Drawing.Size(1155, 564);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "UI and User Preferences";
             // 
@@ -1020,7 +1023,7 @@
             tabPage6.Location = new System.Drawing.Point(4, 24);
             tabPage6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new System.Drawing.Size(1155, 600);
+            tabPage6.Size = new System.Drawing.Size(1155, 564);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Security";
             // 
@@ -1187,10 +1190,10 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox cmbErrors;
-        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label lblErrors;
         private System.Windows.Forms.ComboBox cmbLogLevel;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label lblWarnings;
+        private System.Windows.Forms.Label lblInfoMessag;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.ComboBox cmbWarnings;
