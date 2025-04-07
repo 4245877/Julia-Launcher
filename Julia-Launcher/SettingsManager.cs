@@ -68,7 +68,7 @@ namespace Julia_Launcher
                     case "Height": settings.Height = (short)(int)value; break;
                     case "Weight": settings.Weight = (short)(int)value; break;
                     case "Age": settings.Age = (short)(int)value; break;
-                    case "Tone": settings.Age = (short)value; break;
+                    case "Tone": settings.Age = (short)(int)value; break;
                     case "SpeechRate": settings.Tone = (short)(int)value; break;
                     case "Volume": settings.Volume = (short)(int)value; break;
                     case "Timbre": settings.Timbre = (short)(int)value; break;
