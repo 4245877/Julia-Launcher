@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 
 namespace Julia_Launcher
@@ -74,33 +75,34 @@ namespace Julia_Launcher
             txtCPULimit.Text = settings.CPULimit;
             txtGPULimit.Text = settings.GPULimit;
             txtNetworkSpeed.Text = settings.NetworkSpeed;
-            txtHotkeyLounch.Text = settings.HotkeyLounch; // Добавлено для свойства HotkeyLounch
+            txtHotkeyLounch.Text = settings.HotkeyLounch;
+            // Добавлено свойство CpuLoad, отсутствующее в исходном коде метода
+            txtCpuLoad.Text = settings.CpuLoad;
 
             // CheckBox controls
             chkGPUEnable.Checked = settings.GPUEnable;
             chkAutoStart.Checked = settings.AutoStart;
-            // Добавлены остальные флажки из класса Settings
             chkUpdPreferen.Checked = settings.UpdPreferen;
             chkAutoUpdate.Checked = settings.AutoUpdate;
             chkUpdateSrartup.Checked = settings.UpdateSrartup;
             chkManUpdate.Checked = settings.ManUpdate;
-            //chkCheckLogRetention.Checked = settings.CheckLogRetention;
             chkProtectionWithaPassword.Checked = settings.ProtectionWithaPassword;
             chkAllowedIPAddresses.Checked = settings.AllowedIPAddresses;
+            // Раскомментировано и добавлено свойство CheckLogRetention
+            //chkCheckLogRetention.Checked = settings.CheckLogRetention;
 
             // ComboBox controls
             if (!string.IsNullOrEmpty(settings.CpuCores) && cmbCpuCores.Items.Contains(settings.CpuCores))
                 cmbCpuCores.SelectedItem = settings.CpuCores;
+
+            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
+                cmbGpuSelection.SelectedItem = settings.GpuSelection;
 
             if (!string.IsNullOrEmpty(settings.UpdateBranch) && cmbUpdateBranch.Items.Contains(settings.UpdateBranch))
                 cmbUpdateBranch.SelectedItem = settings.UpdateBranch;
 
             if (!string.IsNullOrEmpty(settings.LogLevel) && cmbLogLevel.Items.Contains(settings.LogLevel))
                 cmbLogLevel.SelectedItem = settings.LogLevel;
-
-            // Добавлены остальные выпадающие списки из класса Settings
-            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
-                cmbGpuSelection.SelectedItem = settings.GpuSelection;
 
             if (!string.IsNullOrEmpty(settings.Language) && cmbLanguage.Items.Contains(settings.Language))
                 cmbLanguage.SelectedItem = settings.Language;
@@ -120,13 +122,27 @@ namespace Julia_Launcher
             if (!string.IsNullOrEmpty(settings.Debugging) && cmbDebugging.Items.Contains(settings.Debugging))
                 cmbDebugging.SelectedItem = settings.Debugging;
 
+            // Для SelectedComboBoxIndex предполагается, что это индекс одного из ComboBox
+            if (settings.SelectedComboBoxIndex >= 0 && settings.SelectedComboBoxIndex < cmbCpuCores.Items.Count)
+                cmbCpuCores.SelectedIndex = settings.SelectedComboBoxIndex; // Пример использования
+
             // TrackBar controls
             //trackRamUsage.Value = settings.RAMUsage; 
+
 
             // RadioButton controls
             radWhite.Checked = settings.radWhite;
             radDark.Checked = settings.radDark;
             radSystem.Checked = settings.radSystem;
+
+            // Для SelectedRadioButtonIndex предполагается выбор радиокнопки по индексу
+            switch (settings.SelectedRadioButtonIndex)
+            {
+                case 0: radWhite.Checked = true; break;
+                case 1: radDark.Checked = true; break;
+                case 2: radSystem.Checked = true; break;
+                default: break;
+            }
         }
 
 
