@@ -114,14 +114,15 @@ namespace Julia_Launcher
 
         private void CollectVideoInfo(StringBuilder hardwareInfo)
         {
-            hardwareInfo.AppendLine("\n=== Видеокарта ===");
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController"))
             using (ManagementObjectCollection collection = searcher.Get())
             {
+                int gpuIndex = 0; // Индекс для нумерации видеокарт
                 foreach (ManagementObject obj in collection)
                 {
                     using (obj)
                     {
+                        hardwareInfo.AppendLine($"\n=== Видеокарта {gpuIndex} ==="); // Уникальный заголовок для каждой видеокарты
                         hardwareInfo.AppendLine($"Название: {SafeGetProperty(obj, "Name")}");
                         hardwareInfo.AppendLine($"Производитель: {SafeGetProperty(obj, "AdapterCompatibility")}");
                         hardwareInfo.AppendLine($"Видеопроцессор: {SafeGetProperty(obj, "VideoProcessor")}");
@@ -145,6 +146,8 @@ namespace Julia_Launcher
 
                         hardwareInfo.AppendLine($"Разрешение экрана: {SafeGetProperty(obj, "CurrentHorizontalResolution")} x {SafeGetProperty(obj, "CurrentVerticalResolution")}");
                         hardwareInfo.AppendLine($"Частота обновления: {SafeGetProperty(obj, "CurrentRefreshRate")} Гц");
+
+                        gpuIndex++; // Увеличиваем индекс для следующей видеокарты
                     }
                 }
             }
@@ -182,6 +185,14 @@ namespace Julia_Launcher
             }
         }
 
+        public class GpuInfo
+        {
+            public string Name { get; set; }
+            public string Manufacturer { get; set; }
+            public long Memory { get; set; }
+            public string Resolution { get; set; }
+            public int RefreshRate { get; set; }
+        }
 
         public class HardwareInfo
         {
@@ -198,6 +209,7 @@ namespace Julia_Launcher
             public List<RamModule> RamModules { get; set; } = new List<RamModule>();
 
             // Данные о видеокарте
+            public List<GpuInfo> Gpus { get; set; } = new List<GpuInfo>();
             public string GpuName { get; set; }
             public string GpuManufacturer { get; set; }
             public long GpuMemory { get; set; } // Изменен на long для избежания переполнения
@@ -211,7 +223,27 @@ namespace Julia_Launcher
                 public ulong Size { get; set; }
                 public int Speed { get; set; }
             }
-
+            private void ParseGpuLine(string line, GpuInfo gpu)
+            {
+                if (line.StartsWith("Название:"))
+                    gpu.Name = line.Substring("Название:".Length).Trim();
+                else if (line.StartsWith("Производитель:"))
+                    gpu.Manufacturer = line.Substring("Производитель:".Length).Trim();
+                else if (line.StartsWith("Объем памяти:"))
+                {
+                    string[] parts = line.Substring("Объем памяти:".Length).Trim().Split(' ');
+                    if (parts.Length > 0 && long.TryParse(parts[0], out long memory))
+                        gpu.Memory = memory;
+                }
+                else if (line.StartsWith("Разрешение экрана:"))
+                    gpu.Resolution = line.Substring("Разрешение экрана:".Length).Trim();
+                else if (line.StartsWith("Частота обновления:"))
+                {
+                    string[] parts = line.Substring("Частота обновления:".Length).Trim().Split(' ');
+                    if (parts.Length > 0 && int.TryParse(parts[0], out int refreshRate))
+                        gpu.RefreshRate = refreshRate;
+                }
+            }
             public bool ReadFromFile(string filePath)
             {
                 try
@@ -230,11 +262,19 @@ namespace Julia_Launcher
                         if (line.StartsWith("=== "))
                         {
                             if (line.Contains("Процессор"))
+                            {
                                 currentSection = "CPU";
+                            }
                             else if (line.Contains("Оперативная память"))
+                            {
                                 currentSection = "RAM";
+                            }
                             else if (line.Contains("Видеокарта"))
+                            {
+                                // Новая видеокарта начинается с секции "=== Видеокарта N ==="
+                                Gpus.Add(new GpuInfo());
                                 currentSection = "GPU";
+                            }
                             continue;
                         }
 
@@ -248,9 +288,10 @@ namespace Julia_Launcher
                             {
                                 ParseRamLine(line);
                             }
-                            else if (currentSection == "GPU")
+                            else if (currentSection == "GPU" && Gpus.Count > 0)
                             {
-                                ParseGpuLine(line);
+                                // Парсим данные в последнюю добавленную видеокарту
+                                ParseGpuLine(line, Gpus[Gpus.Count - 1]);
                             }
                         }
                         catch (Exception)

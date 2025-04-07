@@ -63,6 +63,7 @@ namespace Julia_Launcher
                     case "InfoMassages": settings.InfoMassages = (string)value; break;
                     case "Debugging": settings.Debugging = (string)value; break;
 
+
                     //TrackBar
                     case "RAMUsage": settings.RAMUsage = (int)value; break;
                     case "Height": settings.Height = (short)(int)value; break;

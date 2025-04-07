@@ -24,9 +24,6 @@ namespace Julia_Launcher
 
         public UserControl1()
         {
-
-
-
             InitializeComponent();
 
             // Создаем директорию settings, если она не существует
@@ -53,14 +50,34 @@ namespace Julia_Launcher
             {
                 trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalSize * 1024); // Переводим ГБ в МБ
                 previousRamUsage = trackRamUsage.Value; // Инициализируем предыдущее значение
+                InitializeComboBox();
                 LoadHardwareInfo();
             }
             else
             {
                 MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
+
+        private void InitializeComboBox()
+        {
+            cmbGpuSelection.Items.Clear();
+            cmbGpuSelection.Items.Add("Auto");
+
+            if (hardwareInfo != null && hardwareInfo.Gpus != null)
+            {
+                for (int i = 0; i < hardwareInfo.Gpus.Count; i++)
+                {
+                    var gpu = hardwareInfo.Gpus[i];
+                    cmbGpuSelection.Items.Add($"GPU {i} - {gpu.Name}");
+                }
+            }
+
+            cmbGpuSelection.Items.Add("Default");
+            cmbGpuSelection.Items.Add("None");
+        }
+
+
 
         // Загрузка сохраненных настроек 
         private void LoadSettings()
@@ -125,6 +142,11 @@ namespace Julia_Launcher
             // Для SelectedComboBoxIndex предполагается, что это индекс одного из ComboBox
             if (settings.SelectedComboBoxIndex >= 0 && settings.SelectedComboBoxIndex < cmbCpuCores.Items.Count)
                 cmbCpuCores.SelectedIndex = settings.SelectedComboBoxIndex; // Пример использования
+            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
+                cmbGpuSelection.SelectedItem = settings.GpuSelection;
+            else
+                cmbGpuSelection.SelectedIndex = 0; // По умолчанию выбираем "Auto"
+
 
             // TrackBar controls
             //trackRamUsage.Value = settings.RAMUsage; 
