@@ -482,11 +482,13 @@
             // cmbGpuSelection
             // 
             cmbGpuSelection.FormattingEnabled = true;
+            cmbGpuSelection.Items.AddRange(new object[] { "Auto", "GPU 0", "Default", "None" });
             cmbGpuSelection.Location = new System.Drawing.Point(300, 263);
             cmbGpuSelection.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbGpuSelection.Name = "cmbGpuSelection";
             cmbGpuSelection.Size = new System.Drawing.Size(140, 23);
             cmbGpuSelection.TabIndex = 112;
+            cmbGpuSelection.SelectedIndexChanged += cmbGpuSelection_SelectedIndexChanged;
             // 
             // cmbCpuCores
             // 

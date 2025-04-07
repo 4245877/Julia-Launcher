@@ -166,7 +166,7 @@ namespace Julia_Launcher
                         cmbCpuCores.SelectedIndex = 0;
                 }
 
-                
+
 
 
 
@@ -383,6 +383,10 @@ namespace Julia_Launcher
         {
             SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
         }
+        private void cmbGpuSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveSettings("GpuSelection", cmbGpuSelection.SelectedItem.ToString());
+        }
 
         // CheckBox
 
@@ -474,5 +478,7 @@ namespace Julia_Launcher
         {
 
         }
+
+
     }
 }
