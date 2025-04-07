@@ -65,13 +65,13 @@ namespace Julia_Launcher
 
                     //TrackBar
                     case "RAMUsage": settings.RAMUsage = (int)value; break;
-                    case "Height": settings.Height = (short)value; break;
-                    case "Weight": settings.Weight = (short)value; break;
-                    case "Age": settings.Age = (short)value; break;
+                    case "Height": settings.Height = (short)(int)value; break;
+                    case "Weight": settings.Weight = (short)(int)value; break;
+                    case "Age": settings.Age = (short)(int)value; break;
                     case "Tone": settings.Age = (short)value; break;
-                    case "SpeechRate": settings.Tone = (short)value; break;
-                    case "Volume": settings.Volume = (short)value; break;
-                    case "Timbre": settings.Timbre = (short)value; break;
+                    case "SpeechRate": settings.Tone = (short)(int)value; break;
+                    case "Volume": settings.Volume = (short)(int)value; break;
+                    case "Timbre": settings.Timbre = (short)(int)value; break;
 
                     // RadioButton
                     case "ThemeWhite": settings.radWhite = (bool)value; break;
