@@ -259,6 +259,7 @@
             // trkVolume
             // 
             trkVolume.Location = new System.Drawing.Point(182, 411);
+            trkVolume.Maximum = 100;
             trkVolume.Name = "trkVolume";
             trkVolume.Size = new System.Drawing.Size(290, 45);
             trkVolume.TabIndex = 25;

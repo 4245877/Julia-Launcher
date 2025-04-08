@@ -55,13 +55,13 @@ namespace Julia_Launcher
         public bool radSystem { get; set; } = false;
 
         //UserControl2
-        public short Height { get; set; } = 0;
-        public short Weight { get; set; } = 0;
-        public short Age { get; set; } = 0;
-        public short Tone { get; set; } = 0;
-        public short Timbre { get; set; } = 0;
-        public short SpeechRate { get; set; } = 0;
-        public short Volume { get; set; } = 0;
+        public short Height { get; set; } = 175;
+        public short Weight { get; set; } = 65;
+        public short Age { get; set; } = 22;
+        public short Tone { get; set; } = 3;
+        public short Timbre { get; set; } = 2;
+        public short SpeechRate { get; set; } = 1;
+        public short Volume { get; set; } = 70;
 
 
         public Dictionary<string, object> AdditionalSettings { get; set; } = new Dictionary<string, object>();
