@@ -247,22 +247,22 @@ namespace Julia_Launcher
         // Обработчики событий изменения текста
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("InstallDirectory", txtInstallDirectory.Text);
+
         }
 
         private void txtLogDirectory_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogDirectory", txtLogDirectory.Text);
+
         }
 
         private void txtModulesDirectory_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("ModulesDirectory", txtModulesDirectory.Text);
+
         }
 
         private void txtCacheDirectory_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("CacheDirectory", txtCacheDirectory.Text);
+
         }
 
         private void txtCPULimit_TextChanged(object sender, EventArgs e)
@@ -283,7 +283,7 @@ namespace Julia_Launcher
             {
                 txtCPULimit.Text = "";
             }
-            SaveSettings("CPULimit", txtCPULimit.Text);
+
         }
 
         private void txtGPULimit_TextChanged(object sender, EventArgs e)
@@ -303,7 +303,7 @@ namespace Julia_Launcher
             {
                 txtGPULimit.Text = "";
             }
-            SaveSettings("GPULimit", txtGPULimit.Text); // Уже есть в коде
+
         }
 
         private void txtNetworkSpeed_TextChanged(object sender, EventArgs e)
@@ -318,34 +318,78 @@ namespace Julia_Launcher
         }
         private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("HotkeyLounch", txtHotkeyLounch.Text);
+
         }
 
         //Button 
 
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtInstallDirectory, "Выберите папку для установки");
+
         }
 
         private void btnSelectLogDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtLogDirectory, "Выберите папку для логов");
+
         }
 
         private void btnSelectModulesDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtModulesDirectory, "Выберите папку для модулей");
+
         }
 
         private void btnSelectCacheDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtCacheDirectory, "Выберите папку для кеша");
+
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            SaveSettings("InstallDirectory", txtInstallDirectory.Text);
+            SaveSettings("LogDirectory", txtLogDirectory.Text);
+            SaveSettings("ModulesDirectory", txtModulesDirectory.Text);
+            SaveSettings("CacheDirectory", txtCacheDirectory.Text);
+            SaveSettings("CPULimit", txtCPULimit.Text);
+            SaveSettings("GPULimit", txtGPULimit.Text); // Уже есть в коде
 
+            SaveSettings("HotkeyLounch", txtHotkeyLounch.Text);
+            SelectDirectory(txtInstallDirectory, "Выберите папку для установки");
+            SelectDirectory(txtLogDirectory, "Выберите папку для логов");
+            SelectDirectory(txtModulesDirectory, "Выберите папку для модулей");
+            SelectDirectory(txtCacheDirectory, "Выберите папку для кеша");
+
+            SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
+            SaveSettings("UpdateBranch", cmbUpdateBranch.SelectedItem.ToString());
+            SaveSettings("LogLevel", cmbLogLevel.SelectedItem.ToString());
+            SaveSettings("LogFormat", cmbLogFormat.SelectedItem.ToString());
+            SaveSettings("Debugging", cmbDebugging.SelectedItem.ToString());
+            SaveSettings("Language", cmbLanguage.SelectedItem.ToString());
+            SaveSettings("Warnings", cmbWarnings.SelectedItem.ToString());
+            SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
+            SaveSettings("GpuSelection", cmbGpuSelection.SelectedItem.ToString());
+
+            // CheckBox
+            SaveSettings("AutoStart", chkAutoStart.Checked);
+            SaveSettings("GPUEnable", chkGPUEnable.Checked);
+            SaveSettings("AutoUpdate", chkAutoUpdate.Checked);
+            SaveSettings("ProtectionWithaPassword", chkProtectionWithaPassword.Checked);
+            SaveSettings("AllowedIPAddresses", chkAllowedIPAddresses.Checked);
+            SaveSettings("UpdPreferen", chkUpdPreferen.Checked);
+            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+            SaveSettings("ManUpdate", chkManUpdate.Checked);
+            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+            SaveSettings("LogRetention", chkLogRetention.Checked);
+
+
+            // RadioButton
+            SaveSettings("ThemeWhite", radWhite.Checked);
+            SaveSettings("ThemeDark", radDark.Checked);
+            SaveSettings("ThemeSystem", radSystem.Checked);
+
+            // TrackBar
+            SaveSettings("RAMUsage", trackRamUsage.Value);
+            // Уведомление пользователя об успешном сохранении
+            MessageBox.Show("Настройки успешно сохранены.", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -365,17 +409,17 @@ namespace Julia_Launcher
 
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
+
         }
 
         private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdateBranch", cmbUpdateBranch.SelectedItem.ToString());
+
         }
 
         private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogLevel", cmbLogLevel.SelectedItem.ToString());
+
         }
 
         private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
@@ -387,73 +431,73 @@ namespace Julia_Launcher
         }
         private void cmbLogFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogFormat", cmbLogFormat.SelectedItem.ToString());
+
         }
         private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Debugging", cmbDebugging.SelectedItem.ToString());
+
         }
         private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Language", cmbLanguage.SelectedItem.ToString());
+
         }
         private void cmbWarnings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Warnings", cmbWarnings.SelectedItem.ToString());
+
         }
         private void cmbInfoMassages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
+
         }
         private void cmbGpuSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("GpuSelection", cmbGpuSelection.SelectedItem.ToString());
+
         }
 
         // CheckBox
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AutoStart", chkAutoStart.Checked);
+
         }
 
         private void chkGPUEnable_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("GPUEnable", chkGPUEnable.Checked);
+
         }
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AutoUpdate", chkAutoUpdate.Checked);
+
         }
         private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ProtectionWithaPassword", chkProtectionWithaPassword.Checked);
+
         }
 
         private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AllowedIPAddresses", chkAllowedIPAddresses.Checked);
+
         }
         private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdPreferen", chkUpdPreferen.Checked);
+
         }
         private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+
         }
         private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ManUpdate", chkManUpdate.Checked);
+
         }
         private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
         {
-            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+
         }
         private void chkLogRetention_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogRetention", chkLogRetention.Checked);
+
         }
 
 
@@ -463,17 +507,17 @@ namespace Julia_Launcher
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ThemeWhite", radWhite.Checked);
+
         }
 
         private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
         {
-            SaveSettings("ThemeDark", radDark.Checked);
+
         }
 
         private void radSystem_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ThemeSystem", radSystem.Checked);
+
         }
 
         // TrackBar
@@ -481,9 +525,6 @@ namespace Julia_Launcher
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
 
-
-
-            SaveSettings("RAMUsage", trackRamUsage.Value);
         }
 
         private void tabPage3_Click(object sender, EventArgs e)
