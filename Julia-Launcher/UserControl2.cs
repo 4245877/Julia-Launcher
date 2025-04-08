@@ -52,6 +52,23 @@ namespace Julia_Launcher
             this.glControl1.MouseMove += GlControl_MouseMove;
             this.glControl1.MouseUp += GlControl_MouseUp;
             this.glControl1.MouseWheel += GlControl_MouseWheel;
+
+
+            // Загружаем настройки при запуске
+            LoadSettings();
+        }
+        private void LoadSettings()
+        {
+            var settings = ReadSettings();
+
+            // TrackBar controls
+            trkHeight.Value = settings.Height;
+            trkWeight.Value = settings.Weight;
+            trkAge.Value = settings.Age;
+            trkTone.Value = settings.Tone;
+            trkSpeechRate.Value = settings.SpeechRate;
+            trkVolume.Value = settings.Volume;
+            trkTimbre.Value = settings.Timbre;
         }
 
         // Remove the InitializeOpenGL method entirely
