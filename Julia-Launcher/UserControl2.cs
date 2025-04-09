@@ -269,11 +269,6 @@ namespace Julia_Launcher
                     {
                         camera.SetFromAssimpCamera(assimpCamera);
                         Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
-
-                        // Don't call these after setting from Assimp camera, as they may override values
-                          camera.Position = new Vector3(0, 0, 3);
-                          camera.LookAt(new Vector3(0, 0, 0));
-
                         // Just refresh the UI
                         glControl1.Invalidate();
                     }
@@ -331,84 +326,35 @@ namespace Julia_Launcher
 
             public void SetFromAssimpCamera(Assimp.Camera assimpCamera, bool convertCoordinateSystem = true)
             {
-                // Set position
                 Position = new Vector3(assimpCamera.Position.X, assimpCamera.Position.Y, assimpCamera.Position.Z);
 
-                // Get lookAt point
-                Vector3 lookAt;
-                var lookAtProp = typeof(Assimp.Camera).GetProperty("LookAt") ??
-                                 typeof(Assimp.Camera).GetProperty("Target");
+                Vector3 lookAt = new Vector3(assimpCamera.Direction.X, assimpCamera.Direction.Y, assimpCamera.Direction.Z);
+                Vector3 direction = lookAt - Position;
+                Front = direction.LengthSquared > 0 ? Vector3.Normalize(direction) : new Vector3(0, 0, -1);
 
-                if (lookAtProp != null)
-                {
-                    var lookAtVector = (Assimp.Vector3D)lookAtProp.GetValue(assimpCamera);
-                    lookAt = new Vector3(lookAtVector.X, lookAtVector.Y, lookAtVector.Z);
-                }
-                else
-                {
-                    // Default direction
-                    lookAt = Position + new Vector3(0, 0, -1);
-                }
-
-                // Calculate Front vector - direction from position to lookAt
-                Front = Vector3.Normalize(lookAt - Position);
-
-                // Apply coordinate system conversion if needed (FBX to OpenGL)
                 if (convertCoordinateSystem)
                 {
-                    // Convert from FBX/Assimp (Y-up) to OpenGL (Z-forward, Y-up)
-                    // This may need adjustment based on your specific import/export settings
-                    // Common transformation for FBX to OpenGL:
                     Front = new Vector3(Front.X, Front.Y, -Front.Z);
                     Position = new Vector3(Position.X, Position.Y, -Position.Z);
                 }
 
-                // Get Up vector
-                Vector3 upVector;
-                var upProp = typeof(Assimp.Camera).GetProperty("UpVector") ??
-                            typeof(Assimp.Camera).GetProperty("Up");
-
-                if (upProp != null)
+                Vector3 upVector = new Vector3(assimpCamera.Up.X, assimpCamera.Up.Y, assimpCamera.Up.Z);
+                if (convertCoordinateSystem)
                 {
-                    var up = (Assimp.Vector3D)upProp.GetValue(assimpCamera);
-                    upVector = new Vector3(up.X, up.Y, up.Z);
-                }
-                else
-                {
-                    // Default up vector
-                    upVector = new Vector3(0, 1, 0);
+                    upVector = new Vector3(upVector.X, upVector.Y, -upVector.Z);
                 }
 
-                // Calculate Right and Up vectors to ensure orthogonality
-                Right = Vector3.Normalize(Vector3.Cross(upVector, Front));  // Note the order for right-handed system
+                Right = Vector3.Normalize(Vector3.Cross(upVector, Front));
                 Up = Vector3.Normalize(Vector3.Cross(Front, Right));
 
-                // Calculate Yaw and Pitch from Front vector after coordinate system conversion
                 yaw = MathHelper.RadiansToDegrees((float)Math.Atan2(Front.Z, Front.X));
                 pitch = MathHelper.RadiansToDegrees((float)Math.Asin(Front.Y));
 
-                // Get FOV
-                var fovProp = typeof(Assimp.Camera).GetProperty("FieldOfView") ??
-                             typeof(Assimp.Camera).GetProperty("FOV");
+                zoom = MathHelper.RadiansToDegrees(assimpCamera.FieldOfview);
+                if (zoom <= 0) zoom = 45.0f;
 
-                if (fovProp != null)
-                {
-                    var fovValue = fovProp.GetValue(assimpCamera);
-                    zoom = MathHelper.RadiansToDegrees((float)Convert.ToDouble(fovValue));
-                }
-                else
-                {
-                    // Default zoom/FOV
-                    zoom = 45.0f;
-                }
+                AspectRatio = assimpCamera.AspectRatio > 0 ? assimpCamera.AspectRatio : 1.0f;
 
-                // Set aspect ratio if available
-                if (assimpCamera.AspectRatio > 0)
-                {
-                    AspectRatio = assimpCamera.AspectRatio;
-                }
-
-                // Update camera vectors based on calculated angles
                 UpdateCameraVectors();
             }
 
