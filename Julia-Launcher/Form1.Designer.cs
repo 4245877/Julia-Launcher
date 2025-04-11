@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
+            progressBar = new System.Windows.Forms.ProgressBar();
             panel2 = new System.Windows.Forms.Panel();
             SetingButton = new System.Windows.Forms.Button();
             btnModelVoiceSettings = new System.Windows.Forms.Button();
@@ -37,6 +38,7 @@
             button2 = new System.Windows.Forms.Button();
             panel3 = new System.Windows.Forms.Panel();
             button1 = new System.Windows.Forms.Button();
+            panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             SuspendLayout();
@@ -44,12 +46,22 @@
             // panel1
             // 
             panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panel1.Controls.Add(progressBar);
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(1171, 626);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
+            // 
+            // progressBar
+            // 
+            progressBar.ForeColor = System.Drawing.Color.FromArgb(0, 192, 0);
+            progressBar.Location = new System.Drawing.Point(3, 600);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new System.Drawing.Size(1165, 23);
+            progressBar.TabIndex = 0;
+            progressBar.Click += progressBar_Click;
             // 
             // panel2
             // 
@@ -131,14 +143,13 @@
             // 
             button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
-            button1.Font = new System.Drawing.Font("Intro Friday", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            button1.Font = new System.Drawing.Font("Intro Friday", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 204);
             button1.ForeColor = System.Drawing.Color.White;
             button1.Location = new System.Drawing.Point(464, 3);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(216, 67);
             button1.TabIndex = 0;
-            button1.Text = "Start";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
@@ -157,6 +168,7 @@
             Name = "Form1";
             Text = "Julia Launcher ";
             Load += Form1_Load;
+            panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ResumeLayout(false);
@@ -173,6 +185,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 

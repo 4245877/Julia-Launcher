@@ -44,6 +44,9 @@ namespace Julia_Launcher
         {
             InitializeComponent();
 
+
+
+
             // Use existing glControl1 instead of creating a new one 
             this.glControl1.Load += GlControl_Load;
             this.glControl1.Paint += GlControl_Paint;
@@ -326,36 +329,58 @@ namespace Julia_Launcher
 
             public void SetFromAssimpCamera(Assimp.Camera assimpCamera, bool convertCoordinateSystem = true)
             {
-                Position = new Vector3(assimpCamera.Position.X, assimpCamera.Position.Y, assimpCamera.Position.Z);
+                // Store the original position and target
+                Vector3 originalPosition = new Vector3(assimpCamera.Position.X, assimpCamera.Position.Y, assimpCamera.Position.Z);
+                Vector3 originalTarget = new Vector3(
+                    assimpCamera.Position.X + assimpCamera.Direction.X,
+                    assimpCamera.Position.Y + assimpCamera.Direction.Y,
+                    assimpCamera.Position.Z + assimpCamera.Direction.Z);
+                Vector3 originalUp = new Vector3(assimpCamera.Up.X, assimpCamera.Up.Y, assimpCamera.Up.Z);
 
-                Vector3 lookAt = new Vector3(assimpCamera.Direction.X, assimpCamera.Direction.Y, assimpCamera.Direction.Z);
-                Vector3 direction = lookAt - Position;
-                Front = direction.LengthSquared > 0 ? Vector3.Normalize(direction) : new Vector3(0, 0, -1);
-
+                // Convert from Assimp to OpenTK coordinate system if needed
                 if (convertCoordinateSystem)
                 {
-                    Front = new Vector3(Front.X, Front.Y, -Front.Z);
-                    Position = new Vector3(Position.X, Position.Y, -Position.Z);
-                }
+                    // Convert from Y-up (Assimp) to Y-up (OpenTK) - may need adjustment based on your specific case
+                    // For typical FBX files we might need to flip Z or invert other axes
+                    Position = new Vector3(originalPosition.X, originalPosition.Y, -originalPosition.Z);
+                    Vector3 target = new Vector3(originalTarget.X, originalTarget.Y, -originalTarget.Z);
+                    Vector3 up = new Vector3(originalUp.X, originalUp.Y, -originalUp.Z);
 
-                Vector3 upVector = new Vector3(assimpCamera.Up.X, assimpCamera.Up.Y, assimpCamera.Up.Z);
-                if (convertCoordinateSystem)
+                    // Calculate front direction from position to target
+                    Front = Vector3.Normalize(target - Position);
+
+                    // Calculate the right vector from front and up
+                    Right = Vector3.Normalize(Vector3.Cross(up, Front));
+
+                    // Recalculate the up vector to ensure orthogonality
+                    Up = Vector3.Normalize(Vector3.Cross(Front, Right));
+                }
+                else
                 {
-                    upVector = new Vector3(upVector.X, upVector.Y, -upVector.Z);
+                    // Use directly without conversion
+                    Position = originalPosition;
+                    Front = Vector3.Normalize(new Vector3(assimpCamera.Direction.X, assimpCamera.Direction.Y, assimpCamera.Direction.Z));
+                    Up = Vector3.Normalize(originalUp);
+                    Right = Vector3.Normalize(Vector3.Cross(Up, Front));
                 }
 
-                Right = Vector3.Normalize(Vector3.Cross(upVector, Front));
-                Up = Vector3.Normalize(Vector3.Cross(Front, Right));
-
+                // Calculate yaw and pitch from the Front vector
                 yaw = MathHelper.RadiansToDegrees((float)Math.Atan2(Front.Z, Front.X));
                 pitch = MathHelper.RadiansToDegrees((float)Math.Asin(Front.Y));
 
+                // Set field of view (zoom)
                 zoom = MathHelper.RadiansToDegrees(assimpCamera.FieldOfview);
                 if (zoom <= 0) zoom = 45.0f;
 
+                // Set aspect ratio
                 AspectRatio = assimpCamera.AspectRatio > 0 ? assimpCamera.AspectRatio : 1.0f;
 
+                // Make sure all vectors are updated
                 UpdateCameraVectors();
+
+                // Log camera import details for debugging
+                Console.WriteLine($"Imported camera - Position: {Position}, Front: {Front}, Up: {Up}");
+                Console.WriteLine($"FOV: {zoom}, Yaw: {yaw}, Pitch: {pitch}");
             }
 
 

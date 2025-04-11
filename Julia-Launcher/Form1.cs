@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Management;
@@ -11,12 +12,24 @@ namespace Julia_Launcher
 {
     public partial class Form1 : Form
     {
+        private bool isInstalled = false;
+        private BackgroundWorker backgroundWorker1; // Объявление поля
+
         // Путь для сохранения информации о системе
         private readonly string hardwareInfoFilePath;
 
         public Form1()
         {
             InitializeComponent();
+
+            // Инициализация BackgroundWorker
+            backgroundWorker1 = new BackgroundWorker();
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.DoWork += BackgroundWorker1_DoWork;
+            backgroundWorker1.ProgressChanged += BackgroundWorker1_ProgressChanged;
+            backgroundWorker1.RunWorkerCompleted += BackgroundWorker1_RunWorkerCompleted;
+
+            UpdateUI();
 
             // Создаем директорию settings, если она не существует
             string settingsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings");
@@ -25,7 +38,6 @@ namespace Julia_Launcher
                 Directory.CreateDirectory(settingsDirectory);
             }
 
-            // Устанавливаем путь к файлу с информацией о железе
             hardwareInfoFilePath = Path.Combine(settingsDirectory, "hardware_info.txt");
         }
 
@@ -35,6 +47,39 @@ namespace Julia_Launcher
             CollectHardwareInfo();
             LoadHardwareInfo();
         }
+        private void UpdateUI()
+        {
+            if (!isInstalled)
+            {
+                button1.Text = "Установить";
+                progressBar.Visible = false;
+            }
+            else
+            {
+                button1.Text = "Запустить";
+                progressBar.Visible = false;
+            }
+        }
+        private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+        }
+        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            isInstalled = true;
+            progressBar.Visible = false;
+            UpdateUI();
+        }
+
+        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i <= 100; i++)
+            {
+                System.Threading.Thread.Sleep(50);
+                backgroundWorker1.ReportProgress(i);
+            }
+        }
+
 
         private void CollectHardwareInfo()
         {
@@ -445,7 +490,7 @@ namespace Julia_Launcher
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Пустой метод в исходном коде
+
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -454,6 +499,11 @@ namespace Julia_Launcher
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void progressBar_Click(object sender, EventArgs e)
         {
 
         }

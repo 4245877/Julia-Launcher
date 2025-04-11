@@ -345,7 +345,7 @@ namespace Julia_Launcher
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+
 
             // Уведомление пользователя об успешном сохранении
             MessageBox.Show("Настройки успешно сохранены.", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -353,9 +353,12 @@ namespace Julia_Launcher
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            if (this.ParentForm != null)
+            // Очистка ресурсов, если есть
+            // Например: timer1.Stop();
+
+            if (this.Parent != null)
             {
-                this.ParentForm.Close();
+                this.Parent.Controls.Remove(this);
             }
         }
 
@@ -504,6 +507,9 @@ namespace Julia_Launcher
 
         }
 
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

@@ -193,6 +193,7 @@
             tabPage1.Size = new System.Drawing.Size(1155, 564);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "File and Folder Paths";
+            tabPage1.Click += tabPage1_Click;
             // 
             // label1
             // 
