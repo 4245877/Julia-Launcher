@@ -167,7 +167,6 @@ namespace Julia_Launcher
             }
         }
 
-
         private void LoadHardwareInfo()
         {
             // Получаем доступ к информации о железе через статический экземпляр
@@ -195,6 +194,51 @@ namespace Julia_Launcher
                 // Здесь заполните другие элементы управления
                 // в соответствии с их фактическими именами
             }
+        }
+
+        private Settings CollectSettings()
+        {
+            return new Settings
+            {
+                InstallDirectory = txtInstallDirectory.Text,
+                LogDirectory = txtLogDirectory.Text,
+                ModulesDirectory = txtModulesDirectory.Text,
+                CacheDirectory = txtCacheDirectory.Text,
+                CPULimit = txtCPULimit.Text,
+                GPULimit = txtGPULimit.Text,
+                NetworkSpeed = txtNetworkSpeed.Text,
+                HotkeyLounch = txtHotkeyLounch.Text,
+                CpuLoad = txtCpuLoad.Text,
+                GPUEnable = chkGPUEnable.Checked,
+                AutoStart = chkAutoStart.Checked,
+                UpdPreferen = chkUpdPreferen.Checked,
+                AutoUpdate = chkAutoUpdate.Checked,
+                UpdateSrartup = chkUpdateSrartup.Checked,
+                ManUpdate = chkManUpdate.Checked,
+                ProtectionWithaPassword = chkProtectionWithaPassword.Checked,
+                AllowedIPAddresses = chkAllowedIPAddresses.Checked,
+                //LogRetention = chkLogRetention.Checked, // Добавлено для chkLogRetention
+                CpuCores = cmbCpuCores.SelectedItem?.ToString(),
+                GpuSelection = cmbGpuSelection.SelectedItem?.ToString(),
+                UpdateBranch = cmbUpdateBranch.SelectedItem?.ToString(),
+                LogLevel = cmbLogLevel.SelectedItem?.ToString(),
+                Language = cmbLanguage.SelectedItem?.ToString(),
+                Errors = cmbErrors.SelectedItem?.ToString(),
+                Warnings = cmbWarnings.SelectedItem?.ToString(),
+                InfoMassages = cmbInfoMassages.SelectedItem?.ToString(),
+                LogFormat = cmbLogFormat.SelectedItem?.ToString(),
+                Debugging = cmbDebugging.SelectedItem?.ToString(),
+                RAMUsage = trackRamUsage.Value,
+                radWhite = radWhite.Checked,
+                radDark = radDark.Checked,
+                radSystem = radSystem.Checked,
+                SelectedRadioButtonIndex = radWhite.Checked ? 0 : radDark.Checked ? 1 : 2
+            };
+        }
+        private void SaveAllSettings(Settings settings)
+        {
+            string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(settingsFilePath, json);
         }
 
 
@@ -318,13 +362,14 @@ namespace Julia_Launcher
         }
         private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
         {
-            SaveSettings("HotkeyLounch", txtHotkeyLounch.Text);
+           
         }
 
         //Button 
 
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
         {
+
             SelectDirectory(txtInstallDirectory, "Выберите папку для установки");
         }
 
@@ -345,9 +390,8 @@ namespace Julia_Launcher
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
-
-            // Уведомление пользователя об успешном сохранении
+            var settings = CollectSettings();
+            SaveAllSettings(settings);
             MessageBox.Show("Настройки успешно сохранены.", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -371,17 +415,17 @@ namespace Julia_Launcher
 
         private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("CpuCores", cmbCpuCores.SelectedItem.ToString());
+
         }
 
         private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdateBranch", cmbUpdateBranch.SelectedItem.ToString());
+
         }
 
         private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogLevel", cmbLogLevel.SelectedItem.ToString());
+
         }
 
         private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
@@ -393,123 +437,102 @@ namespace Julia_Launcher
         }
         private void cmbLogFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogFormat", cmbLogFormat.SelectedItem.ToString());
+
         }
         private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Debugging", cmbDebugging.SelectedItem.ToString());
+
         }
         private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Language", cmbLanguage.SelectedItem.ToString());
+
         }
         private void cmbWarnings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("Warnings", cmbWarnings.SelectedItem.ToString());
+
         }
         private void cmbInfoMassages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("InfoMassages", cmbInfoMassages.SelectedItem.ToString());
+
         }
         private void cmbGpuSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveSettings("GpuSelection", cmbGpuSelection.SelectedItem.ToString());
+
         }
 
         // CheckBox
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AutoStart", chkAutoStart.Checked);
+
         }
 
         private void chkGPUEnable_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("GPUEnable", chkGPUEnable.Checked);
+
         }
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AutoUpdate", chkAutoUpdate.Checked);
+
         }
         private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ProtectionWithaPassword", chkProtectionWithaPassword.Checked);
+
         }
 
         private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("AllowedIPAddresses", chkAllowedIPAddresses.Checked);
+
         }
         private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdPreferen", chkUpdPreferen.Checked);
+
         }
         private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+
         }
         private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ManUpdate", chkManUpdate.Checked);
+
         }
         private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
         {
-            SaveSettings("UpdateSrartup", chkUpdateSrartup.Checked);
+
         }
         private void chkLogRetention_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("LogRetention", chkLogRetention.Checked);
+
         }
 
 
-
-
         // RadioButton
-
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ThemeWhite", radWhite.Checked);
+
         }
 
         private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
         {
-            SaveSettings("ThemeDark", radDark.Checked);
+
         }
 
         private void radSystem_CheckedChanged(object sender, EventArgs e)
         {
-            SaveSettings("ThemeSystem", radSystem.Checked);
+
         }
 
         // TrackBar
-
         private void trackRamUsage_Scroll(object sender, EventArgs e)
         {
 
-
-
-            SaveSettings("RAMUsage", trackRamUsage.Value);
         }
 
-        private void tabPage3_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void tabPage4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserControl1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void tabPage3_Click(object sender, EventArgs e){}
+        private void tabPage4_Click(object sender, EventArgs e){}
+        private void UserControl1_Load(object sender, EventArgs e){}
+        private void tabPage1_Click(object sender, EventArgs e){}
     }
 }
