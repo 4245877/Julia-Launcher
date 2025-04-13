@@ -105,12 +105,12 @@ namespace Julia_Launcher
         private bool isDragging = false;
         private Point lastMousePos;
 
-        private Vector3 lightPos = new Vector3(1.2f, 1.0f, 2.0f);
+        private Vector3 lightPos = new Vector3(3.2f, 5.0f, 4.0f);
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
         private float specularStrength = 0.5f;
         private float diffuseStrength = 0.8f; // Сила диффузного освещения
-        private float shininess = 32.0f;      // Блеск (степень зеркальности)
+        private float shininess = 16.0f;      // Блеск (степень зеркальности)
 
         private void AutoPositionCamera()
         {
