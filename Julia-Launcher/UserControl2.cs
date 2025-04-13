@@ -746,9 +746,11 @@ namespace Julia_Launcher
             private int indexCount;
             private bool hasBones;
             public List<Texture> Textures { get; private set; }
+            private float[] vertices; // Новое поле для хранения вершин
 
             public Mesh(float[] vertices, uint[] indices, List<Texture> textures, bool hasBones = false)
             {
+                this.vertices = vertices; // Сохраняем копию вершин
                 Textures = textures;
                 indexCount = indices.Length;
                 this.hasBones = hasBones;
@@ -796,6 +798,12 @@ namespace Julia_Launcher
                 }
 
                 GL.BindVertexArray(0);
+            }
+
+            // Новый метод для получения вершин
+            public float[] GetVertices()
+            {
+                return vertices;
             }
 
             public void Draw(Shader shader)
@@ -1202,6 +1210,25 @@ namespace Julia_Launcher
                     assimpMatrix.A4, assimpMatrix.B4, assimpMatrix.C4, assimpMatrix.D4
                 );
             }
+
+            public Vector3 CalculateModelCenter()
+            {
+                Vector3 sum = Vector3.Zero;
+                int vertexCount = 0;
+
+                foreach (var mesh in meshes)
+                {
+                    var vertices = mesh.GetVertices(); // Предполагается, что у Mesh есть метод для получения вершин
+                    for (int i = 0; i < vertices.Length; i += 8) // Шаг 8, если вершина содержит позицию, нормали и текстурные координаты
+                    {
+                        sum += new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
+                        vertexCount++;
+                    }
+                }
+
+                return vertexCount > 0 ? sum / vertexCount : Vector3.Zero;
+            }
+
 
             private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
             {
