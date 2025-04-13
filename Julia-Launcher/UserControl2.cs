@@ -116,32 +116,27 @@ namespace Julia_Launcher
         {
             if (model == null) return;
 
-            // Вычисление bounding box и центра модели
             var (min, max) = model.CalculateBoundingBox();
             Vector3 center = (min + max) / 2;
             Vector3 size = max - min;
 
-            // Вычисление углов поля зрения в радианах
             float fovYRad = MathHelper.DegreesToRadians(30); // Вертикальный FOV
             float tanFovYHalf = (float)Math.Tan(fovYRad / 2);
             float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf); // Горизонтальный FOV
             float tanFovXHalf = (float)Math.Tan(fovXRad / 2);
 
-            // Вычисление необходимого расстояния
             float width = size.X;
             float height = size.Y;
-            float dX = (width / 2) / tanFovXHalf; // Расстояние для ширины
-            float dY = (height / 2) / tanFovYHalf; // Расстояние для высоты
-            float distance = Math.Max(dX, dY); // Большее расстояние, чтобы вместить модель
+            float dX = (width / 2) / tanFovXHalf;
+            float dY = (height / 2) / tanFovYHalf;
+            float distance = Math.Max(dX, dY);
 
-            // Добавляем запас (например, 20%)
-            distance *= 1.2f;
+            distance *= 1.2f; // Запас 20%
 
-            // Установка позиции и ориентации камеры
             camera.Position = center + new Vector3(0, 0, distance);
             camera.LookAt(center);
 
-            glControl1.Invalidate(); // Перерисовка сцены
+            glControl1.Invalidate();
         }
 
         public UserControl2()
@@ -184,11 +179,9 @@ namespace Julia_Launcher
             {
                 GL.ClearColor(0.7f, 0.9f, 0.5f, 1.0f);
                 GL.Enable(EnableCap.DepthTest);
-                GL.Viewport(0, 0, glControl1.Width, glControl1.Height); // Добавлен Viewport
+                GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
 
                 string appDirectory = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher";
-
-                // Исправлены пути на относительные
                 string shadersDirectory = Path.Combine(appDirectory, "Shaders");
                 string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
                 string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
@@ -200,15 +193,11 @@ namespace Julia_Launcher
                 }
 
                 shader = new Shader(vertexPath, fragmentPath);
-
                 camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
-                // Исправлен путь к модели
-
                 string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\sketch2.fbx";
-
-                LoadModel(modelPath);
+                LoadModel(modelPath); // Здесь теперь вызывается AutoPositionCamera
                 loaded = true;
             }
             catch (Exception ex)
@@ -342,19 +331,15 @@ namespace Julia_Launcher
         {
             try
             {
-                // Удалить предыдущую модель, если она существует
                 model?.Dispose();
-
-                // Загрузить модель
                 model = new Model(path);
-
-                // Центрируем и масштабируем модель для соответствия виду
                 modelScale = 1.0f;
                 modelPosition = Vector3.Zero;
                 rotation = 0.0f;
 
-                // Попробуем загрузить настройки камеры из файла
+                // Попробуем загрузить камеру из файла, но всё равно применим автопозиционирование
                 LoadCameraFromFile(path);
+                AutoPositionCamera(); // Всегда вызываем после загрузки модели
 
                 glControl1.Invalidate();
             }
