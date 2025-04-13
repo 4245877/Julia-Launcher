@@ -50,6 +50,7 @@ namespace Julia_Launcher
                     case "AutoUpdate": settings.AutoUpdate = (bool)value; break;
                     case "AllowedIPAddresses": settings.AllowedIPAddresses = (bool)value; break;
                     case "UpdPreferen": settings.UpdPreferen = (bool)value; break;
+                        
 
                     // ComboBox
                     case "GpuSelection": settings.GpuSelection = (string)value; break;

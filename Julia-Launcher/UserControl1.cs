@@ -105,8 +105,8 @@ namespace Julia_Launcher
             chkManUpdate.Checked = settings.ManUpdate;
             chkProtectionWithaPassword.Checked = settings.ProtectionWithaPassword;
             chkAllowedIPAddresses.Checked = settings.AllowedIPAddresses;
-            // Раскомментировано и добавлено свойство CheckLogRetention
-            //chkCheckLogRetention.Checked = settings.CheckLogRetention;
+
+            chkLogRetention.Checked = settings.CheckLogRetention;
 
             // ComboBox 
             if (!string.IsNullOrEmpty(settings.CpuCores) && cmbCpuCores.Items.Contains(settings.CpuCores))
@@ -149,7 +149,7 @@ namespace Julia_Launcher
 
 
             // TrackBar controls
-            //trackRamUsage.Value = settings.RAMUsage; 
+            trackRamUsage.Value = settings.RAMUsage; 
 
 
             // RadioButton controls
@@ -217,18 +217,18 @@ namespace Julia_Launcher
                 ManUpdate = chkManUpdate.Checked,
                 ProtectionWithaPassword = chkProtectionWithaPassword.Checked,
                 AllowedIPAddresses = chkAllowedIPAddresses.Checked,
-                //LogRetention = chkLogRetention.Checked, // Добавлено для chkLogRetention
+                RAMUsage = trackRamUsage.Value,
                 CpuCores = cmbCpuCores.SelectedItem?.ToString(),
                 GpuSelection = cmbGpuSelection.SelectedItem?.ToString(),
                 UpdateBranch = cmbUpdateBranch.SelectedItem?.ToString(),
                 LogLevel = cmbLogLevel.SelectedItem?.ToString(),
+                CheckLogRetention = chkLogRetention.Checked,
                 Language = cmbLanguage.SelectedItem?.ToString(),
                 Errors = cmbErrors.SelectedItem?.ToString(),
                 Warnings = cmbWarnings.SelectedItem?.ToString(),
                 InfoMassages = cmbInfoMassages.SelectedItem?.ToString(),
                 LogFormat = cmbLogFormat.SelectedItem?.ToString(),
                 Debugging = cmbDebugging.SelectedItem?.ToString(),
-                RAMUsage = trackRamUsage.Value,
                 radWhite = radWhite.Checked,
                 radDark = radDark.Checked,
                 radSystem = radSystem.Checked,

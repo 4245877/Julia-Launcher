@@ -31,7 +31,7 @@ namespace Julia_Launcher
 
         public static Quaternion ExtractRotation(this Matrix4 matrix)
         {
-            // Remove scaling
+            // Удалить масштабирование
             Vector3 scale = matrix.ExtractScale();
             Matrix4 rotMat = matrix;
 
