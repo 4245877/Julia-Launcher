@@ -112,6 +112,38 @@ namespace Julia_Launcher
         private float diffuseStrength = 0.8f; // Сила диффузного освещения
         private float shininess = 32.0f;      // Блеск (степень зеркальности)
 
+        private void AutoPositionCamera()
+        {
+            if (model == null) return;
+
+            // Вычисление bounding box и центра модели
+            var (min, max) = model.CalculateBoundingBox();
+            Vector3 center = (min + max) / 2;
+            Vector3 size = max - min;
+
+            // Вычисление углов поля зрения в радианах
+            float fovYRad = MathHelper.DegreesToRadians(30); // Вертикальный FOV
+            float tanFovYHalf = (float)Math.Tan(fovYRad / 2);
+            float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf); // Горизонтальный FOV
+            float tanFovXHalf = (float)Math.Tan(fovXRad / 2);
+
+            // Вычисление необходимого расстояния
+            float width = size.X;
+            float height = size.Y;
+            float dX = (width / 2) / tanFovXHalf; // Расстояние для ширины
+            float dY = (height / 2) / tanFovYHalf; // Расстояние для высоты
+            float distance = Math.Max(dX, dY); // Большее расстояние, чтобы вместить модель
+
+            // Добавляем запас (например, 20%)
+            distance *= 1.2f;
+
+            // Установка позиции и ориентации камеры
+            camera.Position = center + new Vector3(0, 0, distance);
+            camera.LookAt(center);
+
+            glControl1.Invalidate(); // Перерисовка сцены
+        }
+
         public UserControl2()
         {
             InitializeComponent();
@@ -345,43 +377,32 @@ namespace Julia_Launcher
 
                 if (scene != null && scene.CameraCount > 0)
                 {
-                    // Debug info about all cameras found
-                    Console.WriteLine($"Found {scene.CameraCount} cameras in the file:");
-                    for (int i = 0; i < scene.CameraCount; i++)
-                    {
-                        Console.WriteLine($"  Camera {i}: {scene.Cameras[i].Name}");
-                    }
-
-                    // Use the first camera from the file
+                    // Загрузка камеры из файла
                     Assimp.Camera assimpCamera = scene.Cameras[0];
-
-                    // If we already have a camera instance, update it
                     if (camera != null)
                     {
                         camera.SetFromAssimpCamera(assimpCamera);
                         Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
-                        // Just refresh the UI
                         glControl1.Invalidate();
                     }
                     else
                     {
-                        // Create new camera from the file's camera
                         camera = new Camera(
-                            new Vector3(0, 0, 3), // Default position, will be overwritten
+                            new Vector3(0, 0, 3),
                             glControl1.Width / (float)glControl1.Height);
                         camera.SetFromAssimpCamera(assimpCamera);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("No camera found in the file, using default camera");
-                    ResetCamera();
+                    Console.WriteLine("No camera found in the file, auto positioning camera");
+                    AutoPositionCamera(); // Автоматическое позиционирование камеры
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading camera: {ex.Message}. Using default camera.");
-                ResetCamera();
+                Console.WriteLine($"Error loading camera: {ex.Message}. Auto positioning camera.");
+                AutoPositionCamera(); // В случае ошибки тоже используем автоматическое позиционирование
             }
         }
 
@@ -746,7 +767,10 @@ namespace Julia_Launcher
             private int indexCount;
             private bool hasBones;
             public List<Texture> Textures { get; private set; }
-            private float[] vertices; // Новое поле для хранения вершин
+            private float[] vertices;
+
+            // Публичное свойство для доступа к hasBones
+            public bool HasBones => hasBones;
 
             public Mesh(float[] vertices, uint[] indices, List<Texture> textures, bool hasBones = false)
             {
@@ -754,6 +778,7 @@ namespace Julia_Launcher
                 Textures = textures;
                 indexCount = indices.Length;
                 this.hasBones = hasBones;
+ 
 
                 // Create buffers/arrays
                 GL.GenVertexArrays(1, out VAO);
@@ -785,6 +810,7 @@ namespace Julia_Launcher
                 GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, stride, 6 * sizeof(float));
                 GL.EnableVertexAttribArray(2);
 
+
                 // If we have bones, set up bone attributes
                 if (hasBones)
                 {
@@ -799,6 +825,7 @@ namespace Julia_Launcher
 
                 GL.BindVertexArray(0);
             }
+
 
             // Новый метод для получения вершин
             public float[] GetVertices()
@@ -1157,6 +1184,7 @@ namespace Julia_Launcher
                 return textureId;
             }
 
+
             private void LoadModel(string path)
             {
                 var importer = new AssimpContext();
@@ -1183,7 +1211,27 @@ namespace Julia_Launcher
                     animator.SetAnimation(animations.Values.First());
                 }
             }
+            public (Vector3 Min, Vector3 Max) CalculateBoundingBox()
+            {
+                if (meshes.Count == 0) return (Vector3.Zero, Vector3.Zero);
 
+                Vector3 min = new Vector3(float.MaxValue);
+                Vector3 max = new Vector3(float.MinValue);
+
+                foreach (var mesh in meshes)
+                {
+                    var vertices = mesh.GetVertices();
+                    int stride = mesh.HasBones ? 16 : 8; // Шаг зависит от наличия костей
+                    for (int i = 0; i < vertices.Length; i += stride)
+                    {
+                        Vector3 pos = new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
+                        min = Vector3.ComponentMin(min, pos);
+                        max = Vector3.ComponentMax(max, pos);
+                    }
+                }
+
+                return (min, max);
+            }
             private void ProcessNode(Node node, Scene scene, Matrix4 parentTransform)
             {
                 Matrix4 nodeTransform = ConvertMatrix(node.Transform);
@@ -1482,10 +1530,7 @@ namespace Julia_Launcher
 
 
 
-        private void UserControl2_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void UserControl2_Load(object sender, EventArgs e) { }
 
         private void btnModel_Click(object sender, EventArgs e)
         {
