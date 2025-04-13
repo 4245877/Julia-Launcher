@@ -22,7 +22,6 @@ using System.Reflection;
 
 namespace Julia_Launcher
 {
-    // Add this extension method to Matrix4 to help with animation interpolation
     public static class Matrix4Extensions
     {
         public static Vector3 ExtractTranslation(this Matrix4 matrix)
@@ -118,9 +117,7 @@ namespace Julia_Launcher
             InitializeComponent();
 
 
-
-
-            // Use existing glControl1 instead of creating a new one 
+            // Использовать существующий glControl1 вместо создания нового
             this.glControl1.Load += GlControl_Load;
             this.glControl1.Paint += GlControl_Paint;
             this.glControl1.Resize += GlControl_Resize;
@@ -214,12 +211,12 @@ namespace Julia_Launcher
                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                      Matrix4.CreateTranslation(modelPosition);
 
-                // Compute normal matrix
+                // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
                 shader.SetMatrix4("model", modelMatrix);
                 shader.SetMatrix3("normalMatrix", normalMatrix);
 
-                // Set lighting uniforms
+                // Установить униформу освещения
                 shader.SetVector3("lightPosition", lightPos);
                 shader.SetVector3("lightColor", lightColor);
                 shader.SetVector3("viewPosition", camera.Position);
@@ -228,27 +225,27 @@ namespace Julia_Launcher
                 shader.SetFloat("specularStrength", specularStrength);
                 shader.SetFloat("shininess", shininess);
 
-                // Draw the model (which will set bone transforms if animated)
+                // Рисуем модель (которая установит преобразования костей, если анимирована)
                 model.Draw(shader);
             }
 
             glControl1.SwapBuffers();
         }
 
-        // Animation timer callback
+        // Обратный вызов таймера анимации
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             if (model != null && model.HasAnimations && isAnimating)
             {
-                // Calculate delta time for smooth animation
+                // Рассчитать дельта-время для плавной анимации
                 DateTime now = DateTime.Now;
                 float deltaTime = (float)(now - lastFrameTime).TotalSeconds;
                 lastFrameTime = now;
 
-                // Update the model's animation
+                // Обновляем анимацию модели
                 model.Update(deltaTime);
 
-                // Request redraw
+                // Запрос на перерисовку
                 glControl1.Invalidate();
             }
         }
@@ -313,18 +310,18 @@ namespace Julia_Launcher
         {
             try
             {
-                // Dispose previous model if exists
+                // Удалить предыдущую модель, если она существует
                 model?.Dispose();
 
-                // Load the model
+                // Загрузить модель
                 model = new Model(path);
 
-                // Center and scale model to fit view
+                // Центрируем и масштабируем модель для соответствия виду
                 modelScale = 1.0f;
                 modelPosition = Vector3.Zero;
                 rotation = 0.0f;
 
-                // Try to load camera settings from the file 
+                // Попробуем загрузить настройки камеры из файла
                 LoadCameraFromFile(path);
 
                 glControl1.Invalidate();
@@ -388,10 +385,7 @@ namespace Julia_Launcher
             }
         }
 
-        private void GlControl_Click(object sender, EventArgs e)
-        {
-            // Empty implementation or different functionality if needed
-        }
+        private void GlControl_Click(object sender, EventArgs e){ }
 
         private void trackBar7_Scroll(object sender, EventArgs e)
         {
@@ -403,7 +397,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Camera class to handle camera transformations 
+        // Класс камеры для обработки преобразований камеры
         public class Camera
         {
             public Vector3 Position { get; set; }
@@ -541,7 +535,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Shader class to handle GLSL shaders
+        // Класс шейдера для обработки шейдеров GLSL
         public class Shader
         {
             public int Handle { get; private set; }
@@ -744,8 +738,8 @@ namespace Julia_Launcher
             }
         }
 
-        // Mesh class to store mesh data
-        // Modified Mesh class to handle bone data
+        // Класс сетки для хранения данных сетки
+        // Модифицированный класс сетки для обработки данных костей
         public class Mesh
         {
             private int VAO, VBO, EBO;
@@ -839,7 +833,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Texture class to hold texture data
+        // Класс текстуры для хранения данных текстуры
         public class Texture
         {
             public int Id { get; private set; }
@@ -887,9 +881,9 @@ namespace Julia_Launcher
             }
         }
 
-        // Add these new classes to handle animations
+        // Добавьте эти новые классы для обработки анимации
 
-        // Store bone information and hierarchy
+        // Хранить информацию о костях и иерархию
         public class Bone
         {
             public int ID { get; private set; }
@@ -912,13 +906,13 @@ namespace Julia_Launcher
                 KeyFrames.Add(keyFrame);
             }
 
-            // Interpolate between keyframes based on animation time
+            // Интерполяция между ключевыми кадрами на основе времени анимации
             public Matrix4 InterpolateTransform(float animationTime)
             {
                 if (KeyFrames.Count == 0) return Matrix4.Identity;
                 if (KeyFrames.Count == 1) return KeyFrames[0].Transform;
 
-                // Find which keyframes to interpolate between
+                // Найти, между какими ключевыми кадрами следует выполнить интерполяцию
                 int frameIndex = FindFrameIndex(animationTime);
                 int nextFrameIndex = (frameIndex + 1) % KeyFrames.Count;
 
@@ -927,7 +921,7 @@ namespace Julia_Launcher
 
                 float delta = CalculateDelta(animationTime, currentFrame, nextFrame);
 
-                // Interpolate between current frame and next frame
+                // Интерполяция между текущим кадром и следующим кадром
                 return InterpolateMatrices(currentFrame.Transform, nextFrame.Transform, delta);
             }
 
@@ -952,7 +946,7 @@ namespace Julia_Launcher
 
             private Matrix4 InterpolateMatrices(Matrix4 start, Matrix4 end, float factor)
             {
-                // Extract position, rotation, and scale from matrices
+                // Извлечь положение, поворот и масштаб из матриц
                 Vector3 startPos = start.ExtractTranslation();
                 Vector3 endPos = end.ExtractTranslation();
 
@@ -962,12 +956,12 @@ namespace Julia_Launcher
                 Vector3 startScale = start.ExtractScale();
                 Vector3 endScale = end.ExtractScale();
 
-                // Interpolate components
+                // Интерполировать компоненты
                 Vector3 pos = Vector3.Lerp(startPos, endPos, factor);
                 Quaternion rot = Quaternion.Slerp(startRot, endRot, factor);
                 Vector3 scale = Vector3.Lerp(startScale, endScale, factor);
 
-                // Combine into new transformation
+                // Объединить в новую трансформацию
                 Matrix4 result = Matrix4.CreateScale(scale) *
                                   Matrix4.CreateFromQuaternion(rot) *
                                   Matrix4.CreateTranslation(pos);
@@ -976,7 +970,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Store key frame data for animation
+        // Сохраняем данные ключевых кадров для анимации
         public class KeyFrame
         {
             public float Time { get; private set; }
@@ -989,11 +983,11 @@ namespace Julia_Launcher
             }
         }
 
-        // Animation class to store and manage a single animation
+        // Класс анимации для хранения и управления одной анимацией
         public class Animation
         {
             public string Name { get; private set; }
-            public float Duration { get; private set; } // in seconds
+            public float Duration { get; private set; } // в секундах
             public float TicksPerSecond { get; private set; }
             public Dictionary<string, Bone> Bones { get; private set; }
 
@@ -1001,7 +995,7 @@ namespace Julia_Launcher
             {
                 Name = name;
                 Duration = duration;
-                TicksPerSecond = ticksPerSecond > 0 ? ticksPerSecond : 25.0f; // Default fallback
+                TicksPerSecond = ticksPerSecond > 0 ? ticksPerSecond : 25.0f; // Резервный вариант по умолчанию
                 Bones = new Dictionary<string, Bone>();
             }
 
@@ -1011,7 +1005,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Animator class to handle playing animations
+        // Класс аниматора для обработки воспроизводимых анимаций
         public class Animator
         {
             private Animation currentAnimation;
@@ -1115,8 +1109,8 @@ namespace Julia_Launcher
         }
 
 
-        // Model class to load and render 3D models
-        // Modify your Model class to support animations
+        // Класс модели для загрузки и рендеринга 3D-моделей
+        // Измените класс модели для поддержки анимации
         public class Model : IDisposable
         {
             private List<Mesh> meshes = new List<Mesh>();
@@ -1440,22 +1434,22 @@ namespace Julia_Launcher
             }
         }
 
-        // Empty event handlers - implementing them with basic functionality camera 
+        // Пустые обработчики событий — реализуем их с базовой функциональностью camera
         private void glControl1_Click(object sender, EventArgs e)
         {
-            // Forward to main click handler
+            // Переслать главному обработчику кликов
             GlControl_Click(sender, e);
         }
 
         private void glControl1_Click_1(object sender, EventArgs e)
         {
-            // Forward to main click handler
+            // Переслать главному обработчику кликов
             GlControl_Click(sender, e);
         }
 
         private void glControl1_Click_2(object sender, EventArgs e)
         {
-            // Forward to main click handler
+            // Переслать главному обработчику кликов
             GlControl_Click(sender, e);
         }
 
@@ -1468,7 +1462,7 @@ namespace Julia_Launcher
 
         private void btnModel_Click(object sender, EventArgs e)
         {
-            // Use open file dialog to select 3D model file
+            // Используйте диалог открытия файла для выбора файла 3D-модели
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "3D Models|*.fbx;*.obj;*.3ds;*.dae|FBX files (*.fbx)|*.fbx|OBJ files (*.obj)|*.obj|All files (*.*)|*.*";
