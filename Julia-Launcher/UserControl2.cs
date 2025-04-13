@@ -504,7 +504,7 @@ namespace Julia_Launcher
                     MathHelper.DegreesToRadians(zoom),
                     AspectRatio,
                     0.1f,
-                    100.0f);
+                    1000.0f);
             }
 
             public void ProcessMouseMovement(float xOffset, float yOffset, bool constrainPitch = true)
