@@ -408,7 +408,12 @@ namespace Julia_Launcher
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-
+            var settings = CollectSettings();
+            SaveAllSettings(settings);
+            if (this.Parent != null)
+            {
+                this.Parent.Controls.Remove(this);
+            }
         }
 
         // ComboBox

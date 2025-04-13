@@ -11,6 +11,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using Quaternion = OpenTK.Mathematics.Quaternion;
 using System.IO;
 using Assimp;
 using Assimp.Configs;
@@ -21,8 +22,80 @@ using System.Reflection;
 
 namespace Julia_Launcher
 {
+    // Add this extension method to Matrix4 to help with animation interpolation
+    public static class Matrix4Extensions
+    {
+        public static Vector3 ExtractTranslation(this Matrix4 matrix)
+        {
+            return new Vector3(matrix.M41, matrix.M42, matrix.M43);
+        }
+
+        public static Quaternion ExtractRotation(this Matrix4 matrix)
+        {
+            // Remove scaling
+            Vector3 scale = matrix.ExtractScale();
+            Matrix4 rotMat = matrix;
+
+            if (scale.X != 0)
+            {
+                rotMat.M11 /= scale.X;
+                rotMat.M12 /= scale.X;
+                rotMat.M13 /= scale.X;
+            }
+
+            if (scale.Y != 0)
+            {
+                rotMat.M21 /= scale.Y;
+                rotMat.M22 /= scale.Y;
+                rotMat.M23 /= scale.Y;
+            }
+
+            if (scale.Z != 0)
+            {
+                rotMat.M31 /= scale.Z;
+                rotMat.M32 /= scale.Z;
+                rotMat.M33 /= scale.Z;
+            }
+            // Создание Matrix3 из верхних левых 3x3 элементов
+            Matrix3 rotationMatrix = new Matrix3(
+                rotMat.M11, rotMat.M12, rotMat.M13,
+                rotMat.M21, rotMat.M22, rotMat.M23,
+                rotMat.M31, rotMat.M32, rotMat.M33
+            );
+
+            // Извлечение кватерниона из Matrix3
+            return Quaternion.FromMatrix(rotationMatrix);
+        }
+
+        public static Vector3 ExtractScale(this Matrix4 matrix)
+        {
+            return new Vector3(
+                new Vector3(matrix.M11, matrix.M12, matrix.M13).Length,
+                new Vector3(matrix.M21, matrix.M22, matrix.M23).Length,
+                new Vector3(matrix.M31, matrix.M32, matrix.M33).Length
+            );
+        }
+
+        public static Matrix4 ClearTranslation(this Matrix4 matrix)
+        {
+            Matrix4 result = matrix;
+            result.M41 = 0;
+            result.M42 = 0;
+            result.M43 = 0;
+            return result;
+        }
+    }
+
+
+
+
     public partial class UserControl2 : UserControl
     {
+        private bool isAnimating = false;
+        private DateTime lastFrameTime;
+        private System.Windows.Forms.Timer animationTimer;
+        private System.Windows.Forms.ComboBox comboAnimations;
+        private System.Windows.Forms.Button btnPlayPause;
         private bool loaded = false;
         private Model model;
         private Camera camera;
@@ -124,7 +197,6 @@ namespace Julia_Launcher
         }
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
-
             if (!loaded) return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -156,10 +228,29 @@ namespace Julia_Launcher
                 shader.SetFloat("specularStrength", specularStrength);
                 shader.SetFloat("shininess", shininess);
 
+                // Draw the model (which will set bone transforms if animated)
                 model.Draw(shader);
             }
 
             glControl1.SwapBuffers();
+        }
+
+        // Animation timer callback
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            if (model != null && model.HasAnimations && isAnimating)
+            {
+                // Calculate delta time for smooth animation
+                DateTime now = DateTime.Now;
+                float deltaTime = (float)(now - lastFrameTime).TotalSeconds;
+                lastFrameTime = now;
+
+                // Update the model's animation
+                model.Update(deltaTime);
+
+                // Request redraw
+                glControl1.Invalidate();
+            }
         }
 
         private void GlControl_Resize(object sender, EventArgs e)
@@ -654,16 +745,19 @@ namespace Julia_Launcher
         }
 
         // Mesh class to store mesh data
+        // Modified Mesh class to handle bone data
         public class Mesh
         {
             private int VAO, VBO, EBO;
             private int indexCount;
+            private bool hasBones;
             public List<Texture> Textures { get; private set; }
 
-            public Mesh(float[] vertices, uint[] indices, List<Texture> textures)
+            public Mesh(float[] vertices, uint[] indices, List<Texture> textures, bool hasBones = false)
             {
                 Textures = textures;
                 indexCount = indices.Length;
+                this.hasBones = hasBones;
 
                 // Create buffers/arrays
                 GL.GenVertexArrays(1, out VAO);
@@ -681,17 +775,31 @@ namespace Julia_Launcher
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 
                 // Set vertex attribute pointers
+                int stride = hasBones ? 16 * sizeof(float) : 8 * sizeof(float);
+
                 // Position attribute
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, stride, 0);
                 GL.EnableVertexAttribArray(0);
 
                 // Normal attribute
-                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 3 * sizeof(float));
+                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, stride, 3 * sizeof(float));
                 GL.EnableVertexAttribArray(1);
 
                 // Texture coords attribute
-                GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), 6 * sizeof(float));
+                GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, stride, 6 * sizeof(float));
                 GL.EnableVertexAttribArray(2);
+
+                // If we have bones, set up bone attributes
+                if (hasBones)
+                {
+                    // Bone IDs (as vec4 of floats)
+                    GL.VertexAttribPointer(3, 4, VertexAttribPointerType.Float, false, stride, 8 * sizeof(float));
+                    GL.EnableVertexAttribArray(3);
+
+                    // Bone weights (as vec4 of floats)
+                    GL.VertexAttribPointer(4, 4, VertexAttribPointerType.Float, false, stride, 12 * sizeof(float));
+                    GL.EnableVertexAttribArray(4);
+                }
 
                 GL.BindVertexArray(0);
             }
@@ -779,38 +887,274 @@ namespace Julia_Launcher
             }
         }
 
+        // Add these new classes to handle animations
+
+        // Store bone information and hierarchy
+        public class Bone
+        {
+            public int ID { get; private set; }
+            public string Name { get; private set; }
+            public Matrix4 OffsetMatrix { get; private set; }
+            public List<KeyFrame> KeyFrames { get; private set; }
+            public Matrix4 FinalTransformation { get; set; }
+
+            public Bone(int id, string name, Matrix4 offsetMatrix)
+            {
+                ID = id;
+                Name = name;
+                OffsetMatrix = offsetMatrix;
+                KeyFrames = new List<KeyFrame>();
+                FinalTransformation = Matrix4.Identity;
+            }
+
+            public void AddKeyFrame(KeyFrame keyFrame)
+            {
+                KeyFrames.Add(keyFrame);
+            }
+
+            // Interpolate between keyframes based on animation time
+            public Matrix4 InterpolateTransform(float animationTime)
+            {
+                if (KeyFrames.Count == 0) return Matrix4.Identity;
+                if (KeyFrames.Count == 1) return KeyFrames[0].Transform;
+
+                // Find which keyframes to interpolate between
+                int frameIndex = FindFrameIndex(animationTime);
+                int nextFrameIndex = (frameIndex + 1) % KeyFrames.Count;
+
+                KeyFrame currentFrame = KeyFrames[frameIndex];
+                KeyFrame nextFrame = KeyFrames[nextFrameIndex];
+
+                float delta = CalculateDelta(animationTime, currentFrame, nextFrame);
+
+                // Interpolate between current frame and next frame
+                return InterpolateMatrices(currentFrame.Transform, nextFrame.Transform, delta);
+            }
+
+            private int FindFrameIndex(float animationTime)
+            {
+                for (int i = 0; i < KeyFrames.Count - 1; i++)
+                {
+                    if (animationTime < KeyFrames[i + 1].Time)
+                        return i;
+                }
+                return KeyFrames.Count - 1;
+            }
+
+            private float CalculateDelta(float animationTime, KeyFrame currentFrame, KeyFrame nextFrame)
+            {
+                float framesDiff = nextFrame.Time - currentFrame.Time;
+                if (framesDiff < 0.0001f) return 0;
+
+                float delta = (animationTime - currentFrame.Time) / framesDiff;
+                return Math.Clamp(delta, 0.0f, 1.0f);
+            }
+
+            private Matrix4 InterpolateMatrices(Matrix4 start, Matrix4 end, float factor)
+            {
+                // Extract position, rotation, and scale from matrices
+                Vector3 startPos = start.ExtractTranslation();
+                Vector3 endPos = end.ExtractTranslation();
+
+                Quaternion startRot = start.ExtractRotation();
+                Quaternion endRot = end.ExtractRotation();
+
+                Vector3 startScale = start.ExtractScale();
+                Vector3 endScale = end.ExtractScale();
+
+                // Interpolate components
+                Vector3 pos = Vector3.Lerp(startPos, endPos, factor);
+                Quaternion rot = Quaternion.Slerp(startRot, endRot, factor);
+                Vector3 scale = Vector3.Lerp(startScale, endScale, factor);
+
+                // Combine into new transformation
+                Matrix4 result = Matrix4.CreateScale(scale) *
+                                  Matrix4.CreateFromQuaternion(rot) *
+                                  Matrix4.CreateTranslation(pos);
+
+                return result;
+            }
+        }
+
+        // Store key frame data for animation
+        public class KeyFrame
+        {
+            public float Time { get; private set; }
+            public Matrix4 Transform { get; private set; }
+
+            public KeyFrame(float time, Matrix4 transform)
+            {
+                Time = time;
+                Transform = transform;
+            }
+        }
+
+        // Animation class to store and manage a single animation
+        public class Animation
+        {
+            public string Name { get; private set; }
+            public float Duration { get; private set; } // in seconds
+            public float TicksPerSecond { get; private set; }
+            public Dictionary<string, Bone> Bones { get; private set; }
+
+            public Animation(string name, float duration, float ticksPerSecond)
+            {
+                Name = name;
+                Duration = duration;
+                TicksPerSecond = ticksPerSecond > 0 ? ticksPerSecond : 25.0f; // Default fallback
+                Bones = new Dictionary<string, Bone>();
+            }
+
+            public void AddBone(Bone bone)
+            {
+                Bones[bone.Name] = bone;
+            }
+        }
+
+        // Animator class to handle playing animations
+        public class Animator
+        {
+            private Animation currentAnimation;
+            private float currentTime = 0.0f;
+            private bool isPlaying = false;
+            private Dictionary<string, Matrix4> boneTransforms = new Dictionary<string, Matrix4>();
+            private Matrix4[] finalBoneMatrices;
+            private int bonesCount;
+
+            // Mapping from bone name to index in final matrices array
+            private Dictionary<string, int> boneMapping = new Dictionary<string, int>();
+
+            public Animator(int maxBones = 100)
+            {
+                finalBoneMatrices = new Matrix4[maxBones];
+                for (int i = 0; i < maxBones; i++)
+                {
+                    finalBoneMatrices[i] = Matrix4.Identity;
+                }
+                bonesCount = 0;
+            }
+
+            public void SetAnimation(Animation animation)
+            {
+                currentAnimation = animation;
+                currentTime = 0.0f;
+                isPlaying = true;
+
+                // Build the bone mapping if needed
+                foreach (var bone in animation.Bones.Values)
+                {
+                    if (!boneMapping.ContainsKey(bone.Name))
+                    {
+                        boneMapping[bone.Name] = bonesCount++;
+                    }
+                }
+            }
+
+            public void Update(float deltaTime)
+            {
+                if (currentAnimation == null || !isPlaying) return;
+
+                currentTime += deltaTime * currentAnimation.TicksPerSecond;
+
+                // Loop the animation
+                if (currentTime > currentAnimation.Duration)
+                {
+                    currentTime = currentTime % currentAnimation.Duration;
+                }
+
+                CalculateBoneTransforms();
+            }
+
+            private void CalculateBoneTransforms()
+            {
+                foreach (var bone in currentAnimation.Bones.Values)
+                {
+                    Matrix4 boneTransform = bone.InterpolateTransform(currentTime);
+
+                    int boneIndex = boneMapping[bone.Name];
+                    finalBoneMatrices[boneIndex] = bone.OffsetMatrix * boneTransform;
+                }
+            }
+
+            public Matrix4[] GetFinalBoneMatrices()
+            {
+                return finalBoneMatrices;
+            }
+
+            public void Play()
+            {
+                isPlaying = true;
+            }
+
+            public void Pause()
+            {
+                isPlaying = false;
+            }
+
+            public void Stop()
+            {
+                isPlaying = false;
+                currentTime = 0.0f;
+            }
+
+            public float CurrentTime
+            {
+                get { return currentTime; }
+                set { currentTime = value; }
+            }
+
+            public bool IsPlaying
+            {
+                get { return isPlaying; }
+            }
+
+            public Animation CurrentAnimation
+            {
+                get { return currentAnimation; }
+            }
+        }
+
 
         // Model class to load and render 3D models
-        public class Model
+        // Modify your Model class to support animations
+        public class Model : IDisposable
         {
             private List<Mesh> meshes = new List<Mesh>();
             private string directory;
             private Dictionary<string, int> loadedTextures = new Dictionary<string, int>();
             private int defaultDiffuseTexture;
             private int defaultSpecularTexture;
+            private Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
+            private Animator animator;
+            private bool hasAnimations = false;
+
+            public bool HasAnimations => hasAnimations;
+            public Animator Animator => animator;
+            public IReadOnlyDictionary<string, Animation> Animations => animations;
 
             public Model(string path)
             {
-                defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255); // Белая
-                defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);      // Чёрная
+                defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255);
+                defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);
+                animator = new Animator(100); // Поддержка до 100 костей
                 LoadModel(path);
             }
+
             private int CreateDefaultTexture(byte r, byte g, byte b, byte a)
             {
                 GL.GenTextures(1, out int textureId);
                 GL.BindTexture(TextureTarget.Texture2D, textureId);
-                byte[] data = new byte[4] { r, g, b, a };
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 1, 1, 0,
-                    PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
-                // Используем полное имя типа для устранения неоднозначности
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
+                byte[] pixels = new byte[] { r, g, b, a };
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 1, 1, 0,
+                              PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
                 return textureId;
             }
+
             private void LoadModel(string path)
             {
                 var importer = new AssimpContext();
@@ -819,7 +1163,8 @@ namespace Julia_Launcher
                     PostProcessSteps.Triangulate |
                     PostProcessSteps.GenerateSmoothNormals |
                     PostProcessSteps.FlipUVs |
-                    PostProcessSteps.CalculateTangentSpace);
+                    PostProcessSteps.CalculateTangentSpace |
+                    PostProcessSteps.LimitBoneWeights);
 
                 if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
                 {
@@ -827,26 +1172,106 @@ namespace Julia_Launcher
                 }
 
                 directory = Path.GetDirectoryName(path);
+                LoadAnimations(scene);
                 ProcessNode(scene.RootNode, scene, Matrix4.Identity);
+
+                if (animations.Count > 0)
+                {
+                    hasAnimations = true;
+                    animator.SetAnimation(animations.Values.First());
+                }
             }
 
             private void ProcessNode(Node node, Scene scene, Matrix4 parentTransform)
             {
-                // Вычисляем глобальную трансформацию текущего узла
-                Matrix4 localTransform = ConvertMatrix(node.Transform);
-                Matrix4 globalTransform = localTransform * parentTransform;
+                Matrix4 nodeTransform = ConvertMatrix(node.Transform);
+                Matrix4 globalTransform = nodeTransform * parentTransform;
 
-                // Обрабатываем все меши в текущем узле
                 for (int i = 0; i < node.MeshCount; i++)
                 {
                     Assimp.Mesh mesh = scene.Meshes[node.MeshIndices[i]];
                     meshes.Add(ProcessMesh(mesh, scene, globalTransform));
                 }
 
-                // Рекурсивно обрабатываем дочерние узлы
                 for (int i = 0; i < node.ChildCount; i++)
                 {
                     ProcessNode(node.Children[i], scene, globalTransform);
+                }
+            }
+
+            private Matrix4 ConvertMatrix(Matrix4x4 assimpMatrix)
+            {
+                return new Matrix4(
+                    assimpMatrix.A1, assimpMatrix.B1, assimpMatrix.C1, assimpMatrix.D1,
+                    assimpMatrix.A2, assimpMatrix.B2, assimpMatrix.C2, assimpMatrix.D2,
+                    assimpMatrix.A3, assimpMatrix.B3, assimpMatrix.C3, assimpMatrix.D3,
+                    assimpMatrix.A4, assimpMatrix.B4, assimpMatrix.C4, assimpMatrix.D4
+                );
+            }
+
+            private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
+            {
+                List<Texture> textures = new List<Texture>();
+
+                for (int i = 0; i < material.GetMaterialTextureCount(type); i++)
+                {
+                    if (material.GetMaterialTexture(type, i, out TextureSlot slot))
+                    {
+                        string texturePath = Path.Combine(directory, slot.FilePath);
+
+                        if (!loadedTextures.TryGetValue(texturePath, out int textureId))
+                        {
+                            textureId = Texture.LoadTextureFromFile(texturePath);
+                            loadedTextures[texturePath] = textureId;
+                        }
+
+                        textures.Add(new Texture(textureId, typeName, texturePath));
+                    }
+                }
+
+                return textures;
+            }
+
+            private void LoadAnimations(Scene scene)
+            {
+                if (scene.AnimationCount > 0)
+                {
+                    Console.WriteLine($"Found {scene.AnimationCount} animations in the scene.");
+                    for (int i = 0; i < scene.AnimationCount; i++)
+                    {
+                        Assimp.Animation assimpAnim = scene.Animations[i];
+                        string animName = string.IsNullOrEmpty(assimpAnim.Name) ? $"Animation_{i}" : assimpAnim.Name;
+                        float ticksPerSecond = (float)assimpAnim.TicksPerSecond > 0 ? (float)assimpAnim.TicksPerSecond : 25.0f;
+                        float durationInTicks = (float)assimpAnim.DurationInTicks;
+                        Animation animation = new Animation(animName, durationInTicks, ticksPerSecond);
+
+                        foreach (var nodeAnim in assimpAnim.NodeAnimationChannels)
+                        {
+                            string boneName = nodeAnim.NodeName;
+                            Bone bone = new Bone(animations.Count, boneName, Matrix4.Identity);
+
+                            for (int frameIdx = 0; frameIdx < nodeAnim.PositionKeyCount; frameIdx++)
+                            {
+                                float timeInTicks = (float)nodeAnim.PositionKeys[frameIdx].Time;
+                                var position = nodeAnim.PositionKeys[frameIdx].Value;
+                                Vector3 pos = new Vector3(position.X, position.Y, position.Z);
+                                Quaternion rot = frameIdx < nodeAnim.RotationKeyCount ?
+                                    new Quaternion(nodeAnim.RotationKeys[frameIdx].Value.X, nodeAnim.RotationKeys[frameIdx].Value.Y,
+                                                   nodeAnim.RotationKeys[frameIdx].Value.Z, nodeAnim.RotationKeys[frameIdx].Value.W) :
+                                    Quaternion.Identity;
+                                Vector3 scale = frameIdx < nodeAnim.ScalingKeyCount ?
+                                    new Vector3(nodeAnim.ScalingKeys[frameIdx].Value.X, nodeAnim.ScalingKeys[frameIdx].Value.Y,
+                                                nodeAnim.ScalingKeys[frameIdx].Value.Z) : Vector3.One;
+
+                                Matrix4 transform = Matrix4.CreateScale(scale) * Matrix4.CreateFromQuaternion(rot) * Matrix4.CreateTranslation(pos);
+                                bone.AddKeyFrame(new KeyFrame(timeInTicks, transform));
+                            }
+
+                            animation.AddBone(bone);
+                        }
+
+                        animations[animName] = animation;
+                    }
                 }
             }
 
@@ -855,29 +1280,60 @@ namespace Julia_Launcher
                 List<float> vertices = new List<float>();
                 List<uint> indices = new List<uint>();
                 List<Texture> textures = new List<Texture>();
+                bool hasBones = mesh.HasBones;
+                List<int> boneIds = new List<int>();
+                List<float> boneWeights = new List<float>();
 
-                // Применяем глобальную трансформацию к вершинам и нормалям
+                if (hasBones)
+                {
+                    int[] vertexBoneIds = new int[mesh.VertexCount * 4];
+                    float[] vertexBoneWeights = new float[mesh.VertexCount * 4];
+                    int[] boneCountPerVertex = new int[mesh.VertexCount];
+
+                    for (int i = 0; i < vertexBoneIds.Length; i++) vertexBoneIds[i] = 0;
+                    for (int i = 0; i < vertexBoneWeights.Length; i++) vertexBoneWeights[i] = 0.0f;
+
+                    for (int boneIndex = 0; boneIndex < mesh.BoneCount; boneIndex++)
+                    {
+                        Assimp.Bone bone = mesh.Bones[boneIndex];
+                        foreach (var weight in bone.VertexWeights)
+                        {
+                            int vertexId = weight.VertexID;
+                            if (boneCountPerVertex[vertexId] < 4)
+                            {
+                                int idx = vertexId * 4 + boneCountPerVertex[vertexId];
+                                vertexBoneIds[idx] = boneIndex;
+                                vertexBoneWeights[idx] = weight.Weight;
+                                boneCountPerVertex[vertexId]++;
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < mesh.VertexCount; i++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            boneIds.Add(vertexBoneIds[i * 4 + j]);
+                            boneWeights.Add(vertexBoneWeights[i * 4 + j]);
+                        }
+                    }
+                }
+
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
                     Vector3 pos = new Vector3(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z);
                     pos = Vector3.TransformPosition(pos, globalTransform);
-                    vertices.Add(pos.X);
-                    vertices.Add(pos.Y);
-                    vertices.Add(pos.Z);
+                    vertices.Add(pos.X); vertices.Add(pos.Y); vertices.Add(pos.Z);
 
                     if (mesh.HasNormals)
                     {
                         Vector3 normal = new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z);
                         normal = Vector3.TransformNormal(normal, globalTransform);
-                        vertices.Add(normal.X);
-                        vertices.Add(normal.Y);
-                        vertices.Add(normal.Z);
+                        vertices.Add(normal.X); vertices.Add(normal.Y); vertices.Add(normal.Z);
                     }
                     else
                     {
-                        vertices.Add(0.0f);
-                        vertices.Add(0.0f);
-                        vertices.Add(1.0f);
+                        vertices.Add(0.0f); vertices.Add(0.0f); vertices.Add(1.0f);
                     }
 
                     if (mesh.HasTextureCoords(0))
@@ -887,12 +1343,19 @@ namespace Julia_Launcher
                     }
                     else
                     {
-                        vertices.Add(0.0f);
-                        vertices.Add(0.0f);
+                        vertices.Add(0.0f); vertices.Add(0.0f);
+                    }
+
+                    if (hasBones)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            vertices.Add(boneIds[i * 4 + j]);
+                            vertices.Add(boneWeights[i * 4 + j]);
+                        }
                     }
                 }
 
-                // Индексы остаются без изменений
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
                     Face face = mesh.Faces[i];
@@ -902,7 +1365,6 @@ namespace Julia_Launcher
                     }
                 }
 
-                // Загрузка текстур (без изменений)
                 if (mesh.MaterialIndex >= 0)
                 {
                     Material material = scene.Materials[mesh.MaterialIndex];
@@ -921,75 +1383,60 @@ namespace Julia_Launcher
                     textures.Add(new Texture(defaultSpecularTexture, "texture_specular", "default_specular"));
                 }
 
-                return new Mesh(vertices.ToArray(), indices.ToArray(), textures);
+                return new Mesh(vertices.ToArray(), indices.ToArray(), textures, hasBones);
             }
 
-            private Matrix4 ConvertMatrix(Assimp.Matrix4x4 mat)
+            public void Update(float deltaTime)
             {
-                return new Matrix4(
-                    mat.A1, mat.A2, mat.A3, mat.A4,
-                    mat.B1, mat.B2, mat.B3, mat.B4,
-                    mat.C1, mat.C2, mat.C3, mat.C4,
-                    mat.D1, mat.D2, mat.D3, mat.D4
-                );
-            }
-
-            private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
-            {
-                List<Texture> textures = new List<Texture>();
-
-                for (int i = 0; i < material.GetMaterialTextureCount(type); i++)
+                if (hasAnimations)
                 {
-                    material.GetMaterialTexture(type, i, out TextureSlot textureSlot);
-                    string path = textureSlot.FilePath;
-
-                    if (!loadedTextures.ContainsKey(path))
-                    {
-                        string fullPath = Path.Combine(directory, path);
-                        int id;
-
-                        if (File.Exists(fullPath))
-                        {
-                            id = Texture.LoadTextureFromFile(fullPath);
-                            loadedTextures[path] = id;
-                        }
-                        else
-                        {
-                            id = typeName == "texture_diffuse" ? defaultDiffuseTexture : defaultSpecularTexture;
-                            loadedTextures[path] = id;
-                        }
-
-                        textures.Add(new Texture(id, typeName, path));
-                    }
-                    else
-                    {
-                        textures.Add(new Texture(loadedTextures[path], typeName, path));
-                    }
+                    animator.Update(deltaTime);
                 }
-
-                return textures;
             }
 
             public void Draw(Shader shader)
             {
+                if (hasAnimations)
+                {
+                    Matrix4[] boneTransforms = animator.GetFinalBoneMatrices();
+                    for (int i = 0; i < boneTransforms.Length; i++)
+                    {
+                        shader.SetMatrix4($"boneTransforms[{i}]", boneTransforms[i]);
+                    }
+                    shader.SetBool("hasAnimation", true);
+                }
+                else
+                {
+                    shader.SetBool("hasAnimation", false);
+                }
+
                 foreach (var mesh in meshes)
                 {
                     mesh.Draw(shader);
                 }
             }
 
+            public void PlayAnimation(string name)
+            {
+                if (animations.TryGetValue(name, out Animation animation))
+                {
+                    animator.SetAnimation(animation);
+                    animator.Play();
+                }
+            }
+
             public void Dispose()
             {
-                foreach (var mesh in meshes)
-                {
-                    mesh.Dispose();
-                }
+                GL.DeleteTexture(defaultDiffuseTexture);
+                GL.DeleteTexture(defaultSpecularTexture);
                 foreach (var textureId in loadedTextures.Values)
                 {
                     GL.DeleteTexture(textureId);
                 }
-                GL.DeleteTexture(defaultDiffuseTexture);
-                GL.DeleteTexture(defaultSpecularTexture);
+                foreach (var mesh in meshes)
+                {
+                    mesh.Dispose();
+                }
             }
         }
 
