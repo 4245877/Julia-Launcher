@@ -162,9 +162,13 @@ namespace Julia_Launcher
                 shader.SetMatrix4("view", view);
                 shader.SetMatrix4("projection", projection);
 
-                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale) *
-                                     Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
-                                     Matrix4.CreateTranslation(modelPosition);
+
+
+
+                // Используем сохранённый масштаб
+                Matrix4 modelMatrix = Matrix4.CreateScale(Vector3.One) *
+                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
+                                      Matrix4.CreateTranslation(modelPosition);
 
                 // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
@@ -180,7 +184,7 @@ namespace Julia_Launcher
                 shader.SetFloat("specularStrength", specularStrength);
                 shader.SetFloat("shininess", shininess);
 
-                // Рисуем модель (которая установит преобразования костей, если анимирована)
+                // Рисуем модель
                 model.Draw(shader);
             }
 
