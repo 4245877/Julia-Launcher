@@ -170,7 +170,7 @@ namespace Julia_Launcher
 
 
                 // Используем сохранённый масштаб
-Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One) *
+                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One)  *
                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                      Matrix4.CreateTranslation(modelPosition);
 
@@ -297,10 +297,11 @@ Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One) *
             {
                 var importer = new AssimpContext();
                 Scene scene = importer.ImportFile(path,
-                    PostProcessSteps.Triangulate |
-                    PostProcessSteps.GenerateSmoothNormals |
-                    PostProcessSteps.FlipUVs |
-                    PostProcessSteps.CalculateTangentSpace);
+                PostProcessSteps.Triangulate |
+                PostProcessSteps.GenerateSmoothNormals |
+                PostProcessSteps.FlipUVs |
+                PostProcessSteps.CalculateTangentSpace |
+                PostProcessSteps.LimitBoneWeights);
 
                 if (scene != null && scene.CameraCount > 0)
                 {
