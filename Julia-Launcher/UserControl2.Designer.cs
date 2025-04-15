@@ -48,6 +48,7 @@
             trkSpeechRate = new System.Windows.Forms.TrackBar();
             trkVolume = new System.Windows.Forms.TrackBar();
             trkTimbre = new System.Windows.Forms.TrackBar();
+            btnAddClothing = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)trkHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkWeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkAge).BeginInit();
@@ -273,11 +274,22 @@
             trkTimbre.TabIndex = 26;
             trkTimbre.Scroll += trkTimbre_Scroll;
             // 
+            // btnAddClothing
+            // 
+            btnAddClothing.Location = new System.Drawing.Point(182, 495);
+            btnAddClothing.Name = "btnAddClothing";
+            btnAddClothing.Size = new System.Drawing.Size(75, 23);
+            btnAddClothing.TabIndex = 27;
+            btnAddClothing.Text = "button1";
+            btnAddClothing.UseVisualStyleBackColor = true;
+            btnAddClothing.Click += btnAddClothing_Click;
+            // 
             // UserControl2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(51, 51, 51);
+            Controls.Add(btnAddClothing);
             Controls.Add(trkTimbre);
             Controls.Add(trkVolume);
             Controls.Add(trkSpeechRate);
@@ -336,5 +348,6 @@
         private System.Windows.Forms.TrackBar trkSpeechRate;
         private System.Windows.Forms.TrackBar trkVolume;
         private System.Windows.Forms.TrackBar trkTimbre;
+        private System.Windows.Forms.Button btnAddClothing;
     }
 }

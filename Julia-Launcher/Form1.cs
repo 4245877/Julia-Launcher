@@ -51,12 +51,12 @@ namespace Julia_Launcher
         {
             if (!isInstalled)
             {
-                button1.Text = "Установить";
+                button1.Text = "Install";
                 progressBar.Visible = false;
             }
             else
             {
-                button1.Text = "Запустить";
+                button1.Text = "Launch";
                 progressBar.Visible = false;
             }
         }

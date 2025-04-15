@@ -19,6 +19,7 @@ using OpenTK.GLControl;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static Julia_Launcher.SettingsManager;
 using System.Reflection;
+using static Julia_Launcher.UserControl2;
 
 namespace Julia_Launcher
 {
@@ -45,6 +46,9 @@ namespace Julia_Launcher
         private float specularStrength = 0.5f;
         private float diffuseStrength = 0.8f; // Сила диффузного освещения
         private float shininess = 16.0f;      // Блеск (степень зеркальности)
+
+        private AnimationManager animationManager;
+
 
         private void AutoPositionCamera()
         {
@@ -166,9 +170,9 @@ namespace Julia_Launcher
 
 
                 // Используем сохранённый масштаб
-                Matrix4 modelMatrix = Matrix4.CreateScale(Vector3.One) *
-                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
-                                      Matrix4.CreateTranslation(modelPosition);
+Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One) *
+                     Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
+                     Matrix4.CreateTranslation(modelPosition);
 
                 // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
@@ -1016,6 +1020,15 @@ namespace Julia_Launcher
 
                 CalculateBoneTransforms();
             }
+            public void LookAtCamera(Vector3 cameraPos, string headBoneName)
+            {
+                if (currentAnimation == null || !currentAnimation.Bones.TryGetValue(headBoneName, out Bone headBone)) return;
+
+                Vector3 headPos = Vector3.TransformPosition(Vector3.Zero, headBone.FinalTransformation);
+                Vector3 direction = Vector3.Normalize(cameraPos - headPos);
+                Quaternion rotation = Quaternion.FromAxisAngle(Vector3.UnitY, (float)Math.Atan2(direction.X, direction.Z));
+                headBone.FinalTransformation = Matrix4.CreateFromQuaternion(rotation) * headBone.InterpolateTransform(currentTime);
+            }
 
             private void CalculateBoneTransforms()
             {
@@ -1066,6 +1079,82 @@ namespace Julia_Launcher
             }
         }
 
+        public class AnimationManager
+        {
+            private readonly Model model;
+            private readonly Queue<string> animationQueue = new Queue<string>();
+            private float switchInterval = 5.0f; // Секунды между переключениями
+            private float elapsedTime = 0.0f;
+
+            public AnimationManager(Model model)
+            {
+                this.model = model;
+            }
+
+            public void EnqueueAnimation(string animationName) => animationQueue.Enqueue(animationName);
+            public void SetSwitchInterval(float interval) => switchInterval = interval;
+
+            public void Update(float deltaTime)
+            {
+                if (!model.HasAnimations || animationQueue.Count == 0) return;
+
+                elapsedTime += deltaTime;
+                if (elapsedTime >= switchInterval || !model.Animator.IsPlaying)
+                {
+                    elapsedTime = 0.0f;
+                    string nextAnim = animationQueue.Dequeue();
+                    model.PlayAnimation(nextAnim);
+                    animationQueue.Enqueue(nextAnim); // Цикл анимации
+                }
+            }
+        }
+
+        private void AnimationTimerTick(object sender, EventArgs e)
+        {
+            if (model != null && model.HasAnimations && isAnimating)
+            {
+                float deltaTime = (float)(DateTime.Now - lastFrameTime).TotalSeconds;
+                lastFrameTime = DateTime.Now;
+                model.Update(deltaTime);
+                animationManager.Update(deltaTime);
+                glControl1.Invalidate();
+            }
+        }
+        public class CharacterComponent
+        {
+            public string Name { get; }
+            public Mesh Mesh { get; set; }
+            public Dictionary<string, float> MorphTargets { get; } = new Dictionary<string, float>(); // e.g., "EyeSize": 0.5
+
+            public CharacterComponent(string name, Mesh mesh)
+            {
+                Name = name;
+                Mesh = mesh;
+            }
+
+            public void ApplyMorph(string target, float weight)
+            {
+                MorphTargets[target] = Math.Clamp(weight, 0.0f, 1.0f);
+            }
+        }
+        //Класс оборудования
+        public class Equipment
+        {
+            public string Name { get; }
+            public Model Model { get; }
+            public string AttachmentBone { get; }
+            public Matrix4 Offset { get; }
+
+            public Equipment(string name, string modelPath, string bone, Matrix4 offset)
+            {
+                Name = name;
+                Model = new Model(modelPath);
+                AttachmentBone = bone;
+                Offset = offset;
+            }
+        }
+
+
 
         // Класс модели для загрузки и рендеринга 3D-моделей
         // Измените класс модели для поддержки анимации
@@ -1083,6 +1172,14 @@ namespace Julia_Launcher
             public bool HasAnimations => hasAnimations;
             public Animator Animator => animator;
             public IReadOnlyDictionary<string, Animation> Animations => animations;
+
+            private List<CharacterComponent> components = new List<CharacterComponent>();
+            public void AddComponent(CharacterComponent component) => components.Add(component);
+            private List<Equipment> equipment = new List<Equipment>();
+            public void AddEquipment(Equipment eq) => equipment.Add(eq);
+
+
+
 
             public Model(string path)
             {
@@ -1505,6 +1602,13 @@ namespace Julia_Launcher
         private void trkTimbre_Scroll(object sender, EventArgs e)
         {
             SaveSettings("Timbre", trkTimbre.Value);
+        }
+
+        private void btnAddClothing_Click(object sender, EventArgs e)
+        {
+            var shirt = new Equipment("Shirt", "path/to/shirt.fbx", "Spine", Matrix4.Identity);
+            model.AddEquipment(shirt);
+            glControl1.Invalidate();
         }
     }
 
