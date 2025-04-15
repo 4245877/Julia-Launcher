@@ -95,6 +95,7 @@ namespace Julia_Launcher
             // Загружаем настройки при запуске
             LoadSettings();
         }
+
         private void LoadSettings()
         {
             var settings = ReadSettings();
@@ -1551,10 +1552,33 @@ namespace Julia_Launcher
 
 
 
-        private void UserControl2_Load(object sender, EventArgs e) { }
+        private void UserControl2_Load(object sender, EventArgs e)
+        {
+            // Получаем путь к корню проекта
+            string exePath = Application.StartupPath;
+            string projectDir = Directory.GetParent(Directory.GetParent(exePath).FullName).FullName;
+            string shadersDirectory = Path.Combine(projectDir, "Shaders");
+            string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
+            string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
+
+            // Проверка наличия файлов
+            if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
+            {
+                MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Здесь продолжение логики, например, загрузка шейдеров
+            // Shader shader = new Shader(vertexPath, fragmentPath);
+        }
+
 
         private void btnModel_Click(object sender, EventArgs e)
         {
+
+
+
+
             // Используйте диалог открытия файла для выбора файла 3D-модели
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {

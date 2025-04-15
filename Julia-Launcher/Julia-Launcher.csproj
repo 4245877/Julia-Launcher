@@ -47,12 +47,12 @@
   <ItemGroup>
     <Content Include="Logo.ico" />
     <None Include="Style.cs" />
-    <Content Include="Shaders\fragment.glsl">
+    <EmbeddedResource Include="Shaders\fragment.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Shaders\vertex.glsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shaders\vertex.glsl">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
