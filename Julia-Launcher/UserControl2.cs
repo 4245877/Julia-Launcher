@@ -123,15 +123,16 @@ namespace Julia_Launcher
                 // Получаем путь к директории исполняемого файла
                 string appDirectory = Application.StartupPath;
 
-                // Строим относительный путь к папке Shaders
-                string shadersDirectory = Path.Combine(appDirectory, "..", "..", "..", "Shaders");
+                // Строим путь к папке Shaders в выходной директории
+                string shadersDirectory = Path.Combine(appDirectory, "Shaders");
                 string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
                 string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
                 // Проверяем существование файлов шейдеров
                 if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
                 {
-                    MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Файлы шейдеров не найдены!\nПуть к vertex.glsl: {vertexPath}\nПуть к fragment.glsl: {fragmentPath}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
