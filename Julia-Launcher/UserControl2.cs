@@ -120,11 +120,15 @@ namespace Julia_Launcher
                 GL.Enable(EnableCap.DepthTest);
                 GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
 
-                string appDirectory = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher";
-                string shadersDirectory = Path.Combine(appDirectory, "Shaders");
+                // Получаем путь к директории исполняемого файла
+                string appDirectory = Application.StartupPath;
+
+                // Строим относительный путь к папке Shaders
+                string shadersDirectory = Path.Combine(appDirectory, "..", "..", "..", "Shaders");
                 string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
                 string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
+                // Проверяем существование файлов шейдеров
                 if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
                 {
                     MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -135,7 +139,10 @@ namespace Julia_Launcher
                 camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
-                string modelPath = "F:\\Work\\C#\\Julia-Launcher\\Julia-Launcher\\Julia-Launcher\\Model\\sketch2.fbx";
+                // Строим относительный путь к модели
+                string modelDirectory = Path.Combine(appDirectory, "..", "..", "..", "Model");
+                string modelPath = Path.Combine(modelDirectory, "sketch2.fbx");
+
                 LoadModel(modelPath); // Здесь теперь вызывается AutoPositionCamera
                 loaded = true;
             }

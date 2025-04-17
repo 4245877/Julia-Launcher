@@ -23,8 +23,7 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Shaders\fragment.glsl" />
-    <None Remove="Shaders\vertex.glsl" />
+    <None Remove="Model\sketch2.fbx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="UserControl1.cs">
@@ -46,13 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo.ico" />
+    <Resource Include="Model\sketch2.fbx" />
     <None Include="Style.cs" />
-    <EmbeddedResource Include="Shaders\fragment.glsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Shaders\vertex.glsl">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
@@ -61,5 +55,13 @@
     <PackageReference Include="OpenTK.GLControl" Version="4.0.2" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Management" Version="9.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Shaders\fragment.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Shaders\vertex.glsl">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
