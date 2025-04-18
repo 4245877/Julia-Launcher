@@ -1281,6 +1281,10 @@ namespace Julia_Launcher
                     ProcessNode(node.Children[i], scene, globalTransform);
                 }
             }
+            private void BuildSkeleton(Scene scene)
+            {
+                
+            }
 
             private Matrix4 ConvertMatrix(Matrix4x4 assimpMatrix)
             {
@@ -1587,9 +1591,6 @@ namespace Julia_Launcher
 
         private void btnModel_Click(object sender, EventArgs e)
         {
-
-
-
 
             // Используйте диалог открытия файла для выбора файла 3D-модели
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
