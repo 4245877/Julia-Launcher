@@ -7,6 +7,8 @@ using System.IO;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using System.Net;         // Для работы с WebClient
+using System.Diagnostics; // Для запуска процесса
 
 namespace Julia_Launcher
 {
@@ -488,9 +490,59 @@ namespace Julia_Launcher
             LoadUserControl(new UserControl2());
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
+            if (isInstalled)
+            {
+                // Если продукт уже установлен, запускаем его (добавьте нужную логику)
+                MessageBox.Show("Продукт уже установлен. Добавьте логику запуска здесь.");
+                return;
+            }
 
+            // URL для загрузки файла с Google Диска
+            string downloadUrl = "https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"; // Замените YOUR_FILE_ID на реальный ID файла
+            string localFilePath = Path.Combine(Path.GetTempPath(), "installer.exe"); // Путь для сохранения файла во временной папке
+
+            // Показываем progressBar
+            progressBar.Visible = true;
+            progressBar.Value = 0;
+
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    // Обновление progressBar при изменении прогресса загрузки
+                    webClient.DownloadProgressChanged += (s, ev) =>
+                    {
+                        progressBar.Value = ev.ProgressPercentage;
+                    };
+
+                    // Действия после завершения загрузки
+                    webClient.DownloadFileCompleted += (s, ev) =>
+                    {
+                        if (ev.Error == null)
+                        {
+                            // Запускаем установочный файл
+                            Process.Start(localFilePath);
+                            isInstalled = true;
+                            UpdateUI();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ошибка при загрузке файла: " + ev.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        progressBar.Visible = false;
+                    };
+
+                    // Асинхронная загрузка файла
+                    await webClient.DownloadFileTaskAsync(new Uri(downloadUrl), localFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                progressBar.Visible = false;
+            }
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
