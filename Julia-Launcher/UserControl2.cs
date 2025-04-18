@@ -1170,6 +1170,7 @@ namespace Julia_Launcher
         // Измените класс модели для поддержки анимации
         public class Model : IDisposable
         {
+            private AssimpContext importer; // Поле для AssimpContext
             private List<Mesh> meshes = new List<Mesh>();
             private string directory;
             private Dictionary<string, int> loadedTextures = new Dictionary<string, int>();
@@ -1193,6 +1194,8 @@ namespace Julia_Launcher
 
             public Model(string path)
             {
+                importer = new AssimpContext();
+                importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
                 defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255);
                 defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);
                 animator = new Animator(100); // Поддержка до 100 костей
@@ -1526,6 +1529,7 @@ namespace Julia_Launcher
 
             public void Dispose()
             {
+                importer?.Dispose();
                 GL.DeleteTexture(defaultDiffuseTexture);
                 GL.DeleteTexture(defaultSpecularTexture);
                 foreach (var textureId in loadedTextures.Values)
