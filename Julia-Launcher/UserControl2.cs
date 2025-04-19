@@ -46,7 +46,7 @@ namespace Julia_Launcher
         private float specularStrength = 0.5f;
         private float diffuseStrength = 0.8f; // Сила диффузного освещения
         private float shininess = 16.0f;      // Блеск (степень зеркальности)
-
+        private float time = 0.0f;
         private AnimationManager animationManager;
 
 
@@ -170,32 +170,80 @@ namespace Julia_Launcher
             {
                 shader.Use();
 
+                // Обновляем время для анимации
+                time += 0.016f; // Примерно для 60fps
+                shader.UpdateTime(time);
+
+                // Устанавливаем стандартные матрицы
                 Matrix4 view = camera.GetViewMatrix();
                 Matrix4 projection = camera.GetProjectionMatrix();
                 shader.SetMatrix4("view", view);
                 shader.SetMatrix4("projection", projection);
 
-
-
-
-                // Используем сохранённый масштаб
-                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One)  *
+                // Трансформация модели
+                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One) *
                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                      Matrix4.CreateTranslation(modelPosition);
 
-                // Вычислить нормальную матрицу
+                // Вычисляем нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
                 shader.SetMatrix4("model", modelMatrix);
                 shader.SetMatrix3("normalMatrix", normalMatrix);
 
-                // Установить униформу освещения
+                // Обновляем позицию света
+                float distance = 5.0f;
+                float heightOffset = 2.0f;
+                lightPos = camera.Position + camera.Front * distance + new Vector3(0, heightOffset, 0);
+
+                // Устанавливаем основные параметры освещения
                 shader.SetVector3("lightPosition", lightPos);
                 shader.SetVector3("lightColor", lightColor);
                 shader.SetVector3("viewPosition", camera.Position);
-                shader.SetFloat("ambientStrength", ambientStrength);
+                shader.SetFloat("ambientStrength", ambientStrength * 0.8f); // Уменьшаем ambient для устранения "белизны"
                 shader.SetFloat("diffuseStrength", diffuseStrength);
-                shader.SetFloat("specularStrength", specularStrength);
+                shader.SetFloat("specularStrength", specularStrength * 0.7f); // Снижаем силу бликов
                 shader.SetFloat("shininess", shininess);
+
+                // Устанавливаем параметры cel-shading
+                shader.SetCelShadingProperties(
+                    diffuseThresholds: new float[] { 0.8f, 0.6f, 0.3f },
+                    diffuseFactors: new float[] { 0.8f, 0.6f, 0.4f, 0.15f }, // Уменьшенные значения
+                    specularThreshold: 0.7f, // Повышенный порог для бликов
+                    rimColor: new Vector3(0.6f, 0.7f, 0.9f), // Менее интенсивный цвет ободка
+                    rimPower: 3.5f, // Усиленный эффект для более узкого ободка
+                    rimWidth: 0.25f // Уменьшенная ширина ободка
+                );
+
+                // Устанавливаем параметры цветокоррекции
+                shader.SetColorGradingProperties(
+                    saturation: 1.1f, // Уменьшенная насыщенность
+                    brightness: 0.9f, // Уменьшенная яркость
+                    contrast: 1.1f // Немного уменьшенный контраст
+                );
+
+                // Устанавливаем параметры контура
+                shader.SetOutlineProperties(
+                    thickness: 0.005f,
+                    color: new Vector3(0.0f, 0.0f, 0.0f)
+                );
+
+                // Устанавливаем параметры окружения и тумана
+                shader.SetEnvironmentProperties(
+                    environmentColor: new Vector3(0.05f, 0.05f, 0.1f), // Более темное окружение
+                    environmentStrength: 0.2f, // Уменьшенное влияние окружения
+                    fogDensity: 0.015f,
+                    fogColor: new Vector3(0.7f, 0.8f, 0.9f) // Менее яркий туман
+                );
+
+                // Устанавливаем параметры эффекта наброска
+                shader.SetSketchProperties(
+                    threshold: 0.15f,
+                    strength: 0.1f
+                );
+
+                // Устанавливаем параметры теней (новые)
+                shader.SetFloat("shadowIntensity", 0.7f);
+                shader.SetFloat("shadowSoftness", 0.05f);
 
                 // Рисуем модель
                 model.Draw(shader);
@@ -710,6 +758,107 @@ namespace Julia_Launcher
                 }
 
                 return location;
+            }
+            // Add these methods to your Shader class
+
+            // Method to set Genshin Impact cel-shading properties
+            public void SetCelShadingProperties(
+                float[] diffuseThresholds = null,
+                float[] diffuseFactors = null,
+                float specularThreshold = 0.6f,
+                Vector3? rimColor = null,
+                float rimPower = 3.0f,
+                float rimWidth = 0.3f)
+            {
+                Use();
+
+                // Set defaults if no values provided
+                diffuseThresholds ??= new float[] { 0.8f, 0.6f, 0.3f };
+                diffuseFactors ??= new float[] { 1.0f, 0.8f, 0.5f, 0.2f };
+                rimColor ??= new Vector3(0.8f, 0.9f, 1.0f);
+
+                // Set uniform values
+                for (int i = 0; i < diffuseThresholds.Length; i++)
+                {
+                    SetFloat($"diffuseThresholds[{i}]", diffuseThresholds[i]);
+                }
+
+                for (int i = 0; i < diffuseFactors.Length; i++)
+                {
+                    SetFloat($"diffuseFactors[{i}]", diffuseFactors[i]);
+                }
+
+                SetFloat("specularThreshold", specularThreshold);
+                SetVector3("rimColor", rimColor.Value);
+                SetFloat("rimPower", rimPower);
+                SetFloat("rimWidth", rimWidth);
+            }
+
+            // Method to set color grading properties
+            public void SetColorGradingProperties(
+                float saturation = 1.2f,
+                float brightness = 1.1f,
+                float contrast = 1.15f)
+            {
+                Use();
+                SetFloat("saturation", saturation);
+                SetFloat("brightness", brightness);
+                SetFloat("contrast", contrast);
+            }
+
+            // Method to set outline properties
+            public void SetOutlineProperties(
+                float thickness = 0.005f,
+                Vector3? color = null)
+            {
+                Use();
+                color ??= new Vector3(0.0f, 0.0f, 0.0f); // Default black
+
+                SetFloat("outlineThickness", thickness);
+                SetVector3("outlineColor", color.Value);
+            }
+
+            // Method to set environment properties
+            public void SetEnvironmentProperties(
+                Vector3? environmentColor = null,
+                float environmentStrength = 0.3f,
+                float fogDensity = 0.02f,
+                Vector3? fogColor = null)
+            {
+                Use();
+                environmentColor ??= new Vector3(0.1f, 0.1f, 0.2f);
+                fogColor ??= new Vector3(0.8f, 0.9f, 1.0f);
+
+                SetVector3("environmentColor", environmentColor.Value);
+                SetFloat("environmentStrength", environmentStrength);
+                SetFloat("fogDensity", fogDensity);
+                SetVector3("fogColor", fogColor.Value);
+            }
+
+            // Method to set sketch effect properties
+            public void SetSketchProperties(
+                float threshold = 0.1f,
+                float strength = 0.08f)
+            {
+                Use();
+                SetFloat("sketchThreshold", threshold);
+                SetFloat("sketchStrength", strength);
+            }
+
+            // Method to update time value for animations
+            public void UpdateTime(float time)
+            {
+                Use();
+                SetFloat("time", time);
+            }
+            // Метод для установки параметров теней
+            public void SetShadowProperties(
+                float shadowIntensity = 0.7f,
+                float shadowSoftness = 0.05f)
+            {
+                Use();
+                SetFloat("shadowIntensity", shadowIntensity);
+                SetFloat("shadowSoftness", shadowSoftness);
             }
         }
 
