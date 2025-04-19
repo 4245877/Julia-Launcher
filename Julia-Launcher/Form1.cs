@@ -10,6 +10,7 @@ using System.Net;                    // Для работы с сетевыми 
 using System.Net.Http;               // Для HTTP клиентских операций, например, HttpClient, HttpResponseMessage
 using System.Text;                   // Для работы со строками и кодировками, например, StringBuilder, Encoding
 using System.Threading;              // Для многопоточности и управления потоками, например, CancellationTokenSource
+using System.Threading.Tasks;
 using System.Windows.Forms;          // Для создания приложений Windows Forms, например, Form, Button
 
 namespace Julia_Launcher
@@ -462,10 +463,7 @@ namespace Julia_Launcher
 
 
         // Обработчики событий кнопок
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // Пустой метод в исходном коде
-        }
+        private void button2_Click(object sender, EventArgs e) { }
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -497,7 +495,12 @@ namespace Julia_Launcher
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (isInstalled)
+            string installedFilePath = Path.Combine(Path.GetTempPath(), "installed_app.exe");
+            string installerFilePath = Path.Combine(Path.GetTempPath(), "installer.exe");
+            string downloadUrl = "https://drive.google.com/uc?export=download&id=1khCoBVr65P49kGOsEfRy9po_XKjlNQiR";
+
+            // 1. Проверить, установлен ли продукт
+            if (File.Exists(installedFilePath))
             {
                 DialogResult result = MessageBox.Show(
                     "Продукт уже установлен. Запустить его?",
@@ -508,28 +511,17 @@ namespace Julia_Launcher
 
                 if (result == DialogResult.Yes)
                 {
-                    string installedFilePath = Path.Combine(Path.GetTempPath(), "installed_app.exe");
-                    if (File.Exists(installedFilePath))
+                    try
                     {
-                        try
-                        {
-                            Process.Start(installedFilePath);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка при запуске: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        Process.Start(installedFilePath);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Установленный файл не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Ошибка при запуске: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 return;
             }
-
-            string downloadUrl = "https://drive.google.com/uc?export=download&id=1khCoBVr65P49kGOsEfRy9po_XKjlNQiR";
-            string localFilePath = Path.Combine(Path.GetTempPath(), $"installer_{Guid.NewGuid().ToString("N")}.exe");
 
             progressBar.Visible = true;
             progressBar.Value = 0;
@@ -539,43 +531,80 @@ namespace Julia_Launcher
                 using (var cts = new CancellationTokenSource())
                 using (var httpClient = new HttpClient())
                 {
-                    HttpResponseMessage response = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-                    response.EnsureSuccessStatusCode();
+                    // Получить ожидаемый размер файла с сервера
+                    HttpResponseMessage headResponse = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+                    headResponse.EnsureSuccessStatusCode();
+                    long? expectedSize = headResponse.Content.Headers.ContentLength;
 
-                    long? totalBytes = response.Content.Headers.ContentLength;
-                    long bytesRead = 0;
-
-                    using (Stream contentStream = await response.Content.ReadAsStreamAsync())
-                    using (FileStream fileStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    // 2. Проверить наличие файла установщика
+                    bool needToDownload = true;
+                    if (File.Exists(installerFilePath))
                     {
-                        byte[] buffer = new byte[8192];
-                        int bytesReadThisTime;
-
-                        while ((bytesReadThisTime = await contentStream.ReadAsync(buffer, 0, buffer.Length, cts.Token)) > 0)
+                        long localSize = new FileInfo(installerFilePath).Length;
+                        if (expectedSize.HasValue && localSize == expectedSize.Value)
                         {
-                            await fileStream.WriteAsync(buffer, 0, bytesReadThisTime, cts.Token);
-                            bytesRead += bytesReadThisTime;
+                            // Файл загружен полностью, можно установить
+                            needToDownload = false;
+                        }
+                        else
+                        {
+                            // Файл загружен не полностью, удалить и скачать заново
+                            File.Delete(installerFilePath);
+                        }
+                    }
 
-                            if (totalBytes.HasValue && totalBytes > 0)
+                    // 3. Скачать файл, если необходимо
+                    if (needToDownload)
+                    {
+                        HttpResponseMessage response = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+                        response.EnsureSuccessStatusCode();
+
+                        long? totalBytes = response.Content.Headers.ContentLength;
+                        long bytesRead = 0;
+
+                        using (Stream contentStream = await response.Content.ReadAsStreamAsync())
+                        using (FileStream fileStream = new FileStream(installerFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            byte[] buffer = new byte[8192];
+                            int bytesReadThisTime;
+
+                            while ((bytesReadThisTime = await contentStream.ReadAsync(buffer, 0, buffer.Length, cts.Token)) > 0)
                             {
-                                int progress = (int)((bytesRead * 100) / totalBytes.Value);
-                                progressBar.Value = progress;
+                                await fileStream.WriteAsync(buffer, 0, bytesReadThisTime, cts.Token);
+                                bytesRead += bytesReadThisTime;
+
+                                if (totalBytes.HasValue && totalBytes > 0)
+                                {
+                                    int progress = (int)((bytesRead * 100) / totalBytes.Value);
+                                    progressBar.Value = progress;
+                                }
                             }
                         }
                     }
 
-                    if (File.Exists(localFilePath))
+                    // 4. Установить продукт
+                    if (File.Exists(installerFilePath))
                     {
                         try
                         {
-                            Process.Start(localFilePath);
-                            isInstalled = true;
-                            UpdateUI();
+                            Process installerProcess = Process.Start(installerFilePath);
+                            await Task.Run(() => installerProcess.WaitForExit()); // Ждем завершения установки
+
+                            // Проверяем, появился ли установленный файл
+                            if (File.Exists(installedFilePath))
+                            {
+                                isInstalled = true;
+                                UpdateUI();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Установка завершилась, но продукт не установлен.", "Ошибка установки", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show($"Ошибка при запуске установщика: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            File.Delete(localFilePath);
+                            File.Delete(installerFilePath); // Удаляем поврежденный установщик
                         }
                     }
                     else
@@ -587,7 +616,7 @@ namespace Julia_Launcher
             catch (OperationCanceledException)
             {
                 MessageBox.Show("Загрузка отменена.", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (File.Exists(localFilePath)) File.Delete(localFilePath);
+                if (File.Exists(installerFilePath)) File.Delete(installerFilePath);
             }
             catch (HttpRequestException ex)
             {
@@ -607,19 +636,10 @@ namespace Julia_Launcher
             }
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
+        private void panel2_Paint(object sender, PaintEventArgs e) { }
 
-        }
+        private void panel3_Paint(object sender, PaintEventArgs e) { }
 
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void progressBar_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void progressBar_Click(object sender, EventArgs e) { }
     }
 }
