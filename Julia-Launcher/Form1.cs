@@ -448,6 +448,9 @@ namespace Julia_Launcher
                         GpuRefreshRate = refreshRate;
                 }
             }
+
+
+
         }
 
         // Статический экземпляр класса HardwareInfo для доступа из других форм
