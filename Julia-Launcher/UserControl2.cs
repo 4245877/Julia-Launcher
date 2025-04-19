@@ -40,7 +40,7 @@ namespace Julia_Launcher
         private bool isDragging = false;
         private Point lastMousePos;
 
-        private Vector3 lightPos = new Vector3(3.2f, 5.0f, 4.0f);
+        private Vector3 lightPos = new Vector3 (5.0f, 5.0f, 5.0f);
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
         private float specularStrength = 0.5f;
@@ -181,9 +181,9 @@ namespace Julia_Launcher
                 shader.SetMatrix4("projection", projection);
 
                 // Трансформация модели
-                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale * Vector3.One) *
-                     Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
-                     Matrix4.CreateTranslation(modelPosition);
+                Matrix4 modelMatrix = Matrix4.CreateTranslation(modelPosition) *
+                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
+                                      Matrix4.CreateScale(modelScale * Vector3.One);
 
                 // Вычисляем нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
@@ -193,57 +193,25 @@ namespace Julia_Launcher
                 // Обновляем позицию света
                 float distance = 5.0f;
                 float heightOffset = 2.0f;
-                lightPos = camera.Position + camera.Front * distance + new Vector3(0, heightOffset, 0);
+                lightPos = camera.Position + camera.Front * distance + camera.Up * heightOffset;
 
                 // Устанавливаем основные параметры освещения
                 shader.SetVector3("lightPosition", lightPos);
-                shader.SetVector3("lightColor", lightColor);
+                shader.SetVector3("lightColor", new Vector3(0.7f, 0.7f, 0.7f));
                 shader.SetVector3("viewPosition", camera.Position);
-                shader.SetFloat("ambientStrength", ambientStrength * 0.8f); // Уменьшаем ambient для устранения "белизны"
+                shader.SetFloat("ambientStrength", ambientStrength * 0.1f); // Уменьшаем ambient для устранения "белизны"
                 shader.SetFloat("diffuseStrength", diffuseStrength);
-                shader.SetFloat("specularStrength", specularStrength * 0.7f); // Снижаем силу бликов
+                shader.SetFloat("specularStrength", 0.0f); // Снижаем силу бликов
                 shader.SetFloat("shininess", shininess);
 
-                // Устанавливаем параметры cel-shading
+                // Устанавливаем параметры cel-shading (без rimWidth)
                 shader.SetCelShadingProperties(
                     diffuseThresholds: new float[] { 0.8f, 0.6f, 0.3f },
-                    diffuseFactors: new float[] { 0.8f, 0.6f, 0.4f, 0.15f }, // Уменьшенные значения
-                    specularThreshold: 0.7f, // Повышенный порог для бликов
-                    rimColor: new Vector3(0.6f, 0.7f, 0.9f), // Менее интенсивный цвет ободка
-                    rimPower: 3.5f, // Усиленный эффект для более узкого ободка
-                    rimWidth: 0.25f // Уменьшенная ширина ободка
+                    diffuseFactors: new float[] { 0.8f, 0.6f, 0.4f, 0.15f },
+                    specularThreshold: 0.7f,
+                    rimColor: new Vector3(0.6f, 0.7f, 0.9f),
+                    rimPower: 3.5f
                 );
-
-                // Устанавливаем параметры цветокоррекции
-                shader.SetColorGradingProperties(
-                    saturation: 1.1f, // Уменьшенная насыщенность
-                    brightness: 0.9f, // Уменьшенная яркость
-                    contrast: 1.1f // Немного уменьшенный контраст
-                );
-
-                // Устанавливаем параметры контура
-                shader.SetOutlineProperties(
-                    thickness: 0.005f,
-                    color: new Vector3(0.0f, 0.0f, 0.0f)
-                );
-
-                // Устанавливаем параметры окружения и тумана
-                shader.SetEnvironmentProperties(
-                    environmentColor: new Vector3(0.05f, 0.05f, 0.1f), // Более темное окружение
-                    environmentStrength: 0.2f, // Уменьшенное влияние окружения
-                    fogDensity: 0.015f,
-                    fogColor: new Vector3(0.7f, 0.8f, 0.9f) // Менее яркий туман
-                );
-
-                // Устанавливаем параметры эффекта наброска
-                shader.SetSketchProperties(
-                    threshold: 0.15f,
-                    strength: 0.1f
-                );
-
-                // Устанавливаем параметры теней (новые)
-                shader.SetFloat("shadowIntensity", 0.7f);
-                shader.SetFloat("shadowSoftness", 0.05f);
 
                 // Рисуем модель
                 model.Draw(shader);
@@ -251,6 +219,7 @@ namespace Julia_Launcher
 
             glControl1.SwapBuffers();
         }
+
 
         // Обратный вызов таймера анимации
         private void AnimationTimer_Tick(object sender, EventArgs e)
