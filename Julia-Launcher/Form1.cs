@@ -1,14 +1,16 @@
-﻿using Microsoft.VisualBasic.Devices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Management;
-using System.Text;
-using System.Windows.Forms;
-using System.Net;         // Для работы с WebClient
-using System.Diagnostics; // Для запуска процесса
+﻿using Microsoft.VisualBasic.Devices; // Для доступа к информации о компьютере, например, через класс Computer
+using System;                        // Для базовых классов и типов, таких как Object, String
+using System.Collections.Generic;    // Для работы с generic коллекциями, например, List<T>, Dictionary<K,V>
+using System.ComponentModel;         // Для компонентно-ориентированного дизайна, например, BackgroundWorker
+using System.Diagnostics;            // Для запуска процессов и отладки, например, Process, Debug
+using System.Drawing;                // Для работы с графикой, например, Bitmap, Graphics
+using System.IO;                     // Для операций с файлами и потоками, например, File, StreamReader
+using System.Management;             // Для WMI запросов, например, ManagementObjectSearcher
+using System.Net;                    // Для работы с сетевыми операциями, например, WebClient
+using System.Net.Http;               // Для HTTP клиентских операций, например, HttpClient, HttpResponseMessage
+using System.Text;                   // Для работы со строками и кодировками, например, StringBuilder, Encoding
+using System.Threading;              // Для многопоточности и управления потоками, например, CancellationTokenSource
+using System.Windows.Forms;          // Для создания приложений Windows Forms, например, Form, Button
 
 namespace Julia_Launcher
 {
@@ -494,53 +496,110 @@ namespace Julia_Launcher
         {
             if (isInstalled)
             {
-                // Если продукт уже установлен, запускаем его (добавьте нужную логику)
-                MessageBox.Show("Продукт уже установлен. Добавьте логику запуска здесь.");
+                DialogResult result = MessageBox.Show(
+                    "Продукт уже установлен. Запустить его?",
+                    "Продукт готов",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    string installedFilePath = Path.Combine(Path.GetTempPath(), "installed_app.exe");
+                    if (File.Exists(installedFilePath))
+                    {
+                        try
+                        {
+                            Process.Start(installedFilePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка при запуске: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Установленный файл не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
                 return;
             }
 
-            // URL для загрузки файла с Google Диска
-            string downloadUrl = "https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"; // Замените YOUR_FILE_ID на реальный ID файла
-            string localFilePath = Path.Combine(Path.GetTempPath(), "installer.exe"); // Путь для сохранения файла во временной папке
+            string downloadUrl = "https://drive.google.com/uc?export=download&id=1khCoBVr65P49kGOsEfRy9po_XKjlNQiR";
+            string localFilePath = Path.Combine(Path.GetTempPath(), $"installer_{Guid.NewGuid().ToString("N")}.exe");
 
-            // Показываем progressBar
             progressBar.Visible = true;
             progressBar.Value = 0;
 
             try
             {
-                using (WebClient webClient = new WebClient())
+                using (var cts = new CancellationTokenSource())
+                using (var httpClient = new HttpClient())
                 {
-                    // Обновление progressBar при изменении прогресса загрузки
-                    webClient.DownloadProgressChanged += (s, ev) =>
-                    {
-                        progressBar.Value = ev.ProgressPercentage;
-                    };
+                    HttpResponseMessage response = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+                    response.EnsureSuccessStatusCode();
 
-                    // Действия после завершения загрузки
-                    webClient.DownloadFileCompleted += (s, ev) =>
+                    long? totalBytes = response.Content.Headers.ContentLength;
+                    long bytesRead = 0;
+
+                    using (Stream contentStream = await response.Content.ReadAsStreamAsync())
+                    using (FileStream fileStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
-                        if (ev.Error == null)
+                        byte[] buffer = new byte[8192];
+                        int bytesReadThisTime;
+
+                        while ((bytesReadThisTime = await contentStream.ReadAsync(buffer, 0, buffer.Length, cts.Token)) > 0)
                         {
-                            // Запускаем установочный файл
+                            await fileStream.WriteAsync(buffer, 0, bytesReadThisTime, cts.Token);
+                            bytesRead += bytesReadThisTime;
+
+                            if (totalBytes.HasValue && totalBytes > 0)
+                            {
+                                int progress = (int)((bytesRead * 100) / totalBytes.Value);
+                                progressBar.Value = progress;
+                            }
+                        }
+                    }
+
+                    if (File.Exists(localFilePath))
+                    {
+                        try
+                        {
                             Process.Start(localFilePath);
                             isInstalled = true;
                             UpdateUI();
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Ошибка при загрузке файла: " + ev.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Ошибка при запуске установщика: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            File.Delete(localFilePath);
                         }
-                        progressBar.Visible = false;
-                    };
-
-                    // Асинхронная загрузка файла
-                    await webClient.DownloadFileTaskAsync(new Uri(downloadUrl), localFilePath);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Файл установщика не найден после загрузки.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Загрузка отменена.", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (File.Exists(localFilePath)) File.Delete(localFilePath);
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show($"Ошибка сети: {ex.Message}", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Ошибка доступа к файлу: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Неизвестная ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
                 progressBar.Visible = false;
             }
         }
