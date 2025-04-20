@@ -110,8 +110,6 @@ namespace Julia_Launcher
             trkTimbre.Value = settings.Timbre;
         }
 
-        // Remove the InitializeOpenGL method entirely
-
         private void GlControl_Load(object sender, EventArgs e)
         {
             try
@@ -175,10 +173,9 @@ namespace Julia_Launcher
                 shader.SetMatrix4("view", view);
                 shader.SetMatrix4("projection", projection);
 
-                // Трансформация модели
-                Matrix4 modelMatrix = Matrix4.CreateTranslation(modelPosition) *
-                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
-                                      Matrix4.CreateScale(modelScale * Vector3.One);
+                Matrix4 modelMatrix = Matrix4.CreateScale(modelScale) *
+                                     Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
+                                     Matrix4.CreateTranslation(modelPosition);
 
                 // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
