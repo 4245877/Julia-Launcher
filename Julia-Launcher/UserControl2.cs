@@ -170,11 +170,6 @@ namespace Julia_Launcher
             {
                 shader.Use();
 
-                // Обновляем время для анимации
-                time += 0.016f; // Примерно для 60fps
-                shader.UpdateTime(time);
-
-                // Устанавливаем стандартные матрицы
                 Matrix4 view = camera.GetViewMatrix();
                 Matrix4 projection = camera.GetProjectionMatrix();
                 shader.SetMatrix4("view", view);
@@ -185,35 +180,21 @@ namespace Julia_Launcher
                                       Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                       Matrix4.CreateScale(modelScale * Vector3.One);
 
-                // Вычисляем нормальную матрицу
+                // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
                 shader.SetMatrix4("model", modelMatrix);
                 shader.SetMatrix3("normalMatrix", normalMatrix);
 
-                // Обновляем позицию света
-                float distance = 5.0f;
-                float heightOffset = 2.0f;
-                lightPos = camera.Position + camera.Front * distance + camera.Up * heightOffset;
-
-                // Устанавливаем основные параметры освещения
+                // Установить униформу освещения
                 shader.SetVector3("lightPosition", lightPos);
-                shader.SetVector3("lightColor", new Vector3(0.7f, 0.7f, 0.7f));
+                shader.SetVector3("lightColor", lightColor);
                 shader.SetVector3("viewPosition", camera.Position);
-                shader.SetFloat("ambientStrength", ambientStrength * 0.1f); // Уменьшаем ambient для устранения "белизны"
+                shader.SetFloat("ambientStrength", ambientStrength);
                 shader.SetFloat("diffuseStrength", diffuseStrength);
-                shader.SetFloat("specularStrength", 0.0f); // Снижаем силу бликов
+                shader.SetFloat("specularStrength", specularStrength);
                 shader.SetFloat("shininess", shininess);
 
-                // Устанавливаем параметры cel-shading (без rimWidth)
-                shader.SetCelShadingProperties(
-                    diffuseThresholds: new float[] { 0.8f, 0.6f, 0.3f },
-                    diffuseFactors: new float[] { 0.8f, 0.6f, 0.4f, 0.15f },
-                    specularThreshold: 0.7f,
-                    rimColor: new Vector3(0.6f, 0.7f, 0.9f),
-                    rimPower: 3.5f
-                );
-
-                // Рисуем модель
+                // Рисуем модель (которая установит преобразования костей, если анимирована)
                 model.Draw(shader);
             }
 
