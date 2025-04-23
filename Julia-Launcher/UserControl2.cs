@@ -1349,7 +1349,10 @@ namespace Julia_Launcher
 
                 directory = Path.GetDirectoryName(path);
                 LoadAnimations(scene);
-                ProcessNode(scene.RootNode, scene, Matrix4.Identity);
+
+                // Равномерное уменьшение в 2 раза
+                Matrix4 scaleTransform = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+                ProcessNode(scene.RootNode, scene, scaleTransform);
 
                 if (animations.Count > 0)
                 {
