@@ -16,13 +16,18 @@ using System.IO;
 using Assimp;
 using Assimp.Configs;
 using OpenTK.GLControl;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static Julia_Launcher.SettingsManager;
-using static Julia_Launcher.Camera;
-
 
 using System.Reflection;
+
 using static Julia_Launcher.UserControl2;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+using static Julia_Launcher.SettingsManager;
+using static Julia_Launcher.Camera;
+using static Julia_Launcher.Mesh;
+
+
+
 
 namespace Julia_Launcher
 {
@@ -676,114 +681,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Класс сетки для хранения данных сетки
-        // Модифицированный класс сетки для обработки данных костей
-        public class Mesh
-        {
-            private int VAO, VBO, EBO;
-            private int indexCount;
-            private bool hasBones;
-            public List<Texture> Textures { get; private set; }
-            private float[] vertices;
 
-            // Публичное свойство для доступа к hasBones
-            public bool HasBones => hasBones;
-
-            public Mesh(float[] vertices, uint[] indices, List<Texture> textures, bool hasBones = false)
-            {
-                this.vertices = vertices; // Сохраняем копию вершин
-                Textures = textures;
-                indexCount = indices.Length;
-                this.hasBones = hasBones;
-
-
-                // Create buffers/arrays
-                GL.GenVertexArrays(1, out VAO);
-                GL.GenBuffers(1, out VBO);
-                GL.GenBuffers(1, out EBO);
-
-                GL.BindVertexArray(VAO);
-
-                // Load data into vertex buffer
-                GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-
-                // Load data into element buffer
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
-
-                // Set vertex attribute pointers
-                int stride = hasBones ? 16 * sizeof(float) : 8 * sizeof(float);
-
-                // Position attribute
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, stride, 0);
-                GL.EnableVertexAttribArray(0);
-
-                // Normal attribute
-                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, stride, 3 * sizeof(float));
-                GL.EnableVertexAttribArray(1);
-
-                // Texture coords attribute
-                GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, stride, 6 * sizeof(float));
-                GL.EnableVertexAttribArray(2);
-
-
-                // If we have bones, set up bone attributes
-                if (hasBones)
-                {
-                    // Bone IDs (as vec4 of floats)
-                    GL.VertexAttribPointer(3, 4, VertexAttribPointerType.Float, false, stride, 8 * sizeof(float));
-                    GL.EnableVertexAttribArray(3);
-
-                    // Bone weights (as vec4 of floats)
-                    GL.VertexAttribPointer(4, 4, VertexAttribPointerType.Float, false, stride, 12 * sizeof(float));
-                    GL.EnableVertexAttribArray(4);
-                }
-
-                GL.BindVertexArray(0);
-            }
-
-
-            // Новый метод для получения вершин
-            public float[] GetVertices()
-            {
-                return vertices;
-            }
-
-            public void Draw(Shader shader)
-            {
-                uint diffuseNr = 1;
-                uint specularNr = 1;
-
-                for (int i = 0; i < Textures.Count; i++)
-                {
-                    GL.ActiveTexture(TextureUnit.Texture0 + i);
-                    string number = "";
-                    string name = Textures[i].Type;
-
-                    if (name == "texture_diffuse")
-                        number = diffuseNr++.ToString();
-                    else if (name == "texture_specular")
-                        number = specularNr++.ToString();
-
-                    shader.SetInt($"{name}{number}", i);
-                    GL.BindTexture(TextureTarget.Texture2D, Textures[i].Id);
-                }
-
-                GL.BindVertexArray(VAO);
-                GL.DrawElements(OpenTK.Graphics.OpenGL4.PrimitiveType.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
-                GL.BindVertexArray(0);
-
-                GL.ActiveTexture(TextureUnit.Texture0);
-            }
-
-            public void Dispose()
-            {
-                GL.DeleteVertexArray(VAO);
-                GL.DeleteBuffer(VBO);
-                GL.DeleteBuffer(EBO);
-            }
-        }
 
         // Класс текстуры для хранения данных текстуры
         public class Texture

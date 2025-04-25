@@ -46,7 +46,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Logo.ico" />
     <Resource Include="Model\sketch2.fbx" />
     <EmbeddedResource Include="Shaders\fragment.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
