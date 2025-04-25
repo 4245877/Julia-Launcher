@@ -1025,6 +1025,8 @@ namespace Julia_Launcher
                 MorphTargets[target] = Math.Clamp(weight, 0.0f, 1.0f);
             }
         }
+
+
         //Класс оборудования
         public class Equipment
         {
@@ -1593,5 +1595,4 @@ namespace Julia_Launcher
             return result;
         }
     }
-
 }
