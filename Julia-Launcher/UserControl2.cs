@@ -350,7 +350,6 @@ namespace Julia_Launcher
         }
 
         
-
         // Класс шейдера для обработки шейдеров GLSL
         public class Shader
         {
@@ -705,12 +704,6 @@ namespace Julia_Launcher
             }
         }
 
-        // Добавьте эти новые классы для обработки анимации
-
-
-
-
-
 
         private void AnimationTimerTick(object sender, EventArgs e)
         {
@@ -723,8 +716,6 @@ namespace Julia_Launcher
                 glControl1.Invalidate();
             }
         }
-
-
 
 
         // Класс модели для загрузки и рендеринга 3D-моделей
