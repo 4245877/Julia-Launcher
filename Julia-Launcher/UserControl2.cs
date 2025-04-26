@@ -30,6 +30,7 @@ using static Julia_Launcher.Bone;
 using static Julia_Launcher.KeyFrame;
 
 
+
 namespace Julia_Launcher
 {
     public partial class UserControl2 : UserControl
@@ -63,10 +64,12 @@ namespace Julia_Launcher
         {
             if (model == null) return;
 
+            // Вычисляем центр и размеры модели
             var (min, max) = model.CalculateBoundingBox();
-            Vector3 center = (min + max) / 2;
-            Vector3 size = max - min;
+            Vector3 center = (min + max) / 2; // Центр модели
+            Vector3 size = max - min;         // Размеры модели
 
+            // Расчёт расстояния камеры на основе поля зрения (FOV)
             float fovYRad = MathHelper.DegreesToRadians(30); // Вертикальный FOV
             float tanFovYHalf = (float)Math.Tan(fovYRad / 2);
             float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf); // Горизонтальный FOV
@@ -78,11 +81,21 @@ namespace Julia_Launcher
             float dY = (height / 2) / tanFovYHalf;
             float distance = Math.Max(dX, dY);
 
-            distance *= 1.2f; // Запас 20%
+            // Уменьшаем расстояние для приближения камеры
+            distance *= 0.8f; // 80% от расчётного расстояния
 
-            camera.Position = center + new Vector3(0, 0, distance);
-            camera.LookAt(center);
+            // Позиция камеры: немного выше центра
+            float cameraHeightOffset = size.Y * 0.25f; // Половина высоты модели
+            camera.Position = center + new Vector3(0, cameraHeightOffset, distance);
 
+            // Новая точка фокуса: выше центра модели
+            float focusHeightOffset = size.Y * 0.25f; // Четверть высоты модели (настраиваемо)
+            Vector3 focusPoint = center + new Vector3(0, focusHeightOffset, 0);
+
+            // Направляем камеру на точку выше центра
+            camera.LookAt(focusPoint);
+
+            // Обновляем вид
             glControl1.Invalidate();
         }
 
