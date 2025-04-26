@@ -27,7 +27,7 @@ using static Julia_Launcher.Camera;
 using static Julia_Launcher.Mesh;
 using static Julia_Launcher.Equipment;
 using static Julia_Launcher.Bone;
- 
+using static Julia_Launcher.KeyFrame;
 
 
 namespace Julia_Launcher
@@ -694,18 +694,7 @@ namespace Julia_Launcher
 
 
 
-        // Сохраняем данные ключевых кадров для анимации
-        public class KeyFrame
-        {
-            public float Time { get; private set; }
-            public Matrix4 Transform { get; private set; }
 
-            public KeyFrame(float time, Matrix4 transform)
-            {
-                Time = time;
-                Transform = transform;
-            }
-        }
 
         // Класс анимации для хранения и управления одной анимацией
         public class Animation
@@ -882,9 +871,6 @@ namespace Julia_Launcher
                 glControl1.Invalidate();
             }
         }
-
-
-
 
 
 
