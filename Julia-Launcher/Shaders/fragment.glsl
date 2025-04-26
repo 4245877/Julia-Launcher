@@ -4,6 +4,7 @@ out vec4 FragColor;
 in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoord;
+in vec4 LightSpaceFragPos;
 
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
@@ -13,6 +14,7 @@ uniform float diffuseStrength;
 uniform float specularStrength;
 uniform float shininess;
 uniform sampler2D texture_diffuse1;
+uniform sampler2D shadowMap;
 
 void main()
 {
@@ -46,7 +48,27 @@ void main()
     // Texture
     vec4 texColor = texture(texture_diffuse1, TexCoord);
 
-    // Combine lighting with texture
-    vec3 result = (ambient + diffuse + specular) * texColor.rgb;
+    // Shadow calculation with PCF
+    float shadow = 0.0;
+    vec4 lightSpacePos = LightSpaceFragPos / LightSpaceFragPos.w;
+    vec3 projCoords = lightSpacePos.xyz * 0.5 + 0.5;
+    if (projCoords.z <= 1.0 && projCoords.x >= 0.0 && projCoords.x <= 1.0 && projCoords.y >= 0.0 && projCoords.y <= 1.0) {
+        vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+        for(int x = -1; x <= 1; ++x) {
+            for(int y = -1; y <= 1; ++y) {
+                vec2 offset = vec2(x, y) * texelSize;
+                float closestDepth = texture(shadowMap, projCoords.xy + offset).r;
+                shadow += projCoords.z > closestDepth ? 1.0 : 0.0;
+            }
+        }
+        shadow /= 9.0;
+    } else if (projCoords.z > 1.0) {
+        shadow = 1.0; // Beyond light's far plane, assume in shadow
+    }
+
+    // Combine lighting with texture and shadow
+    vec3 directLight = diffuse + specular;
+    vec3 lighting = ambient + directLight * (1.0 - shadow);
+    vec3 result = lighting * texColor.rgb;
     FragColor = vec4(result, texColor.a);
 }
