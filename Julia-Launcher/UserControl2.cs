@@ -85,7 +85,7 @@ namespace Julia_Launcher
             distance *= 0.8f; // 80% от расчётного расстояния
 
             // Позиция камеры: немного выше центра
-            float cameraHeightOffset = size.Y * 0.25f; // Половина высоты модели
+            float cameraHeightOffset = size.Y * 0.25f; // 1/4 высоты модели
             camera.Position = center + new Vector3(0, cameraHeightOffset, distance);
 
             // Новая точка фокуса: выше центра модели
