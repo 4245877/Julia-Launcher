@@ -24,4 +24,21 @@ namespace Julia_Launcher
             Offset = offset;
         }
     }
+    public class CharacterComponent
+    {
+        public string Name { get; }
+        public Mesh Mesh { get; set; }
+        public Dictionary<string, float> MorphTargets { get; } = new Dictionary<string, float>(); // e.g., "EyeSize": 0.5
+
+        public CharacterComponent(string name, Mesh mesh)
+        {
+            Name = name;
+            Mesh = mesh;
+        }
+
+        public void ApplyMorph(string target, float weight)
+        {
+            MorphTargets[target] = Math.Clamp(weight, 0.0f, 1.0f);
+        }
+    }
 }
