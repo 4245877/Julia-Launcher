@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Julia_Launcher
 {
-    internal class AnimationManager
-    {
-    }
+ 
 }

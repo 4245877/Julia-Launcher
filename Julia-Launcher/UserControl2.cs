@@ -27,6 +27,7 @@ using static Julia_Launcher.Camera;
 using static Julia_Launcher.Mesh;
 using static Julia_Launcher.Equipment;
 using static Julia_Launcher.Bone;
+ 
 
 
 namespace Julia_Launcher
@@ -292,7 +293,7 @@ namespace Julia_Launcher
                 rotation = 0.0f;
 
                 // Попробуем загрузить камеру из файла, но всё равно применим автопозиционирование
-                LoadCameraFromFile(path);
+ 
                 AutoPositionCamera(); // Всегда вызываем после загрузки модели
 
                 glControl1.Invalidate();
@@ -303,49 +304,7 @@ namespace Julia_Launcher
             }
         }
 
-        private void LoadCameraFromFile(string path)
-        {
-            try
-            {
-                var importer = new AssimpContext();
-                Scene scene = importer.ImportFile(path,
-                    PostProcessSteps.Triangulate |
-                    PostProcessSteps.GenerateSmoothNormals |
-                    PostProcessSteps.FlipUVs |
-                    PostProcessSteps.CalculateTangentSpace |
-                    PostProcessSteps.LimitBoneWeights);
-
-                if (scene != null && scene.CameraCount > 0)
-                {
-                    Assimp.Camera assimpCamera = scene.Cameras[0];
-                    if (camera != null)
-                    {
-                        camera.SetFromAssimpCamera(assimpCamera);
-                        Console.WriteLine($"Camera loaded from file: {assimpCamera.Name}");
-                        glControl1.Invalidate();
-                    }
-                    else
-                    {
-                        camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
-                        camera.SetFromAssimpCamera(assimpCamera);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No camera found in the file, auto positioning camera");
-                    AutoPositionCamera();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Логирование ошибки
-                string errorMessage = $"Error loading camera from {path}: {ex.Message}\nStackTrace: {ex.StackTrace}";
-                LogError(errorMessage); // Запись в лог-файл
-                MessageBox.Show("Не удалось загрузить камеру из файла. Используется автоматическое позиционирование.",
-                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                AutoPositionCamera(); // Резервный сценарий
-            }
-        }
+ 
         private void LogError(string message)
         {
             string logPath = Path.Combine(Application.StartupPath, "error_log.txt");
