@@ -122,9 +122,10 @@
             label2.Location = new System.Drawing.Point(33, 67);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(32, 15);
+            label2.Size = new System.Drawing.Size(43, 15);
             label2.TabIndex = 8;
-            label2.Text = "Рост";
+            label2.Text = "Height";
+            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -133,9 +134,9 @@
             label3.Location = new System.Drawing.Point(33, 169);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(50, 15);
+            label3.Size = new System.Drawing.Size(28, 15);
             label3.TabIndex = 9;
-            label3.Text = "Возраст";
+            label3.Text = "Age";
             // 
             // label4
             // 
@@ -144,9 +145,9 @@
             label4.Location = new System.Drawing.Point(33, 258);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(28, 15);
+            label4.Size = new System.Drawing.Size(33, 15);
             label4.TabIndex = 10;
-            label4.Text = "Тон";
+            label4.Text = "Tone";
             // 
             // label5
             // 
@@ -155,9 +156,9 @@
             label5.Location = new System.Drawing.Point(33, 360);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(89, 15);
+            label5.Size = new System.Drawing.Size(79, 15);
             label5.TabIndex = 11;
-            label5.Text = "Скорость речи";
+            label5.Text = "Speech speed";
             // 
             // label10
             // 
@@ -166,9 +167,9 @@
             label10.Location = new System.Drawing.Point(33, 118);
             label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(26, 15);
+            label10.Size = new System.Drawing.Size(45, 15);
             label10.TabIndex = 16;
-            label10.Text = "Вес";
+            label10.Text = "Weight";
             // 
             // label11
             // 
@@ -178,9 +179,9 @@
             label11.Location = new System.Drawing.Point(15, 221);
             label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(116, 13);
+            label11.Size = new System.Drawing.Size(87, 13);
             label11.TabIndex = 17;
-            label11.Text = "Настройки голоса";
+            label11.Text = "Voice settings";
             // 
             // label12
             // 
@@ -189,9 +190,9 @@
             label12.Location = new System.Drawing.Point(33, 309);
             label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(43, 15);
+            label12.Size = new System.Drawing.Size(45, 15);
             label12.TabIndex = 18;
-            label12.Text = "Тембр";
+            label12.Text = "Timbre";
             // 
             // label13
             // 
@@ -200,9 +201,9 @@
             label13.Location = new System.Drawing.Point(33, 411);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(66, 15);
+            label13.Size = new System.Drawing.Size(47, 15);
             label13.TabIndex = 19;
-            label13.Text = "Громкость";
+            label13.Text = "Volume";
             // 
             // label6
             // 
@@ -211,9 +212,9 @@
             label6.Location = new System.Drawing.Point(15, 32);
             label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(131, 15);
+            label6.Size = new System.Drawing.Size(103, 15);
             label6.TabIndex = 20;
-            label6.Text = "Настройки 3D-модели";
+            label6.Text = "3D Model Settings";
             // 
             // glControl1
             // 

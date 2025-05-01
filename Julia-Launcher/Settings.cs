@@ -47,7 +47,7 @@ namespace Julia_Launcher
         public string CPULimit { get; set; } = string.Empty;
 
         // Свойства для TrackBar
-        public int RAMUsage { get; set; } = 0;
+        public int RAMUsage { get; set; } = 4096;
 
         // Свойства для RadioButton
         public bool radWhite { get; set; } = false;

@@ -212,6 +212,7 @@
             txtLogDirectory.Location = new System.Drawing.Point(166, 78);
             txtLogDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtLogDirectory.Name = "txtLogDirectory";
+            txtLogDirectory.ReadOnly = true;
             txtLogDirectory.Size = new System.Drawing.Size(288, 23);
             txtLogDirectory.TabIndex = 78;
             txtLogDirectory.TextChanged += txtLogDirectory_TextChanged;
@@ -221,6 +222,7 @@
             txtInstallDirectory.Location = new System.Drawing.Point(166, 42);
             txtInstallDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtInstallDirectory.Name = "txtInstallDirectory";
+            txtInstallDirectory.ReadOnly = true;
             txtInstallDirectory.Size = new System.Drawing.Size(288, 23);
             txtInstallDirectory.TabIndex = 64;
             txtInstallDirectory.TextChanged += txtInstallDirectory_TextChanged;
@@ -296,6 +298,7 @@
             txtModulesDirectory.Location = new System.Drawing.Point(166, 115);
             txtModulesDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtModulesDirectory.Name = "txtModulesDirectory";
+            txtModulesDirectory.ReadOnly = true;
             txtModulesDirectory.Size = new System.Drawing.Size(288, 23);
             txtModulesDirectory.TabIndex = 118;
             txtModulesDirectory.TextChanged += txtModulesDirectory_TextChanged;
@@ -316,6 +319,7 @@
             txtCacheDirectory.Location = new System.Drawing.Point(166, 152);
             txtCacheDirectory.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtCacheDirectory.Name = "txtCacheDirectory";
+            txtCacheDirectory.ReadOnly = true;
             txtCacheDirectory.Size = new System.Drawing.Size(288, 23);
             txtCacheDirectory.TabIndex = 99;
             txtCacheDirectory.TextChanged += txtCacheDirectory_TextChanged;
@@ -472,7 +476,7 @@
             // 
             trackRamUsage.Location = new System.Drawing.Point(109, 27);
             trackRamUsage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackRamUsage.Maximum = 4096;
+            trackRamUsage.Maximum = 9999999;
             trackRamUsage.Minimum = 4096;
             trackRamUsage.Name = "trackRamUsage";
             trackRamUsage.Size = new System.Drawing.Size(288, 45);

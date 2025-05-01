@@ -52,7 +52,7 @@ namespace Julia_Launcher
         private bool isDragging = false;
         private Point lastMousePos;
 
-        private Vector3 lightPos = new Vector3 (5.0f, 5.0f, 5.0f);
+        private Vector3 lightPos = new Vector3(5.0f, 5.0f, 5.0f);
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
         private float specularStrength = 0.5f;
@@ -308,7 +308,7 @@ namespace Julia_Launcher
                 rotation = 0.0f;
 
                 // Попробуем загрузить камеру из файла, но всё равно применим автопозиционирование
- 
+
                 AutoPositionCamera(); // Всегда вызываем после загрузки модели
 
                 glControl1.Invalidate();
@@ -319,7 +319,7 @@ namespace Julia_Launcher
             }
         }
 
- 
+
         private void LogError(string message)
         {
             string logPath = Path.Combine(Application.StartupPath, "error_log.txt");
@@ -349,7 +349,7 @@ namespace Julia_Launcher
             }
         }
 
-        
+
         // Класс шейдера для обработки шейдеров GLSL
         public class Shader
         {
@@ -838,7 +838,7 @@ namespace Julia_Launcher
             }
             private void BuildSkeleton(Scene scene)
             {
-                
+
             }
 
             private Matrix4 ConvertMatrix(Matrix4x4 assimpMatrix)
@@ -1202,6 +1202,11 @@ namespace Julia_Launcher
             var shirt = new Equipment("Shirt", "path/to/shirt.fbx", "Spine", Matrix4.Identity);
             model.AddEquipment(shirt);
             glControl1.Invalidate();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
