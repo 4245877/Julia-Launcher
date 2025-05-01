@@ -35,17 +35,19 @@
             SetingButton = new System.Windows.Forms.Button();
             btnModelVoiceSettings = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
-            button2 = new System.Windows.Forms.Button();
             panel3 = new System.Windows.Forms.Panel();
+            pictureBoxInfo = new System.Windows.Forms.PictureBox();
             button1 = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panel1.Controls.Add(pictureBoxInfo);
             panel1.Controls.Add(progressBar);
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -65,12 +67,11 @@
             // 
             // panel2
             // 
-            panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            panel2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel2.Controls.Add(SetingButton);
             panel2.Controls.Add(btnModelVoiceSettings);
             panel2.Controls.Add(button3);
-            panel2.Controls.Add(button2);
             panel2.Location = new System.Drawing.Point(10, 12);
             panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
@@ -115,21 +116,9 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
-            // button2
-            // 
-            button2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            button2.Location = new System.Drawing.Point(3, 3);
-            button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(145, 48);
-            button2.TabIndex = 1;
-            button2.Text = "account";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
             // panel3
             // 
-            panel3.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panel3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel3.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel3.Controls.Add(button1);
             panel3.Location = new System.Drawing.Point(166, 644);
@@ -139,9 +128,21 @@
             panel3.TabIndex = 2;
             panel3.Paint += panel3_Paint;
             // 
+            // pictureBoxInfo
+            // 
+            pictureBoxInfo.BackColor = System.Drawing.Color.Transparent;
+            pictureBoxInfo.Image = (System.Drawing.Image)resources.GetObject("pictureBoxInfo.Image");
+            pictureBoxInfo.Location = new System.Drawing.Point(3, 3);
+            pictureBoxInfo.Name = "pictureBoxInfo";
+            pictureBoxInfo.Size = new System.Drawing.Size(32, 32);
+            pictureBoxInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            pictureBoxInfo.TabIndex = 1;
+            pictureBoxInfo.TabStop = false;
+            pictureBoxInfo.Click += pictureBoxInfo_Click;
+            // 
             // button1
             // 
-            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
             button1.Font = new System.Drawing.Font("Intro Friday", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 204);
             button1.ForeColor = System.Drawing.Color.White;
@@ -169,8 +170,10 @@
             Text = "Julia Launcher ";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).EndInit();
             ResumeLayout(false);
 
         }
@@ -183,9 +186,9 @@
         private System.Windows.Forms.Button SetingButton;
         private System.Windows.Forms.Button btnModelVoiceSettings;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.PictureBox pictureBoxInfo;
     }
 }
 

@@ -12,7 +12,6 @@ using System.Text;                   // Для работы со строкам�
 using System.Threading;              // Для многопоточности и управления потоками, например, CancellationTokenSource
 using System.Threading.Tasks;
 using System.Windows.Forms;          // Для создания приложений Windows Forms, например, Form, Button
-
 namespace Julia_Launcher
 {
     public partial class Form1 : Form
@@ -461,10 +460,6 @@ namespace Julia_Launcher
 
 
 
-
-        // Обработчики событий кнопок
-        private void button2_Click(object sender, EventArgs e) { }
-
         private void button5_Click(object sender, EventArgs e)
         {
             LoadUserControl(new UserControl1());
@@ -641,5 +636,15 @@ namespace Julia_Launcher
         private void panel3_Paint(object sender, PaintEventArgs e) { }
 
         private void progressBar_Click(object sender, EventArgs e) { }
+
+        private void pictureBoxInfo_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "https://4245877.github.io/Julia_site/",
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+        }
     }
 }
