@@ -30,24 +30,23 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
+            pictureBoxInfo = new System.Windows.Forms.PictureBox();
             progressBar = new System.Windows.Forms.ProgressBar();
             panel2 = new System.Windows.Forms.Panel();
             SetingButton = new System.Windows.Forms.Button();
             btnModelVoiceSettings = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
             panel3 = new System.Windows.Forms.Panel();
-            pictureBoxInfo = new System.Windows.Forms.PictureBox();
             button1 = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).BeginInit();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panel1.Controls.Add(pictureBoxInfo);
             panel1.Controls.Add(progressBar);
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -55,6 +54,18 @@
             panel1.Size = new System.Drawing.Size(1171, 626);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
+            // 
+            // pictureBoxInfo
+            // 
+            pictureBoxInfo.BackColor = System.Drawing.Color.Transparent;
+            pictureBoxInfo.Image = (System.Drawing.Image)resources.GetObject("pictureBoxInfo.Image");
+            pictureBoxInfo.Location = new System.Drawing.Point(3, 3);
+            pictureBoxInfo.Name = "pictureBoxInfo";
+            pictureBoxInfo.Size = new System.Drawing.Size(32, 32);
+            pictureBoxInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            pictureBoxInfo.TabIndex = 1;
+            pictureBoxInfo.TabStop = false;
+            pictureBoxInfo.Click += pictureBoxInfo_Click;
             // 
             // progressBar
             // 
@@ -69,6 +80,7 @@
             // 
             panel2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            panel2.Controls.Add(pictureBoxInfo);
             panel2.Controls.Add(SetingButton);
             panel2.Controls.Add(btnModelVoiceSettings);
             panel2.Controls.Add(button3);
@@ -128,18 +140,6 @@
             panel3.TabIndex = 2;
             panel3.Paint += panel3_Paint;
             // 
-            // pictureBoxInfo
-            // 
-            pictureBoxInfo.BackColor = System.Drawing.Color.Transparent;
-            pictureBoxInfo.Image = (System.Drawing.Image)resources.GetObject("pictureBoxInfo.Image");
-            pictureBoxInfo.Location = new System.Drawing.Point(3, 3);
-            pictureBoxInfo.Name = "pictureBoxInfo";
-            pictureBoxInfo.Size = new System.Drawing.Size(32, 32);
-            pictureBoxInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            pictureBoxInfo.TabIndex = 1;
-            pictureBoxInfo.TabStop = false;
-            pictureBoxInfo.Click += pictureBoxInfo_Click;
-            // 
             // button1
             // 
             button1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -170,10 +170,10 @@
             Text = "Julia Launcher ";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).EndInit();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
             ResumeLayout(false);
 
         }
