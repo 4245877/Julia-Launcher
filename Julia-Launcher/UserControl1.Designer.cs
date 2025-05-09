@@ -476,7 +476,7 @@
             // 
             trackRamUsage.Location = new System.Drawing.Point(109, 27);
             trackRamUsage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            trackRamUsage.Maximum = 9999999;
+            trackRamUsage.Maximum = 999999;
             trackRamUsage.Minimum = 4096;
             trackRamUsage.Name = "trackRamUsage";
             trackRamUsage.Size = new System.Drawing.Size(288, 45);
@@ -541,6 +541,7 @@
             txtCpuLoad.Name = "txtCpuLoad";
             txtCpuLoad.Size = new System.Drawing.Size(116, 23);
             txtCpuLoad.TabIndex = 109;
+            txtCpuLoad.TextChanged += txtCpuLoad_TextChanged;
             // 
             // tabPage3
             // 

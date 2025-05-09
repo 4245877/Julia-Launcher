@@ -52,6 +52,7 @@ namespace Julia_Launcher
                 previousRamUsage = trackRamUsage.Value; // Инициализируем предыдущее значение
                 InitializeComboBox();
                 LoadHardwareInfo();
+                LoadSettings(); // Загружаем настройки только если hardwareInfo доступен
             }
             else
             {
@@ -149,7 +150,15 @@ namespace Julia_Launcher
 
 
             // TrackBar controls
-            trackRamUsage.Value = settings.RAMUsage; 
+            if (settings.RAMUsage < trackRamUsage.Minimum)
+            {
+                settings.RAMUsage = trackRamUsage.Minimum;
+            }
+            else if (settings.RAMUsage > trackRamUsage.Maximum)
+            {
+                settings.RAMUsage = trackRamUsage.Maximum;
+            }
+            trackRamUsage.Value = settings.RAMUsage;
 
 
             // RadioButton controls
@@ -362,7 +371,7 @@ namespace Julia_Launcher
         }
         private void txtHotkeyLounch_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         //Button 
@@ -418,20 +427,11 @@ namespace Julia_Launcher
 
         // ComboBox
 
-        private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void cmbCpuCores_SelectedIndexChanged(object sender, EventArgs e) { }
 
-        }
+        private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e) { }
 
-        private void cmbUpdateBranch_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e) { }
 
         private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -440,104 +440,50 @@ namespace Julia_Launcher
                 SaveSettings("Errors", cmbErrors.SelectedItem.ToString());
             }
         }
-        private void cmbLogFormat_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void cmbWarnings_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void cmbInfoMassages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void cmbGpuSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void cmbLogFormat_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbDebugging_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbWarnings_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbInfoMassages_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cmbGpuSelection_SelectedIndexChanged(object sender, EventArgs e) { }
 
         // CheckBox
 
-        private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
-        {
+        private void chkAutoStart_CheckedChanged(object sender, EventArgs e) { }
 
-        }
+        private void chkGPUEnable_CheckedChanged(object sender, EventArgs e) { }
 
-        private void chkGPUEnable_CheckedChanged(object sender, EventArgs e)
-        {
+        private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e) { }
+        private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e) { }
 
-        }
-
-        private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void chkProtectionWithaPassword_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void chkManUpdate_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void chkAllowedIPAddresses_CheckedChanged(object sender, EventArgs e) { }
+        private void chkUpdPreferen_CheckedChanged(object sender, EventArgs e) { }
+        private void chkUpdateSrartup_CheckedChanged(object sender, EventArgs e) { }
+        private void chkManUpdate_CheckedChanged(object sender, EventArgs e) { }
         private void chkUpdateSrartup_CheckedChanged_1(object sender, EventArgs e)
         {
 
         }
-        private void chkLogRetention_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
+        private void chkLogRetention_CheckedChanged(object sender, EventArgs e) { }
         // RadioButton
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
+        private void radioButton1_CheckedChanged(object sender, EventArgs e) { }
 
-        }
+        private void radioButton2_CheckedChanged_1(object sender, EventArgs e) { } 
 
-        private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radSystem_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void radSystem_CheckedChanged(object sender, EventArgs e) { }
 
         // TrackBar
-        private void trackRamUsage_Scroll(object sender, EventArgs e)
+        private void trackRamUsage_Scroll(object sender, EventArgs e) { }
+
+
+        private void tabPage3_Click(object sender, EventArgs e) { }
+        private void tabPage4_Click(object sender, EventArgs e) { }
+        private void UserControl1_Load(object sender, EventArgs e) { }
+        private void tabPage1_Click(object sender, EventArgs e) { }
+
+        private void txtCpuLoad_TextChanged(object sender, EventArgs e)
         {
 
         }
-
-
-        private void tabPage3_Click(object sender, EventArgs e){}
-        private void tabPage4_Click(object sender, EventArgs e){}
-        private void UserControl1_Load(object sender, EventArgs e){}
-        private void tabPage1_Click(object sender, EventArgs e){}
     }
 }

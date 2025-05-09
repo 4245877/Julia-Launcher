@@ -19,19 +19,9 @@ using OpenTK.GLControl;
 
 using System.Reflection;
 
-using static Julia_Launcher.UserControl2;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 using static Julia_Launcher.SettingsManager;
-using static Julia_Launcher.Camera;
-using static Julia_Launcher.Mesh;
-using static Julia_Launcher.Equipment;
-using static Julia_Launcher.Bone;
-using static Julia_Launcher.KeyFrame;
-using static Julia_Launcher.Animation;
-using static Julia_Launcher.AnimationManager;
-using static Julia_Launcher.Animator;
-using static Julia_Launcher.Matrix4Extensions;
+using System.Diagnostics;
 
 namespace Julia_Launcher
 {
@@ -145,7 +135,7 @@ namespace Julia_Launcher
                 // Получаем путь к директории исполняемого файла
                 string appDirectory = Application.StartupPath;
 
-                // Строим путь к папке Shaders в выходной директории
+                // Строим путь к папке Shaders
                 string shadersDirectory = Path.Combine(appDirectory, "Shaders");
                 string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
                 string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
@@ -162,9 +152,17 @@ namespace Julia_Launcher
                 camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
-                // Строим относительный путь к модели
+                // Строим путь к модели
                 string modelDirectory = Path.Combine(appDirectory, "..", "..", "..", "Model");
                 string modelPath = Path.Combine(modelDirectory, "sketch2.fbx");
+
+                // Проверяем существование файла модели
+                if (!File.Exists(modelPath))
+                {
+                    MessageBox.Show($"Файл модели не найден!\nПуть к sketch2.fbx: {modelPath}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 LoadModel(modelPath); // Здесь теперь вызывается AutoPositionCamera
                 loaded = true;
@@ -301,17 +299,15 @@ namespace Julia_Launcher
         {
             try
             {
-                model?.Dispose();
-                model = new Model(path);
-                modelScale = 1.0f;
-                modelPosition = Vector3.Zero;
-                rotation = 0.0f;
+                model?.Dispose(); // Освобождаем старую модель, если она есть
+                model = new Model(path); // Создаем новую модель, доверив ей загрузку
+                modelScale = 1.0f; // Сбрасываем масштаб
+                modelPosition = Vector3.Zero; // Сбрасываем позицию
+                rotation = 0.0f; // Сбрасываем поворот
 
-                // Попробуем загрузить камеру из файла, но всё равно применим автопозиционирование
+                AutoPositionCamera(); // Настраиваем камеру после загрузки
 
-                AutoPositionCamera(); // Всегда вызываем после загрузки модели
-
-                glControl1.Invalidate();
+                glControl1.Invalidate(); // Обновляем контрол
             }
             catch (Exception ex)
             {
@@ -705,24 +701,12 @@ namespace Julia_Launcher
         }
 
 
-        private void AnimationTimerTick(object sender, EventArgs e)
-        {
-            if (model != null && model.HasAnimations && isAnimating)
-            {
-                float deltaTime = (float)(DateTime.Now - lastFrameTime).TotalSeconds;
-                lastFrameTime = DateTime.Now;
-                model.Update(deltaTime);
-                animationManager.Update(deltaTime);
-                glControl1.Invalidate();
-            }
-        }
 
 
         // Класс модели для загрузки и рендеринга 3D-моделей
         // Измените класс модели для поддержки анимации
         public class Model : IDisposable
         {
-            private AssimpContext importer; // Поле для AssimpContext
             private List<Mesh> meshes = new List<Mesh>();
             private string directory;
             private Dictionary<string, int> loadedTextures = new Dictionary<string, int>();
@@ -746,11 +730,9 @@ namespace Julia_Launcher
 
             public Model(string path)
             {
-                importer = new AssimpContext();
-                importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
                 defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255);
                 defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);
-                animator = new Animator(100); // Поддержка до 100 костей
+                animator = new Animator(100);
                 LoadModel(path);
             }
 
@@ -1088,7 +1070,6 @@ namespace Julia_Launcher
 
             public void Dispose()
             {
-                importer?.Dispose();
                 GL.DeleteTexture(defaultDiffuseTexture);
                 GL.DeleteTexture(defaultSpecularTexture);
                 foreach (var textureId in loadedTextures.Values)
@@ -1100,19 +1081,6 @@ namespace Julia_Launcher
                     mesh.Dispose();
                 }
             }
-        }
-
-        // Пустые обработчики событий — реализуем их с базовой функциональностью camera
-        private void glControl1_Click(object sender, EventArgs e)
-        {
-            // Переслать главному обработчику кликов
-            GlControl_Click(sender, e);
-        }
-
-        private void glControl1_Click_1(object sender, EventArgs e)
-        {
-            // Переслать главному обработчику кликов
-            GlControl_Click(sender, e);
         }
 
         private void glControl1_Click_2(object sender, EventArgs e)
@@ -1160,7 +1128,7 @@ namespace Julia_Launcher
             }
         }
 
-
+         
         // Trackbars
         private void trkHeight_Scroll(object sender, EventArgs e)
         {
@@ -1199,15 +1167,34 @@ namespace Julia_Launcher
 
         private void btnAddClothing_Click(object sender, EventArgs e)
         {
-            var shirt = new Equipment("Shirt", "path/to/shirt.fbx", "Spine", Matrix4.Identity);
-            model.AddEquipment(shirt);
-            glControl1.Invalidate();
+            PlayHelloWorld();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void label2_Click(object sender, EventArgs e) { }
+
+        public void PlayHelloWorld()
         {
+            string filePath = "output.wav";
 
+            // Запуск Python-скрипта
+            Process process = new Process();
+            process.StartInfo.FileName = "python";
+            process.StartInfo.Arguments = "script.py";
+            process.Start();
+            process.WaitForExit();
+
+            // Проверка наличия файла
+            if (File.Exists(filePath))
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(filePath);
+                player.Play();
+            }
+            else
+            {
+                Console.WriteLine($"Ошибка: файл {filePath} не найден.");
+            }
         }
+
     }
 
 }

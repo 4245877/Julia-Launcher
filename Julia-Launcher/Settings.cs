@@ -47,7 +47,7 @@ namespace Julia_Launcher
         public string CPULimit { get; set; } = string.Empty;
 
         // Свойства для TrackBar
-        public int RAMUsage { get; set; } = 4096;
+        public int RAMUsage { get; set; } = 4097;
 
         // Свойства для RadioButton
         public bool radWhite { get; set; } = false;
@@ -57,7 +57,7 @@ namespace Julia_Launcher
         //UserControl2
         public short Height { get; set; } = 175;
         public short Weight { get; set; } = 65;
-        public short Age { get; set; } = 22;
+        public short Age { get; set; } = 21;
         public short Tone { get; set; } = 3;
         public short Timbre { get; set; } = 2;
         public short SpeechRate { get; set; } = 1;
