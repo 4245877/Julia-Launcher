@@ -376,9 +376,13 @@ namespace Julia_Launcher
                 }
             }
 
-            public void SetMatrix3(string name, Matrix3 value)
+            public void Use()
             {
                 GL.UseProgram(Handle);
+            }
+
+            public void SetMatrix3(string name, Matrix3 value)
+            {
                 int location = GetUniformLocation(name);
                 GL.UniformMatrix3(location, false, ref value);
             }
@@ -401,48 +405,36 @@ namespace Julia_Launcher
 
             public void SetInt(string name, int value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform1(GetUniformLocation(name), value);
-            }
-
-            public void Use()
-            {
-                GL.UseProgram(Handle);
             }
 
             public void SetFloat(string name, float value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform1(GetUniformLocation(name), value);
             }
 
             public void SetVector3(string name, Vector3 value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform3(GetUniformLocation(name), value);
             }
 
             public void SetVector2(string name, Vector2 value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform2(GetUniformLocation(name), value);
             }
 
             public void SetVector4(string name, Vector4 value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform4(GetUniformLocation(name), value);
             }
 
             public void SetBool(string name, bool value)
             {
-                GL.UseProgram(Handle);
                 GL.Uniform1(GetUniformLocation(name), value ? 1 : 0);
             }
 
             public void SetTexture(string name, int textureUnit, int textureId)
             {
-                GL.UseProgram(Handle);
                 GL.ActiveTexture(TextureUnit.Texture0 + textureUnit);
                 GL.BindTexture(TextureTarget.Texture2D, textureId);
                 GL.Uniform1(GetUniformLocation(name), textureUnit);
@@ -450,7 +442,6 @@ namespace Julia_Launcher
 
             public void SetPBRMaterial(string materialName, int diffuseMap, int normalMap, int specularMap, int roughnessMap, int aoMap, float metallic = 0.0f)
             {
-                Use();
                 SetTexture($"{materialName}_diffuse1", 0, diffuseMap);
                 SetTexture($"{materialName}_normal1", 1, normalMap);
                 SetTexture($"{materialName}_specular1", 2, specularMap);
@@ -461,7 +452,6 @@ namespace Julia_Launcher
 
             public void SetLightProperties(Vector3 position, Vector3 color, float intensity, Vector3 ambientLight, float gamma = 2.2f)
             {
-                Use();
                 SetVector3("lightPosition", position);
                 SetVector3("lightColor", color);
                 SetFloat("lightIntensity", intensity);
@@ -471,7 +461,6 @@ namespace Julia_Launcher
 
             public void SetFogProperties(bool enable, Vector3 color, float near, float far)
             {
-                Use();
                 SetBool("enableFog", enable);
                 SetVector3("fogColor", color);
                 SetFloat("fogNear", near);
@@ -480,7 +469,6 @@ namespace Julia_Launcher
 
             public void SetShadowMap(int shadowMapTextureId, Matrix4 lightSpaceMatrix)
             {
-                Use();
                 SetTexture("shadowMap", 5, shadowMapTextureId);
                 SetMatrix4("lightSpaceMatrix", lightSpaceMatrix);
             }
@@ -497,7 +485,6 @@ namespace Julia_Launcher
 
             public void SetMatrix4(string name, Matrix4 value)
             {
-                GL.UseProgram(Handle);
                 GL.UniformMatrix4(GetUniformLocation(name), false, ref value);
             }
 
@@ -521,8 +508,6 @@ namespace Julia_Launcher
 
             public void SetCelShadingProperties(float[] diffuseThresholds = null, float[] diffuseFactors = null, float specularThreshold = 0.6f, Vector3? rimColor = null, float rimPower = 3.0f, float rimWidth = 0.3f)
             {
-                Use();
-
                 diffuseThresholds ??= new float[] { 0.8f, 0.6f, 0.3f };
                 diffuseFactors ??= new float[] { 1.0f, 0.8f, 0.5f, 0.2f };
                 rimColor ??= new Vector3(0.8f, 0.9f, 1.0f);
@@ -545,7 +530,6 @@ namespace Julia_Launcher
 
             public void SetColorGradingProperties(float saturation = 1.2f, float brightness = 1.1f, float contrast = 1.15f)
             {
-                Use();
                 SetFloat("saturation", saturation);
                 SetFloat("brightness", brightness);
                 SetFloat("contrast", contrast);
@@ -553,7 +537,6 @@ namespace Julia_Launcher
 
             public void SetOutlineProperties(float thickness = 0.005f, Vector3? color = null)
             {
-                Use();
                 color ??= new Vector3(0.0f, 0.0f, 0.0f);
 
                 SetFloat("outlineThickness", thickness);
@@ -562,7 +545,6 @@ namespace Julia_Launcher
 
             public void SetEnvironmentProperties(Vector3? environmentColor = null, float environmentStrength = 0.3f, float fogDensity = 0.02f, Vector3? fogColor = null)
             {
-                Use();
                 environmentColor ??= new Vector3(0.1f, 0.1f, 0.2f);
                 fogColor ??= new Vector3(0.8f, 0.9f, 1.0f);
 
@@ -574,20 +556,17 @@ namespace Julia_Launcher
 
             public void SetSketchProperties(float threshold = 0.1f, float strength = 0.08f)
             {
-                Use();
                 SetFloat("sketchThreshold", threshold);
                 SetFloat("sketchStrength", strength);
             }
 
             public void UpdateTime(float time)
             {
-                Use();
                 SetFloat("time", time);
             }
 
             public void SetShadowProperties(float shadowIntensity = 0.7f, float shadowSoftness = 0.05f)
             {
-                Use();
                 SetFloat("shadowIntensity", shadowIntensity);
                 SetFloat("shadowSoftness", shadowSoftness);
             }
@@ -763,7 +742,7 @@ namespace Julia_Launcher
                     ProcessNode(node.Children[i], scene, globalTransform);
                 }
             }
-
+            // TODO:
             private void BuildSkeleton(Scene scene)
             {
             }
