@@ -16,17 +16,27 @@ using System.IO;
 using Assimp;
 using Assimp.Configs;
 using OpenTK.GLControl;
-
 using System.Reflection;
-
-
 using static Julia_Launcher.SettingsManager;
 using System.Diagnostics;
 
 namespace Julia_Launcher
 {
+
+
+
+
+
     public partial class UserControl2 : UserControl
     {
+        // Константы
+        private const float NORMAL_SMOOTHING_ANGLE = 66.0f;
+        private const float MODEL_ROTATION_SPEED = 0.5f;
+        private const float CAMERA_MOVEMENT_SPEED = 0.1f;
+        private const float CAMERA_ZOOM_SPEED = 120.0f;
+        private const float INITIAL_MODEL_SCALE = 0.5f;
+        private const int MAX_BONE_COUNT = 100;
+
         private bool isAnimating = false;
         private DateTime lastFrameTime;
         private System.Windows.Forms.Timer animationTimer;
@@ -38,7 +48,7 @@ namespace Julia_Launcher
         private Shader shader;
         private float rotation = 0.0f;
         private Vector3 modelPosition = Vector3.Zero;
-        private float modelScale = 1.0f;
+        private float modelScale = INITIAL_MODEL_SCALE;
         private bool isDragging = false;
         private Point lastMousePos;
 
@@ -46,25 +56,22 @@ namespace Julia_Launcher
         private Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
         private float ambientStrength = 0.1f;
         private float specularStrength = 0.5f;
-        private float diffuseStrength = 0.8f; // Сила диффузного освещения
-        private float shininess = 16.0f;      // Блеск (степень зеркальности)
+        private float diffuseStrength = 0.8f;
+        private float shininess = 16.0f;
         private float time = 0.0f;
         private AnimationManager animationManager;
-
 
         private void AutoPositionCamera()
         {
             if (model == null) return;
 
-            // Вычисляем центр и размеры модели
             var (min, max) = model.CalculateBoundingBox();
-            Vector3 center = (min + max) / 2; // Центр модели
-            Vector3 size = max - min;         // Размеры модели
+            Vector3 center = (min + max) / 2;
+            Vector3 size = max - min;
 
-            // Расчёт расстояния камеры на основе поля зрения (FOV)
-            float fovYRad = MathHelper.DegreesToRadians(30); // Вертикальный FOV
+            float fovYRad = MathHelper.DegreesToRadians(30);
             float tanFovYHalf = (float)Math.Tan(fovYRad / 2);
-            float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf); // Горизонтальный FOV
+            float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf);
             float tanFovXHalf = (float)Math.Tan(fovXRad / 2);
 
             float width = size.X;
@@ -73,21 +80,16 @@ namespace Julia_Launcher
             float dY = (height / 2) / tanFovYHalf;
             float distance = Math.Max(dX, dY);
 
-            // Уменьшаем расстояние для приближения камеры
-            distance *= 0.8f; // 80% от расчётного расстояния
+            distance *= 0.8f;
 
-            // Позиция камеры: немного выше центра
-            float cameraHeightOffset = size.Y * 0.25f; // 1/4 высоты модели
+            float cameraHeightOffset = size.Y * 0.25f;
             camera.Position = center + new Vector3(0, cameraHeightOffset, distance);
 
-            // Новая точка фокуса: выше центра модели
-            float focusHeightOffset = size.Y * 0.25f; // Четверть высоты модели (настраиваемо)
+            float focusHeightOffset = size.Y * 0.25f;
             Vector3 focusPoint = center + new Vector3(0, focusHeightOffset, 0);
 
-            // Направляем камеру на точку выше центра
             camera.LookAt(focusPoint);
 
-            // Обновляем вид
             glControl1.Invalidate();
         }
 
@@ -95,8 +97,6 @@ namespace Julia_Launcher
         {
             InitializeComponent();
 
-
-            // Использовать существующий glControl1 вместо создания нового
             this.glControl1.Load += GlControl_Load;
             this.glControl1.Paint += GlControl_Paint;
             this.glControl1.Resize += GlControl_Resize;
@@ -105,8 +105,6 @@ namespace Julia_Launcher
             this.glControl1.MouseUp += GlControl_MouseUp;
             this.glControl1.MouseWheel += GlControl_MouseWheel;
 
-
-            // Загружаем настройки при запуске
             LoadSettings();
         }
 
@@ -114,7 +112,6 @@ namespace Julia_Launcher
         {
             var settings = ReadSettings();
 
-            // TrackBar controls
             trkHeight.Value = settings.Height;
             trkWeight.Value = settings.Weight;
             trkAge.Value = settings.Age;
@@ -132,15 +129,11 @@ namespace Julia_Launcher
                 GL.Enable(EnableCap.DepthTest);
                 GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
 
-                // Получаем путь к директории исполняемого файла
                 string appDirectory = Application.StartupPath;
-
-                // Строим путь к папке Shaders
                 string shadersDirectory = Path.Combine(appDirectory, "Shaders");
                 string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
                 string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
-                // Проверяем существование файлов шейдеров
                 if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
                 {
                     MessageBox.Show($"Файлы шейдеров не найдены!\nПуть к vertex.glsl: {vertexPath}\nПуть к fragment.glsl: {fragmentPath}",
@@ -152,11 +145,9 @@ namespace Julia_Launcher
                 camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
-                // Строим путь к модели
                 string modelDirectory = Path.Combine(appDirectory, "..", "..", "..", "Model");
                 string modelPath = Path.Combine(modelDirectory, "sketch2.fbx");
 
-                // Проверяем существование файла модели
                 if (!File.Exists(modelPath))
                 {
                     MessageBox.Show($"Файл модели не найден!\nПуть к sketch2.fbx: {modelPath}",
@@ -164,7 +155,7 @@ namespace Julia_Launcher
                     return;
                 }
 
-                LoadModel(modelPath); // Здесь теперь вызывается AutoPositionCamera
+                LoadModel(modelPath);
                 loaded = true;
             }
             catch (Exception ex)
@@ -172,14 +163,15 @@ namespace Julia_Launcher
                 MessageBox.Show($"Ошибка инициализации: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void ResetCamera()
         {
-            // Сбросить положение камеры к исходному
             camera.Position = new Vector3(0, 0, 3);
             camera.LookAt(new Vector3(0, 2, 0));
             rotation = 0.0f;
             glControl1.Invalidate();
         }
+
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
             if (!loaded) return;
@@ -199,12 +191,10 @@ namespace Julia_Launcher
                                      Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation)) *
                                      Matrix4.CreateTranslation(modelPosition);
 
-                // Вычислить нормальную матрицу
                 Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(modelMatrix)));
                 shader.SetMatrix4("model", modelMatrix);
                 shader.SetMatrix3("normalMatrix", normalMatrix);
 
-                // Установить униформу освещения
                 shader.SetVector3("lightPosition", lightPos);
                 shader.SetVector3("lightColor", lightColor);
                 shader.SetVector3("viewPosition", camera.Position);
@@ -213,28 +203,22 @@ namespace Julia_Launcher
                 shader.SetFloat("specularStrength", specularStrength);
                 shader.SetFloat("shininess", shininess);
 
-                // Рисуем модель (которая установит преобразования костей, если анимирована)
                 model.Draw(shader);
             }
 
             glControl1.SwapBuffers();
         }
 
-
-        // Обратный вызов таймера анимации
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             if (model != null && model.HasAnimations && isAnimating)
             {
-                // Рассчитать дельта-время для плавной анимации
                 DateTime now = DateTime.Now;
                 float deltaTime = (float)(now - lastFrameTime).TotalSeconds;
                 lastFrameTime = now;
 
-                // Обновляем анимацию модели
                 model.Update(deltaTime);
 
-                // Запрос на перерисовку
                 glControl1.Invalidate();
             }
         }
@@ -273,15 +257,13 @@ namespace Julia_Launcher
                 float yOffset = lastMousePos.Y - e.Y;
                 lastMousePos = e.Location;
 
-                // При удерживании Shift или Ctrl - вращаем модель
                 if (ModifierKeys.HasFlag(Keys.Shift) || ModifierKeys.HasFlag(Keys.Control))
                 {
-                    rotation += xOffset * 0.5f;
+                    rotation += xOffset * MODEL_ROTATION_SPEED;
                 }
                 else
                 {
-                    // Иначе перемещаем камеру вокруг модели
-                    camera.ProcessMouseMovement(xOffset * 0.1f, yOffset * 0.1f);
+                    camera.ProcessMouseMovement(xOffset * CAMERA_MOVEMENT_SPEED, yOffset * CAMERA_MOVEMENT_SPEED);
                 }
 
                 glControl1.Invalidate();
@@ -290,8 +272,7 @@ namespace Julia_Launcher
 
         private void GlControl_MouseWheel(object sender, MouseEventArgs e)
         {
-            // Adjust zoom based on mouse wheel
-            camera.ProcessMouseScroll(e.Delta / 120.0f);
+            camera.ProcessMouseScroll(e.Delta / CAMERA_ZOOM_SPEED);
             glControl1.Invalidate();
         }
 
@@ -299,22 +280,21 @@ namespace Julia_Launcher
         {
             try
             {
-                model?.Dispose(); // Освобождаем старую модель, если она есть
-                model = new Model(path); // Создаем новую модель, доверив ей загрузку
-                modelScale = 1.0f; // Сбрасываем масштаб
-                modelPosition = Vector3.Zero; // Сбрасываем позицию
-                rotation = 0.0f; // Сбрасываем поворот
+                model?.Dispose();
+                model = new Model(path);
+                modelScale = INITIAL_MODEL_SCALE;
+                modelPosition = Vector3.Zero;
+                rotation = 0.0f;
 
-                AutoPositionCamera(); // Настраиваем камеру после загрузки
+                AutoPositionCamera();
 
-                glControl1.Invalidate(); // Обновляем контрол
+                glControl1.Invalidate();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load model: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void LogError(string message)
         {
@@ -329,28 +309,20 @@ namespace Julia_Launcher
             }
         }
 
-
-
-
-
         private void GlControl_Click(object sender, EventArgs e) { }
 
         private void trackBar7_Scroll(object sender, EventArgs e)
         {
             if (loaded && model != null)
             {
-                // Assume trackBar7 controls model scale
                 modelScale = trkSpeechRate.Value / 100.0f;
                 glControl1.Invalidate();
             }
         }
 
-
-        // Класс шейдера для обработки шейдеров GLSL
         public class Shader
         {
             public int Handle { get; private set; }
-
             private Dictionary<string, int> uniformLocations;
 
             public Shader(string vertexPath, string fragmentPath)
@@ -361,13 +333,11 @@ namespace Julia_Launcher
                 int vertexShader = CompileShader(ShaderType.VertexShader, vertexShaderSource);
                 int fragmentShader = CompileShader(ShaderType.FragmentShader, fragmentShaderSource);
 
-                // Create program, attach shaders, and link
                 Handle = GL.CreateProgram();
                 GL.AttachShader(Handle, vertexShader);
                 GL.AttachShader(Handle, fragmentShader);
                 GL.LinkProgram(Handle);
 
-                // Check for linking errors
                 GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out int success);
                 if (success == 0)
                 {
@@ -375,13 +345,11 @@ namespace Julia_Launcher
                     Console.WriteLine($"ERROR::PROGRAM::LINKING_FAILED\n{infoLog}");
                 }
 
-                // Delete the shaders as they're now linked into the program
                 GL.DetachShader(Handle, vertexShader);
                 GL.DetachShader(Handle, fragmentShader);
                 GL.DeleteShader(vertexShader);
                 GL.DeleteShader(fragmentShader);
 
-                // Cache all uniform locations
                 GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out int uniformCount);
                 uniformLocations = new Dictionary<string, int>();
 
@@ -392,12 +360,14 @@ namespace Julia_Launcher
                     uniformLocations[name] = location;
                 }
             }
+
             public void SetMatrix3(string name, Matrix3 value)
             {
                 GL.UseProgram(Handle);
                 int location = GetUniformLocation(name);
                 GL.UniformMatrix3(location, false, ref value);
             }
+
             private int CompileShader(ShaderType type, string source)
             {
                 int shader = GL.CreateShader(type);
@@ -413,11 +383,13 @@ namespace Julia_Launcher
 
                 return shader;
             }
+
             public void SetInt(string name, int value)
             {
                 GL.UseProgram(Handle);
                 GL.Uniform1(GetUniformLocation(name), value);
             }
+
             public void Use()
             {
                 GL.UseProgram(Handle);
@@ -434,6 +406,7 @@ namespace Julia_Launcher
                 GL.UseProgram(Handle);
                 GL.Uniform3(GetUniformLocation(name), value);
             }
+
             public void SetVector2(string name, Vector2 value)
             {
                 GL.UseProgram(Handle);
@@ -452,7 +425,6 @@ namespace Julia_Launcher
                 GL.Uniform1(GetUniformLocation(name), value ? 1 : 0);
             }
 
-            // Texture binding helper methods
             public void SetTexture(string name, int textureUnit, int textureId)
             {
                 GL.UseProgram(Handle);
@@ -461,15 +433,7 @@ namespace Julia_Launcher
                 GL.Uniform1(GetUniformLocation(name), textureUnit);
             }
 
-            // Methods to load common PBR material settings
-            public void SetPBRMaterial(
-                string materialName,
-                int diffuseMap,
-                int normalMap,
-                int specularMap,
-                int roughnessMap,
-                int aoMap,
-                float metallic = 0.0f)
+            public void SetPBRMaterial(string materialName, int diffuseMap, int normalMap, int specularMap, int roughnessMap, int aoMap, float metallic = 0.0f)
             {
                 Use();
                 SetTexture($"{materialName}_diffuse1", 0, diffuseMap);
@@ -480,13 +444,7 @@ namespace Julia_Launcher
                 SetFloat("metallic", metallic);
             }
 
-            // Method to set standard lighting properties
-            public void SetLightProperties(
-                Vector3 position,
-                Vector3 color,
-                float intensity,
-                Vector3 ambientLight,
-                float gamma = 2.2f)
+            public void SetLightProperties(Vector3 position, Vector3 color, float intensity, Vector3 ambientLight, float gamma = 2.2f)
             {
                 Use();
                 SetVector3("lightPosition", position);
@@ -496,7 +454,6 @@ namespace Julia_Launcher
                 SetFloat("gamma", gamma);
             }
 
-            // Method to configure fog
             public void SetFogProperties(bool enable, Vector3 color, float near, float far)
             {
                 Use();
@@ -506,7 +463,6 @@ namespace Julia_Launcher
                 SetFloat("fogFar", far);
             }
 
-            // Shadow mapping configuration
             public void SetShadowMap(int shadowMapTextureId, Matrix4 lightSpaceMatrix)
             {
                 Use();
@@ -514,7 +470,6 @@ namespace Julia_Launcher
                 SetMatrix4("lightSpaceMatrix", lightSpaceMatrix);
             }
 
-            // Helper method to calculate normal matrix from model matrix
             public static Matrix3 CalculateNormalMatrix(Matrix4 modelMatrix)
             {
                 Matrix4 normalMatrix = Matrix4.Transpose(Matrix4.Invert(modelMatrix));
@@ -524,6 +479,7 @@ namespace Julia_Launcher
                     normalMatrix.M31, normalMatrix.M32, normalMatrix.M33
                 );
             }
+
             public void SetMatrix4(string name, Matrix4 value)
             {
                 GL.UseProgram(Handle);
@@ -547,25 +503,15 @@ namespace Julia_Launcher
 
                 return location;
             }
-            // Add these methods to your Shader class
 
-            // Method to set Genshin Impact cel-shading properties
-            public void SetCelShadingProperties(
-                float[] diffuseThresholds = null,
-                float[] diffuseFactors = null,
-                float specularThreshold = 0.6f,
-                Vector3? rimColor = null,
-                float rimPower = 3.0f,
-                float rimWidth = 0.3f)
+            public void SetCelShadingProperties(float[] diffuseThresholds = null, float[] diffuseFactors = null, float specularThreshold = 0.6f, Vector3? rimColor = null, float rimPower = 3.0f, float rimWidth = 0.3f)
             {
                 Use();
 
-                // Set defaults if no values provided
                 diffuseThresholds ??= new float[] { 0.8f, 0.6f, 0.3f };
                 diffuseFactors ??= new float[] { 1.0f, 0.8f, 0.5f, 0.2f };
                 rimColor ??= new Vector3(0.8f, 0.9f, 1.0f);
 
-                // Set uniform values
                 for (int i = 0; i < diffuseThresholds.Length; i++)
                 {
                     SetFloat($"diffuseThresholds[{i}]", diffuseThresholds[i]);
@@ -582,11 +528,7 @@ namespace Julia_Launcher
                 SetFloat("rimWidth", rimWidth);
             }
 
-            // Method to set color grading properties
-            public void SetColorGradingProperties(
-                float saturation = 1.2f,
-                float brightness = 1.1f,
-                float contrast = 1.15f)
+            public void SetColorGradingProperties(float saturation = 1.2f, float brightness = 1.1f, float contrast = 1.15f)
             {
                 Use();
                 SetFloat("saturation", saturation);
@@ -594,24 +536,16 @@ namespace Julia_Launcher
                 SetFloat("contrast", contrast);
             }
 
-            // Method to set outline properties
-            public void SetOutlineProperties(
-                float thickness = 0.005f,
-                Vector3? color = null)
+            public void SetOutlineProperties(float thickness = 0.005f, Vector3? color = null)
             {
                 Use();
-                color ??= new Vector3(0.0f, 0.0f, 0.0f); // Default black
+                color ??= new Vector3(0.0f, 0.0f, 0.0f);
 
                 SetFloat("outlineThickness", thickness);
                 SetVector3("outlineColor", color.Value);
             }
 
-            // Method to set environment properties
-            public void SetEnvironmentProperties(
-                Vector3? environmentColor = null,
-                float environmentStrength = 0.3f,
-                float fogDensity = 0.02f,
-                Vector3? fogColor = null)
+            public void SetEnvironmentProperties(Vector3? environmentColor = null, float environmentStrength = 0.3f, float fogDensity = 0.02f, Vector3? fogColor = null)
             {
                 Use();
                 environmentColor ??= new Vector3(0.1f, 0.1f, 0.2f);
@@ -623,26 +557,20 @@ namespace Julia_Launcher
                 SetVector3("fogColor", fogColor.Value);
             }
 
-            // Method to set sketch effect properties
-            public void SetSketchProperties(
-                float threshold = 0.1f,
-                float strength = 0.08f)
+            public void SetSketchProperties(float threshold = 0.1f, float strength = 0.08f)
             {
                 Use();
                 SetFloat("sketchThreshold", threshold);
                 SetFloat("sketchStrength", strength);
             }
 
-            // Method to update time value for animations
             public void UpdateTime(float time)
             {
                 Use();
                 SetFloat("time", time);
             }
-            // Метод для установки параметров теней
-            public void SetShadowProperties(
-                float shadowIntensity = 0.7f,
-                float shadowSoftness = 0.05f)
+
+            public void SetShadowProperties(float shadowIntensity = 0.7f, float shadowSoftness = 0.05f)
             {
                 Use();
                 SetFloat("shadowIntensity", shadowIntensity);
@@ -650,9 +578,6 @@ namespace Julia_Launcher
             }
         }
 
-
-
-        // Класс текстуры для хранения данных текстуры
         public class Texture
         {
             public int Id { get; private set; }
@@ -672,7 +597,6 @@ namespace Julia_Launcher
 
                 using (var image = new Bitmap(path))
                 {
-                    // Flip the image to correct orientation for OpenGL
                     image.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
                     System.Drawing.Imaging.BitmapData data = image.LockBits(
@@ -686,13 +610,11 @@ namespace Julia_Launcher
 
                     image.UnlockBits(data);
 
-                    // Set texture parameters
                     GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
                     GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)OpenTK.Graphics.OpenGL4.TextureWrapMode.Repeat);
                     GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)OpenTK.Graphics.OpenGL4.TextureMinFilter.Linear);
                     GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)OpenTK.Graphics.OpenGL4.TextureMagFilter.Linear);
 
-                    // Generate mipmaps
                     GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
                 }
 
@@ -700,11 +622,6 @@ namespace Julia_Launcher
             }
         }
 
-
-
-
-        // Класс модели для загрузки и рендеринга 3D-моделей
-        // Измените класс модели для поддержки анимации
         public class Model : IDisposable
         {
             private List<Mesh> meshes = new List<Mesh>();
@@ -716,6 +633,10 @@ namespace Julia_Launcher
             private Animator animator;
             private bool hasAnimations = false;
 
+            private Vector3 boundingBoxMin;
+            private Vector3 boundingBoxMax;
+            private bool isBoundingBoxCalculated = false;
+
             public bool HasAnimations => hasAnimations;
             public Animator Animator => animator;
             public IReadOnlyDictionary<string, Animation> Animations => animations;
@@ -725,14 +646,11 @@ namespace Julia_Launcher
             private List<Equipment> equipment = new List<Equipment>();
             public void AddEquipment(Equipment eq) => equipment.Add(eq);
 
-
-
-
             public Model(string path)
             {
                 defaultDiffuseTexture = CreateDefaultTexture(255, 255, 255, 255);
                 defaultSpecularTexture = CreateDefaultTexture(0, 0, 0, 255);
-                animator = new Animator(100);
+                animator = new Animator(MAX_BONE_COUNT);
                 LoadModel(path);
             }
 
@@ -751,11 +669,10 @@ namespace Julia_Launcher
                 return textureId;
             }
 
-
             private void LoadModel(string path)
             {
                 var importer = new AssimpContext();
-                importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
+                importer.SetConfig(new NormalSmoothingAngleConfig(NORMAL_SMOOTHING_ANGLE));
                 Scene scene = importer.ImportFile(path,
                     PostProcessSteps.Triangulate |
                     PostProcessSteps.GenerateSmoothNormals |
@@ -771,8 +688,7 @@ namespace Julia_Launcher
                 directory = Path.GetDirectoryName(path);
                 LoadAnimations(scene);
 
-                // Равномерное уменьшение в 2 раза
-                Matrix4 scaleTransform = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+                Matrix4 scaleTransform = Matrix4.CreateScale(INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE);
                 ProcessNode(scene.RootNode, scene, scaleTransform);
 
                 if (animations.Count > 0)
@@ -781,27 +697,41 @@ namespace Julia_Launcher
                     animator.SetAnimation(animations.Values.First());
                 }
             }
+
             public (Vector3 Min, Vector3 Max) CalculateBoundingBox()
             {
-                if (meshes.Count == 0) return (Vector3.Zero, Vector3.Zero);
-
-                Vector3 min = new Vector3(float.MaxValue);
-                Vector3 max = new Vector3(float.MinValue);
-
-                foreach (var mesh in meshes)
+                if (isBoundingBoxCalculated)
                 {
-                    var vertices = mesh.GetVertices();
-                    int stride = mesh.HasBones ? 16 : 8; // Шаг зависит от наличия костей
-                    for (int i = 0; i < vertices.Length; i += stride)
+                    return (boundingBoxMin, boundingBoxMax);
+                }
+
+                if (meshes.Count == 0)
+                {
+                    boundingBoxMin = Vector3.Zero;
+                    boundingBoxMax = Vector3.Zero;
+                }
+                else
+                {
+                    boundingBoxMin = new Vector3(float.MaxValue);
+                    boundingBoxMax = new Vector3(float.MinValue);
+
+                    foreach (var mesh in meshes)
                     {
-                        Vector3 pos = new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
-                        min = Vector3.ComponentMin(min, pos);
-                        max = Vector3.ComponentMax(max, pos);
+                        var vertices = mesh.GetVertices();
+                        int stride = mesh.HasBones ? 16 : 8;
+                        for (int i = 0; i < vertices.Length; i += stride)
+                        {
+                            Vector3 pos = new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
+                            boundingBoxMin = Vector3.ComponentMin(boundingBoxMin, pos);
+                            boundingBoxMax = Vector3.ComponentMax(boundingBoxMax, pos);
+                        }
                     }
                 }
 
-                return (min, max);
+                isBoundingBoxCalculated = true;
+                return (boundingBoxMin, boundingBoxMax);
             }
+
             private void ProcessNode(Node node, Scene scene, Matrix4 parentTransform)
             {
                 Matrix4 nodeTransform = ConvertMatrix(node.Transform);
@@ -818,9 +748,9 @@ namespace Julia_Launcher
                     ProcessNode(node.Children[i], scene, globalTransform);
                 }
             }
+
             private void BuildSkeleton(Scene scene)
             {
-
             }
 
             private Matrix4 ConvertMatrix(Matrix4x4 assimpMatrix)
@@ -840,8 +770,8 @@ namespace Julia_Launcher
 
                 foreach (var mesh in meshes)
                 {
-                    var vertices = mesh.GetVertices(); // Предполагается, что у Mesh есть метод для получения вершин
-                    for (int i = 0; i < vertices.Length; i += 8) // Шаг 8, если вершина содержит позицию, нормали и текстурные координаты
+                    var vertices = mesh.GetVertices();
+                    for (int i = 0; i < vertices.Length; i += 8)
                     {
                         sum += new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
                         vertexCount++;
@@ -850,7 +780,6 @@ namespace Julia_Launcher
 
                 return vertexCount > 0 ? sum / vertexCount : Vector3.Zero;
             }
-
 
             private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
             {
@@ -1085,37 +1014,26 @@ namespace Julia_Launcher
 
         private void glControl1_Click_2(object sender, EventArgs e)
         {
-            // Переслать главному обработчику кликов
             GlControl_Click(sender, e);
         }
 
-
-
         private void UserControl2_Load(object sender, EventArgs e)
         {
-            // Получаем путь к корню проекта
             string exePath = Application.StartupPath;
             string projectDir = Directory.GetParent(Directory.GetParent(exePath).FullName).FullName;
             string shadersDirectory = Path.Combine(projectDir, "Shaders");
             string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
             string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
-            // Проверка наличия файлов
             if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
             {
                 MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            // Здесь продолжение логики, например, загрузка шейдеров
-            // Shader shader = new Shader(vertexPath, fragmentPath);
         }
-
 
         private void btnModel_Click(object sender, EventArgs e)
         {
-
-            // Используйте диалог открытия файла для выбора файла 3D-модели
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "3D Models|*.fbx;*.obj;*.3ds;*.dae|FBX files (*.fbx)|*.fbx|OBJ files (*.obj)|*.obj|All files (*.*)|*.*";
@@ -1128,8 +1046,6 @@ namespace Julia_Launcher
             }
         }
 
-         
-        // Trackbars
         private void trkHeight_Scroll(object sender, EventArgs e)
         {
             SaveSettings("Height", trkHeight.Value);
@@ -1176,14 +1092,12 @@ namespace Julia_Launcher
         {
             string filePath = "output.wav";
 
-            // Запуск Python-скрипта
             Process process = new Process();
             process.StartInfo.FileName = "python";
             process.StartInfo.Arguments = "script.py";
             process.Start();
             process.WaitForExit();
 
-            // Проверка наличия файла
             if (File.Exists(filePath))
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(filePath);
@@ -1194,7 +1108,5 @@ namespace Julia_Launcher
                 Console.WriteLine($"Ошибка: файл {filePath} не найден.");
             }
         }
-
     }
-
 }
