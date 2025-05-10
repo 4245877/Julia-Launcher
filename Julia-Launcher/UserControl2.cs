@@ -22,11 +22,6 @@ using System.Diagnostics;
 
 namespace Julia_Launcher
 {
-
-
-
-
-
     public partial class UserControl2 : UserControl
     {
         // Константы
@@ -36,6 +31,12 @@ namespace Julia_Launcher
         private const float CAMERA_ZOOM_SPEED = 120.0f;
         private const float INITIAL_MODEL_SCALE = 0.5f;
         private const int MAX_BONE_COUNT = 100;
+        private const float BACKGROUND_COLOR_R = 0.7f;
+        private const float BACKGROUND_COLOR_G = 0.6f;
+        private const float BACKGROUND_COLOR_B = 0.5f;
+        private const float BACKGROUND_COLOR_A = 1.0f;
+
+
 
         private bool isAnimating = false;
         private DateTime lastFrameTime;
@@ -59,7 +60,6 @@ namespace Julia_Launcher
         private float diffuseStrength = 0.8f;
         private float shininess = 16.0f;
         private float time = 0.0f;
-        private AnimationManager animationManager;
 
         private void AutoPositionCamera()
         {
@@ -121,11 +121,26 @@ namespace Julia_Launcher
             trkTimbre.Value = settings.Timbre;
         }
 
+        private void UserControl2_Load(object sender, EventArgs e)
+        {
+            string exePath = Application.StartupPath;
+            string projectDir = Directory.GetParent(Directory.GetParent(exePath).FullName).FullName;
+            string shadersDirectory = Path.Combine(projectDir, "Shaders");
+            string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
+            string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
+
+            if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
+            {
+                MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
         private void GlControl_Load(object sender, EventArgs e)
         {
             try
             {
-                GL.ClearColor(0.7f, 0.9f, 0.5f, 1.0f);
+                GL.ClearColor(BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B, BACKGROUND_COLOR_A);
                 GL.Enable(EnableCap.DepthTest);
                 GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
 
@@ -1017,20 +1032,7 @@ namespace Julia_Launcher
             GlControl_Click(sender, e);
         }
 
-        private void UserControl2_Load(object sender, EventArgs e)
-        {
-            string exePath = Application.StartupPath;
-            string projectDir = Directory.GetParent(Directory.GetParent(exePath).FullName).FullName;
-            string shadersDirectory = Path.Combine(projectDir, "Shaders");
-            string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
-            string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
-            if (!File.Exists(vertexPath) || !File.Exists(fragmentPath))
-            {
-                MessageBox.Show("Файлы шейдеров не найдены!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
 
         private void btnModel_Click(object sender, EventArgs e)
         {

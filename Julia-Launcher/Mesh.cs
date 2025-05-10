@@ -1,9 +1,38 @@
 ﻿using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
+using System.Runtime.InteropServices;
 using Julia_Launcher;
 
 namespace Julia_Launcher
 {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Vertex
+    {
+        public Vector3 Position;     // Позиция вершины (x, y, z)
+        public Vector3 Normal;       // Нормаль (x, y, z)
+        public Vector2 TexCoord;     // Текстурные координаты (u, v)
+        public Vector3 Tangent;      // Касательная (x, y, z)
+        public Vector3 Bitangent;    // Бинормаль (x, y, z)
+        public Vector4i BoneIds;     // Индексы костей (4 int)
+        public Vector4 BoneWeights;  // Веса костей (4 float)
+
+        // Конструктор для удобного создания экземпляра
+        public Vertex(Vector3 position, Vector3 normal, Vector2 texCoord, Vector3 tangent, Vector3 bitangent, Vector4i boneIds, Vector4 boneWeights)
+        {
+            Position = position;
+            Normal = normal;
+            TexCoord = texCoord;
+            Tangent = tangent;
+            Bitangent = bitangent;
+            BoneIds = boneIds;
+            BoneWeights = boneWeights;
+        }
+    }
+
+
+
+
     public class Mesh
     {
         private int VAO, VBO, EBO;
