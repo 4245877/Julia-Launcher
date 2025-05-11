@@ -19,7 +19,7 @@ namespace Julia_Launcher
         private readonly string settingsFilePath;
 
         // Ссылка на информацию о характеристиках
-        private Form1.HardwareInfo hardwareInfo;
+        private HardwareInfo hardwareInfo;
         private int previousRamUsage; // Хранение предыдущего значения TrackBar
 
         public UserControl1()
@@ -48,7 +48,7 @@ namespace Julia_Launcher
             hardwareInfo = Form1.ComputerInfo;
             if (hardwareInfo != null)
             {
-                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalSize * 1024); // Переводим ГБ в МБ
+                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024)); // Переводим байты в МБ
                 previousRamUsage = trackRamUsage.Value; // Инициализируем предыдущее значение
                 InitializeComboBox();
                 LoadHardwareInfo();
@@ -481,9 +481,6 @@ namespace Julia_Launcher
         private void UserControl1_Load(object sender, EventArgs e) { }
         private void tabPage1_Click(object sender, EventArgs e) { }
 
-        private void txtCpuLoad_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void txtCpuLoad_TextChanged(object sender, EventArgs e) { }
     }
 }
