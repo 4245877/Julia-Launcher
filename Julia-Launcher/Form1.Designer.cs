@@ -30,8 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new System.Windows.Forms.Panel();
-            pictureBoxInfo = new System.Windows.Forms.PictureBox();
+            labelStatus = new System.Windows.Forms.Label();
             progressBar = new System.Windows.Forms.ProgressBar();
+            pictureBoxInfo = new System.Windows.Forms.PictureBox();
             panel2 = new System.Windows.Forms.Panel();
             SetingButton = new System.Windows.Forms.Button();
             btnModelVoiceSettings = new System.Windows.Forms.Button();
@@ -47,6 +48,7 @@
             // panel1
             // 
             panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panel1.Controls.Add(labelStatus);
             panel1.Controls.Add(progressBar);
             panel1.Location = new System.Drawing.Point(166, 12);
             panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -54,6 +56,24 @@
             panel1.Size = new System.Drawing.Size(1171, 626);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
+            // 
+            // labelStatus
+            // 
+            labelStatus.AutoSize = true;
+            labelStatus.BackColor = System.Drawing.Color.White;
+            labelStatus.Location = new System.Drawing.Point(1125, 608);
+            labelStatus.Name = "labelStatus";
+            labelStatus.Size = new System.Drawing.Size(0, 15);
+            labelStatus.TabIndex = 1;
+            // 
+            // progressBar
+            // 
+            progressBar.ForeColor = System.Drawing.Color.FromArgb(0, 192, 0);
+            progressBar.Location = new System.Drawing.Point(3, 600);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new System.Drawing.Size(1165, 23);
+            progressBar.TabIndex = 0;
+            progressBar.Click += progressBar_Click;
             // 
             // pictureBoxInfo
             // 
@@ -66,15 +86,6 @@
             pictureBoxInfo.TabIndex = 1;
             pictureBoxInfo.TabStop = false;
             pictureBoxInfo.Click += pictureBoxInfo_Click;
-            // 
-            // progressBar
-            // 
-            progressBar.ForeColor = System.Drawing.Color.FromArgb(0, 192, 0);
-            progressBar.Location = new System.Drawing.Point(3, 600);
-            progressBar.Name = "progressBar";
-            progressBar.Size = new System.Drawing.Size(1165, 23);
-            progressBar.TabIndex = 0;
-            progressBar.Click += progressBar_Click;
             // 
             // panel2
             // 
@@ -144,7 +155,7 @@
             // 
             button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             button1.BackColor = System.Drawing.Color.FromArgb(13, 209, 102);
-            button1.Font = new System.Drawing.Font("Intro Friday", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 204);
+            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 204);
             button1.ForeColor = System.Drawing.Color.White;
             button1.Location = new System.Drawing.Point(464, 3);
             button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -170,6 +181,7 @@
             Text = "Julia Launcher ";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxInfo).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -189,6 +201,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.PictureBox pictureBoxInfo;
+        private System.Windows.Forms.Label labelStatus;
     }
 }
 
