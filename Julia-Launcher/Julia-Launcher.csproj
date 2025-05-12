@@ -28,9 +28,7 @@
     <None Remove="Shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UserControl1.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="UserControl1.cs" />
     <Compile Update="UserControl2.cs" />
   </ItemGroup>
   <ItemGroup>

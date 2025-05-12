@@ -193,7 +193,6 @@
             tabPage1.Size = new System.Drawing.Size(1155, 564);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "File and Folder Paths";
-            tabPage1.Click += tabPage1_Click;
             // 
             // label1
             // 
@@ -482,7 +481,6 @@
             trackRamUsage.Size = new System.Drawing.Size(288, 45);
             trackRamUsage.TabIndex = 100;
             trackRamUsage.Value = 4096;
-            trackRamUsage.Scroll += trackRamUsage_Scroll;
             // 
             // cmbGpuSelection
             // 
@@ -493,7 +491,6 @@
             cmbGpuSelection.Name = "cmbGpuSelection";
             cmbGpuSelection.Size = new System.Drawing.Size(240, 23);
             cmbGpuSelection.TabIndex = 112;
-            cmbGpuSelection.SelectedIndexChanged += cmbGpuSelection_SelectedIndexChanged;
             // 
             // cmbCpuCores
             // 
@@ -503,7 +500,6 @@
             cmbCpuCores.Name = "cmbCpuCores";
             cmbCpuCores.Size = new System.Drawing.Size(140, 23);
             cmbCpuCores.TabIndex = 101;
-            cmbCpuCores.SelectedIndexChanged += cmbCpuCores_SelectedIndexChanged;
             // 
             // chkGPUEnable
             // 
@@ -514,7 +510,6 @@
             chkGPUEnable.Size = new System.Drawing.Size(15, 14);
             chkGPUEnable.TabIndex = 111;
             chkGPUEnable.UseVisualStyleBackColor = true;
-            chkGPUEnable.CheckedChanged += chkGPUEnable_CheckedChanged;
             // 
             // txtCPULimit
             // 
@@ -541,7 +536,6 @@
             txtCpuLoad.Name = "txtCpuLoad";
             txtCpuLoad.Size = new System.Drawing.Size(116, 23);
             txtCpuLoad.TabIndex = 109;
-            txtCpuLoad.TextChanged += txtCpuLoad_TextChanged;
             // 
             // tabPage3
             // 
@@ -566,7 +560,6 @@
             tabPage3.Size = new System.Drawing.Size(1155, 564);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Startup and Update Settings";
-            tabPage3.Click += tabPage3_Click;
             // 
             // chkUpdateSrartup
             // 
@@ -576,7 +569,6 @@
             chkUpdateSrartup.Size = new System.Drawing.Size(15, 14);
             chkUpdateSrartup.TabIndex = 105;
             chkUpdateSrartup.UseVisualStyleBackColor = true;
-            chkUpdateSrartup.CheckedChanged += chkUpdateSrartup_CheckedChanged_1;
             // 
             // chkManUpdate
             // 
@@ -586,7 +578,6 @@
             chkManUpdate.Size = new System.Drawing.Size(15, 14);
             chkManUpdate.TabIndex = 104;
             chkManUpdate.UseVisualStyleBackColor = true;
-            chkManUpdate.CheckedChanged += chkManUpdate_CheckedChanged;
             // 
             // label16
             // 
@@ -675,7 +666,6 @@
             cmbUpdateBranch.Name = "cmbUpdateBranch";
             cmbUpdateBranch.Size = new System.Drawing.Size(140, 23);
             cmbUpdateBranch.TabIndex = 96;
-            cmbUpdateBranch.SelectedIndexChanged += cmbUpdateBranch_SelectedIndexChanged;
             // 
             // chkAutoUpdate
             // 
@@ -686,7 +676,6 @@
             chkAutoUpdate.Size = new System.Drawing.Size(15, 14);
             chkAutoUpdate.TabIndex = 98;
             chkAutoUpdate.UseVisualStyleBackColor = true;
-            chkAutoUpdate.CheckedChanged += chkAutoUpdate_CheckedChanged;
             // 
             // chkUpdPreferen
             // 
@@ -697,7 +686,6 @@
             chkUpdPreferen.Size = new System.Drawing.Size(15, 14);
             chkUpdPreferen.TabIndex = 102;
             chkUpdPreferen.UseVisualStyleBackColor = true;
-            chkUpdPreferen.CheckedChanged += chkUpdPreferen_CheckedChanged;
             // 
             // chkAutoStart
             // 
@@ -708,7 +696,6 @@
             chkAutoStart.Size = new System.Drawing.Size(15, 14);
             chkAutoStart.TabIndex = 103;
             chkAutoStart.UseVisualStyleBackColor = true;
-            chkAutoStart.CheckedChanged += chkAutoStart_CheckedChanged;
             // 
             // tabPage4
             // 
@@ -745,7 +732,6 @@
             cmbDebugging.Name = "cmbDebugging";
             cmbDebugging.Size = new System.Drawing.Size(140, 23);
             cmbDebugging.TabIndex = 128;
-            cmbDebugging.SelectedIndexChanged += cmbDebugging_SelectedIndexChanged;
             // 
             // cmbInfoMassages
             // 
@@ -755,7 +741,6 @@
             cmbInfoMassages.Name = "cmbInfoMassages";
             cmbInfoMassages.Size = new System.Drawing.Size(104, 23);
             cmbInfoMassages.TabIndex = 127;
-            cmbInfoMassages.SelectedIndexChanged += cmbInfoMassages_SelectedIndexChanged;
             // 
             // chkLogRetention
             // 
@@ -765,7 +750,6 @@
             chkLogRetention.Size = new System.Drawing.Size(15, 14);
             chkLogRetention.TabIndex = 126;
             chkLogRetention.UseVisualStyleBackColor = true;
-            chkLogRetention.CheckedChanged += chkLogRetention_CheckedChanged;
             // 
             // cmbLogFormat
             // 
@@ -775,7 +759,6 @@
             cmbLogFormat.Name = "cmbLogFormat";
             cmbLogFormat.Size = new System.Drawing.Size(121, 23);
             cmbLogFormat.TabIndex = 125;
-            cmbLogFormat.SelectedIndexChanged += cmbLogFormat_SelectedIndexChanged;
             // 
             // label23
             // 
@@ -886,7 +869,6 @@
             cmbWarnings.Name = "cmbWarnings";
             cmbWarnings.Size = new System.Drawing.Size(140, 23);
             cmbWarnings.TabIndex = 107;
-            cmbWarnings.SelectedIndexChanged += cmbWarnings_SelectedIndexChanged;
             // 
             // label30
             // 
@@ -928,7 +910,6 @@
             radSystem.TabIndex = 124;
             radSystem.TabStop = true;
             radSystem.UseVisualStyleBackColor = true;
-            radSystem.CheckedChanged += radSystem_CheckedChanged;
             // 
             // txtHotkeyLounch
             // 
@@ -994,7 +975,6 @@
             radWhite.TabIndex = 121;
             radWhite.TabStop = true;
             radWhite.UseVisualStyleBackColor = true;
-            radWhite.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // label34
             // 
@@ -1016,7 +996,6 @@
             cmbLanguage.Name = "cmbLanguage";
             cmbLanguage.Size = new System.Drawing.Size(140, 23);
             cmbLanguage.TabIndex = 95;
-            cmbLanguage.SelectedIndexChanged += cmbLanguage_SelectedIndexChanged;
             // 
             // tabPage6
             // 
@@ -1079,7 +1058,6 @@
             chkAllowedIPAddresses.Size = new System.Drawing.Size(15, 14);
             chkAllowedIPAddresses.TabIndex = 106;
             chkAllowedIPAddresses.UseVisualStyleBackColor = true;
-            chkAllowedIPAddresses.CheckedChanged += chkAllowedIPAddresses_CheckedChanged;
             // 
             // label38
             // 
@@ -1101,7 +1079,6 @@
             chkProtectionWithaPassword.Size = new System.Drawing.Size(15, 14);
             chkProtectionWithaPassword.TabIndex = 105;
             chkProtectionWithaPassword.UseVisualStyleBackColor = true;
-            chkProtectionWithaPassword.CheckedChanged += chkProtectionWithaPassword_CheckedChanged;
             // 
             // chkEncryptLogs
             // 
