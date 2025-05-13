@@ -1,7 +1,4 @@
-﻿using static Julia_Launcher.SettingsManager;
-using static Julia_Launcher.Settings;
-using Julia_Launcher;
-using Microsoft.VisualBasic.Devices;
+﻿using Julia_Launcher;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,53 +8,49 @@ using System.Text.Json;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-
 namespace Julia_Launcher
 {
     public partial class UserControl1 : UserControl
     {
         private readonly string settingsFilePath;
+        private readonly HardwareInfo hardwareInfo; // Теперь это поле только для чтения
+        private int previousRamUsage;
 
-        // Ссылка на информацию о характеристиках
-        private HardwareInfo hardwareInfo;
-        private int previousRamUsage; // Хранение предыдущего значения TrackBar
-
-        public UserControl1()
+        public UserControl1(HardwareInfo hardwareInfo)
         {
             InitializeComponent();
 
-            // Создаем директорию settings, если она не существует
+            this.hardwareInfo = hardwareInfo ?? throw new ArgumentNullException(nameof(hardwareInfo));
+
+            // Создание директории и установка пути к файлу настроек
             string settingsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings");
             if (!Directory.Exists(settingsDirectory))
             {
                 Directory.CreateDirectory(settingsDirectory);
             }
-
             settingsFilePath = Path.Combine(settingsDirectory, "settings.json");
 
-            // Используем существующие методы вместо лямбда-выражений
+            // Подписка на события TextChanged
             txtInstallDirectory.TextChanged += txtInstallDirectory_TextChanged;
             txtLogDirectory.TextChanged += txtLogDirectory_TextChanged;
             txtModulesDirectory.TextChanged += txtModulesDirectory_TextChanged;
             txtCacheDirectory.TextChanged += txtCacheDirectory_TextChanged;
 
-            // Загружаем настройки при запуске
-            LoadSettings();
-
-            // Получаем ссылку на информацию о характеристиках
-            hardwareInfo = Form1.ComputerInfo;
+            // Инициализация с использованием переданного hardwareInfo
             if (hardwareInfo != null)
             {
-                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024)); // Переводим байты в МБ
-                previousRamUsage = trackRamUsage.Value; // Инициализируем предыдущее значение
+                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024));
+                previousRamUsage = trackRamUsage.Value;
                 InitializeComboBox();
                 LoadHardwareInfo();
-                LoadSettings(); // Загружаем настройки только если hardwareInfo доступен
             }
             else
             {
                 MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            // Загрузка настроек
+            LoadSettings();
         }
 
         private void InitializeComboBox()
@@ -78,12 +71,18 @@ namespace Julia_Launcher
             cmbGpuSelection.Items.Add("None");
         }
 
-
-
         // Загрузка сохраненных настроек 
+        // Добавляем перечисление для тем
+        public enum Theme
+        {
+            White,
+            Dark,
+            System
+        }
+
         private void LoadSettings()
         {
-            var settings = ReadSettings();
+            var settings = Julia_Launcher.SettingsManager.ReadSettings();
 
             // TextBox controls
             txtInstallDirectory.Text = settings.InstallDirectory;
@@ -94,7 +93,6 @@ namespace Julia_Launcher
             txtGPULimit.Text = settings.GPULimit;
             txtNetworkSpeed.Text = settings.NetworkSpeed;
             txtHotkeyLounch.Text = settings.HotkeyLounch;
-            // Добавлено свойство CpuLoad, отсутствующее в исходном коде метода
             txtCpuLoad.Text = settings.CpuLoad;
 
             // CheckBox controls
@@ -106,108 +104,77 @@ namespace Julia_Launcher
             chkManUpdate.Checked = settings.ManUpdate;
             chkProtectionWithaPassword.Checked = settings.ProtectionWithaPassword;
             chkAllowedIPAddresses.Checked = settings.AllowedIPAddresses;
-
             chkLogRetention.Checked = settings.CheckLogRetention;
 
-            // ComboBox 
-            if (!string.IsNullOrEmpty(settings.CpuCores) && cmbCpuCores.Items.Contains(settings.CpuCores))
-                cmbCpuCores.SelectedItem = settings.CpuCores;
+            // ComboBox controls
+            SetComboBoxSelectedItem(cmbCpuCores, settings.CpuCores);
+            SetComboBoxSelectedItem(cmbGpuSelection, settings.GpuSelection, 0); // По умолчанию "Auto"
+            SetComboBoxSelectedItem(cmbUpdateBranch, settings.UpdateBranch);
+            SetComboBoxSelectedItem(cmbLogLevel, settings.LogLevel);
+            SetComboBoxSelectedItem(cmbLanguage, settings.Language);
+            SetComboBoxSelectedItem(cmbErrors, settings.Errors);
+            SetComboBoxSelectedItem(cmbWarnings, settings.Warnings);
+            SetComboBoxSelectedItem(cmbInfoMassages, settings.InfoMassages);
+            SetComboBoxSelectedItem(cmbLogFormat, settings.LogFormat);
+            SetComboBoxSelectedItem(cmbDebugging, settings.Debugging);
 
-            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
-                cmbGpuSelection.SelectedItem = settings.GpuSelection;
-
-            if (!string.IsNullOrEmpty(settings.UpdateBranch) && cmbUpdateBranch.Items.Contains(settings.UpdateBranch))
-                cmbUpdateBranch.SelectedItem = settings.UpdateBranch;
-
-            if (!string.IsNullOrEmpty(settings.LogLevel) && cmbLogLevel.Items.Contains(settings.LogLevel))
-                cmbLogLevel.SelectedItem = settings.LogLevel;
-
-            if (!string.IsNullOrEmpty(settings.Language) && cmbLanguage.Items.Contains(settings.Language))
-                cmbLanguage.SelectedItem = settings.Language;
-
-            if (!string.IsNullOrEmpty(settings.Errors) && cmbErrors.Items.Contains(settings.Errors))
-                cmbErrors.SelectedItem = settings.Errors;
-
-            if (!string.IsNullOrEmpty(settings.Warnings) && cmbWarnings.Items.Contains(settings.Warnings))
-                cmbWarnings.SelectedItem = settings.Warnings;
-
-            if (!string.IsNullOrEmpty(settings.InfoMassages) && cmbInfoMassages.Items.Contains(settings.InfoMassages))
-                cmbInfoMassages.SelectedItem = settings.InfoMassages;
-
-            if (!string.IsNullOrEmpty(settings.LogFormat) && cmbLogFormat.Items.Contains(settings.LogFormat))
-                cmbLogFormat.SelectedItem = settings.LogFormat;
-
-            if (!string.IsNullOrEmpty(settings.Debugging) && cmbDebugging.Items.Contains(settings.Debugging))
-                cmbDebugging.SelectedItem = settings.Debugging;
-
-            // Для SelectedComboBoxIndex предполагается, что это индекс одного из ComboBox
+            // Установка SelectedIndex для cmbCpuCores
             if (settings.SelectedComboBoxIndex >= 0 && settings.SelectedComboBoxIndex < cmbCpuCores.Items.Count)
-                cmbCpuCores.SelectedIndex = settings.SelectedComboBoxIndex; // Пример использования
-            if (!string.IsNullOrEmpty(settings.GpuSelection) && cmbGpuSelection.Items.Contains(settings.GpuSelection))
-                cmbGpuSelection.SelectedItem = settings.GpuSelection;
-            else
-                cmbGpuSelection.SelectedIndex = 0; // По умолчанию выбираем "Auto"
-
+            {
+                cmbCpuCores.SelectedIndex = settings.SelectedComboBoxIndex; // Теперь это CpuCoresSelectedIndex
+            }
 
             // TrackBar controls
-            if (settings.RAMUsage < trackRamUsage.Minimum)
-            {
-                settings.RAMUsage = trackRamUsage.Minimum;
-            }
-            else if (settings.RAMUsage > trackRamUsage.Maximum)
-            {
-                settings.RAMUsage = trackRamUsage.Maximum;
-            }
-            trackRamUsage.Value = settings.RAMUsage;
-
+            trackRamUsage.Value = Math.Clamp(settings.RAMUsage, trackRamUsage.Minimum, trackRamUsage.Maximum);
 
             // RadioButton controls
-            radWhite.Checked = settings.radWhite;
-            radDark.Checked = settings.radDark;
-            radSystem.Checked = settings.radSystem;
-
-            // Для SelectedRadioButtonIndex предполагается выбор радиокнопки по индексу
-            switch (settings.SelectedRadioButtonIndex)
+            switch (settings.SelectedTheme)
             {
-                case 0: radWhite.Checked = true; break;
-                case 1: radDark.Checked = true; break;
-                case 2: radSystem.Checked = true; break;
-                default: break;
+                case Theme.White:
+                    radWhite.Checked = true;
+                    break;
+                case Theme.Dark:
+                    radDark.Checked = true;
+                    break;
+                case Theme.System:
+                    radSystem.Checked = true;
+                    break;
+                default:
+                    radSystem.Checked = true; // По умолчанию
+                    break;
+            }
+        }
+
+        // Приватный метод для установки значений ComboBox
+        private void SetComboBoxSelectedItem(ComboBox comboBox, string value, int defaultIndex = -1)
+        {
+            if (!string.IsNullOrEmpty(value) && comboBox.Items.Contains(value))
+            {
+                comboBox.SelectedItem = value;
+            }
+            else if (defaultIndex >= 0 && defaultIndex < comboBox.Items.Count)
+            {
+                comboBox.SelectedIndex = defaultIndex;
             }
         }
 
         private void LoadHardwareInfo()
         {
-            // Получаем доступ к информации о железе через статический экземпляр
-            var computerInfo = Form1.ComputerInfo;
-
-            if (computerInfo != null)
+            if (hardwareInfo != null)
             {
-                // Заполняем данные в элементы управления
-                // Используйте фактические имена ваших элементов управления
-
-                // Процессор
-                // Предполагается, что у вас есть ComboBox для отображения количества ядер
                 if (cmbCpuCores != null)
                 {
                     cmbCpuCores.Items.Clear();
-                    cmbCpuCores.Items.Add(computerInfo.CpuCores.ToString());
+                    cmbCpuCores.Items.Add(hardwareInfo.CpuCores.ToString());
                     if (cmbCpuCores.Items.Count > 0)
                         cmbCpuCores.SelectedIndex = 0;
                 }
-
-
-
-
-
-                // Здесь заполните другие элементы управления
-                // в соответствии с их фактическими именами
             }
         }
 
-        private Settings CollectSettings()
+        private Julia_Launcher.Settings CollectSettings()
         {
-            return new Settings
+            return new Julia_Launcher.Settings
             {
                 InstallDirectory = txtInstallDirectory.Text,
                 LogDirectory = txtLogDirectory.Text,
@@ -238,18 +205,24 @@ namespace Julia_Launcher
                 InfoMassages = cmbInfoMassages.SelectedItem?.ToString(),
                 LogFormat = cmbLogFormat.SelectedItem?.ToString(),
                 Debugging = cmbDebugging.SelectedItem?.ToString(),
-                radWhite = radWhite.Checked,
-                radDark = radDark.Checked,
-                radSystem = radSystem.Checked,
+                SelectedTheme = radWhite.Checked ? Theme.White : radDark.Checked ? Theme.Dark : Theme.System,
+
                 SelectedRadioButtonIndex = radWhite.Checked ? 0 : radDark.Checked ? 1 : 2
             };
         }
-        private void SaveAllSettings(Settings settings)
-        {
-            string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(settingsFilePath, json);
-        }
 
+        private void SaveAllSettings(Julia_Launcher.Settings settings)
+        {
+            try
+            {
+                string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(settingsFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void txtCPULimit_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -268,14 +241,12 @@ namespace Julia_Launcher
             {
                 if (number < 1 || number > 100)
                 {
-                    // Восстанавливаем предыдущее значение или очищаем TextBox
                     txtCPULimit.Text = number < 1 ? "1" : "100";
-                    txtCPULimit.SelectionStart = txtCPULimit.Text.Length; // Устанавливаем курсор в конец
+                    txtCPULimit.SelectionStart = txtCPULimit.Text.Length;
                 }
             }
             else
             {
-                // Удаляем некорректный ввод
                 txtCPULimit.Text = "";
             }
         }
@@ -296,28 +267,14 @@ namespace Julia_Launcher
             }
         }
 
+        // Поля без валидации — просто убираем сохранение
+        private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtModulesDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtCacheDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e) { }
 
-        // Обработчики событий изменения текста
-        private void txtInstallDirectory_TextChanged(object sender, EventArgs e)
-        {
-            SaveSettings("InstallDirectory", txtInstallDirectory.Text);
-        }
-
-        private void txtLogDirectory_TextChanged(object sender, EventArgs e)
-        {
-            SaveSettings("LogDirectory", txtLogDirectory.Text);
-        }
-
-        private void txtModulesDirectory_TextChanged(object sender, EventArgs e)
-        {
-            SaveSettings("ModulesDirectory", txtModulesDirectory.Text);
-        }
-
-        private void txtCacheDirectory_TextChanged(object sender, EventArgs e)
-        {
-            SaveSettings("CacheDirectory", txtCacheDirectory.Text);
-        }
-
+        // Поля с валидацией — оставляем только проверку
         private void txtCPULimit_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtCPULimit.Text))
@@ -364,17 +321,14 @@ namespace Julia_Launcher
             {
                 trimmedText = "0";
             }
-            txtNetworkSpeed.Text = trimmedText; // Обновляем поле, если нужно
+            txtNetworkSpeed.Text = trimmedText;
         }
 
+ 
 
-        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e) { }
-
-        //Button 
-
+        // Обработчики кнопок
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
         {
-
             SelectDirectory(txtInstallDirectory, "Выберите папку для установки");
         }
 
@@ -402,9 +356,6 @@ namespace Julia_Launcher
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            // Очистка ресурсов, если есть
-            // Например: timer1.Stop();
-
             if (this.Parent != null)
             {
                 this.Parent.Controls.Remove(this);
@@ -421,20 +372,8 @@ namespace Julia_Launcher
             }
         }
 
-        // ComboBox
-
- 
-
-
-
-        private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbErrors.SelectedItem != null)
-            {
-                SaveSettings("Errors", cmbErrors.SelectedItem.ToString());
-            }
-        }
- 
+        // Обработчики ComboBox
+        private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e) { }
 
         private void radioButton2_CheckedChanged_1(object sender, EventArgs e) { }
         private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e) { }

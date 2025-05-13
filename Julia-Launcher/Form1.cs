@@ -275,7 +275,14 @@ namespace Julia_Launcher
 
         private void button5_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new UserControl1());
+            if (ComputerInfo != null)
+            {
+                LoadUserControl(new UserControl1(ComputerInfo));
+            }
+            else
+            {
+                MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)

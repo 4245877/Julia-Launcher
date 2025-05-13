@@ -75,9 +75,7 @@ namespace Julia_Launcher
                     case "Timbre": settings.Timbre = (short)(int)value; break;
 
                     // RadioButton
-                    case "ThemeWhite": settings.radWhite = (bool)value; break;
-                    case "ThemeDark": settings.radDark = (bool)value; break;
-                    case "ThemeSystem": settings.radSystem = (bool)value; break;
+ 
                 }
 
                 string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });

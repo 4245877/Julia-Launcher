@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static Julia_Launcher.UserControl1;
 namespace Julia_Launcher
 {
     // Класс для хранения настроек
@@ -50,9 +51,7 @@ namespace Julia_Launcher
         public int RAMUsage { get; set; } = 4097;
 
         // Свойства для RadioButton
-        public bool radWhite { get; set; } = false;
-        public bool radDark { get; set; } = false;
-        public bool radSystem { get; set; } = false;
+        public Theme SelectedTheme { get; set; } = Theme.System;
 
         //UserControl2
         public short Height { get; set; } = 175;
