@@ -86,7 +86,7 @@ namespace Julia_Launcher
             return vertices;
         }
 
-        public void Draw(UserControl2.Shader shader) // Предполагается, что Shader в UserControl2
+        public void Draw(UserControl2.Shader shader)  
         {
             uint diffuseNr = 1;
             uint specularNr = 1;

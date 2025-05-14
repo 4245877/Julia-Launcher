@@ -61,33 +61,69 @@ namespace Julia_Launcher
 
         private void AutoPositionCamera()
         {
-            if (model == null) return;
+            if (model == null || camera == null) // Добавил проверку на камеру, на всякий случай, ты ж можешь и ее проебать
+            {
+                LogError("Модель или камера не инициализированы в AutoPositionCamera."); // Логгируй, блядь, а не просто выходи
+                return;
+            }
 
             var (min, max) = model.CalculateBoundingBox();
-            Vector3 center = (min + max) / 2;
+            Vector3 center = (min + max) / 2f;
             Vector3 size = max - min;
 
-            float fovYRad = MathHelper.DegreesToRadians(30);
-            float tanFovYHalf = (float)Math.Tan(fovYRad / 2);
-            float fovXRad = 2 * (float)Math.Atan(camera.AspectRatio * tanFovYHalf);
-            float tanFovXHalf = (float)Math.Tan(fovXRad / 2);
+            // Если модель – это точка или какая-то хуйня без размера, не ломайся хоть тут
+            if (size.LengthSquared < 0.0001f)
+            {
+                LogError("Размер модели слишком мал для AutoPositionCamera.");
+                // Можно поставить камеру в дефолтную позицию или вернуть ошибку
+                camera.Position = new Vector3(0, 1, 3); // Какая-то базовая позиция
+                camera.LookAt(Vector3.Zero);
+                glControl1.Invalidate();
+                return;
+            }
 
-            float width = size.X;
-            float height = size.Y;
-            float dX = (width / 2) / tanFovXHalf;
-            float dY = (height / 2) / tanFovYHalf;
-            float distance = Math.Max(dX, dY);
+            float fovYDeg = 45f; // Ты хотел 45, пусть будет. Для "синематика" часто берут 35-50.
+            float fovYRad = MathHelper.DegreesToRadians(fovYDeg);
+            float tanFovYHalf = (float)Math.Tan(fovYRad / 2f);
 
-            distance *= 0.8f;
+            // Рассчитываем дистанцию, чтобы модель помещалась по высоте, а потом отодвигаем камеру подальше,
+            // чтобы персонаж не занимал весь ебучий экран.
+            // (size.Y / 2f) / tanFovYHalf – это расстояние, чтобы ВМЕСТИТЬ высоту модели.
+            float baseDistance = (size.Y / 2f) / tanFovYHalf;
 
-            float cameraHeightOffset = size.Y * 0.25f;
-            camera.Position = center + new Vector3(0, cameraHeightOffset, distance);
+            // Множитель для "отъезда" камеры. 1.0 - модель впритык по высоте.
+            // 1.5f - модель занимает ~66% высоты экрана.
+            // 2.0f - модель занимает ~50% высоты экрана.
+            // Подбирай этот ебучий множитель, пока не понравится. Начнем с 1.8f.
+            float cameraViewDistance = baseDistance * 1.8f;
 
-            float focusHeightOffset = size.Y * 0.25f;
-            Vector3 focusPoint = center + new Vector3(0, focusHeightOffset, 0);
+            // Точка фокуса камеры: куда, блядь, смотреть будем.
+            // Обычно это верхняя часть груди или область шеи/подбородка персонажа.
+            // center.Y - это середина модели. size.Y * 0.2f - это примерно +20% высоты от центра вверх.
+            float focusHeight = center.Y + size.Y * 0.20f;
 
-            camera.LookAt(focusPoint);
+            // Высота камеры: откуда будем смотреть.
+            // Для естественного вида часто ставят на уровне глаз персонажа или чуть выше.
+            // Если центр модели - это ее геометрический центр, то "глаза" могут быть center.Y + size.Y * 0.3f / 0.35f.
+            // Поставим камеру чуть выше точки фокуса, чтобы взгляд был немного сверху вниз.
+            float cameraActualHeight = focusHeight + size.Y * 0.05f; // Камера чуть выше фокуса. Можешь сделать focusHeight и cameraActualHeight одинаковыми.
 
+            // Угол для "синематичного" вида сбоку (3/4 ракурс).
+            float horizontalAngleDegrees = 25.0f; // Градусов. Попробуй -25 для вида с другой стороны.
+            float horizontalAngleRadians = MathHelper.DegreesToRadians(horizontalAngleDegrees);
+
+            // Рассчитываем X и Z позицию камеры, чтобы она была на нужной дистанции и под углом.
+            float cameraX = center.X + cameraViewDistance * (float)Math.Sin(horizontalAngleRadians);
+            float cameraZ = center.Z + cameraViewDistance * (float)Math.Cos(horizontalAngleRadians); // Cos, потому что 0 градусов - это прямо по Z
+
+            // Устанавливаем позицию камеры
+            camera.Position = new Vector3(cameraX, cameraActualHeight, cameraZ);
+
+            // Финальная точка, на которую будет смотреть камера.
+            Vector3 targetFocusPoint = new Vector3(center.X, focusHeight, center.Z);
+            camera.LookAt(targetFocusPoint);
+
+            // Обновляем картинку, хули.
             glControl1.Invalidate();
         }
 
@@ -320,14 +356,7 @@ namespace Julia_Launcher
 
         private void GlControl_Click(object sender, EventArgs e) { }
 
-        private void trackBar7_Scroll(object sender, EventArgs e)
-        {
-            if (loaded && model != null)
-            {
-                modelScale = trkSpeechRate.Value / 100.0f;
-                glControl1.Invalidate();
-            }
-        }
+
 
 
         private bool CheckShaderFiles(string vertexPath, string fragmentPath)
