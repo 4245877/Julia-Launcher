@@ -15,6 +15,7 @@ namespace Julia_Launcher
         private readonly string settingsFilePath;
         private readonly HardwareInfo hardwareInfo; // Теперь это поле только для чтения
         private int previousRamUsage;
+        private const long BytesInMegabyte = 1024L * 1024L;
 
         public UserControl1(HardwareInfo hardwareInfo)
         {
@@ -37,7 +38,7 @@ namespace Julia_Launcher
             txtCacheDirectory.TextChanged += txtCacheDirectory_TextChanged;
 
             // Инициализация с использованием hardwareInfo
-            trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024));
+            trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / BytesInMegabyte);
             previousRamUsage = trackRamUsage.Value;
             InitializeComboBox();
             LoadHardwareInfo();
