@@ -55,7 +55,6 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(1171, 626);
             panel1.TabIndex = 0;
-            panel1.Paint += panel1_Paint;
             // 
             // labelStatus
             // 
@@ -73,7 +72,6 @@
             progressBar.Name = "progressBar";
             progressBar.Size = new System.Drawing.Size(1165, 23);
             progressBar.TabIndex = 0;
-            progressBar.Click += progressBar_Click;
             // 
             // pictureBoxInfo
             // 
@@ -100,7 +98,6 @@
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(148, 705);
             panel2.TabIndex = 1;
-            panel2.Paint += panel2_Paint;
             // 
             // SetingButton
             // 
@@ -149,7 +146,6 @@
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(1171, 73);
             panel3.TabIndex = 2;
-            panel3.Paint += panel3_Paint;
             // 
             // button1
             // 
