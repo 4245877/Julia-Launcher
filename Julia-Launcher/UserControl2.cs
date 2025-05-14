@@ -643,7 +643,6 @@ namespace Julia_Launcher
             PlayHelloWorld();
         }
 
-        private void label2_Click(object sender, EventArgs e) { }
 
         public void PlayHelloWorld()
         {

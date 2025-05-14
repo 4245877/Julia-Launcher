@@ -125,7 +125,6 @@
             label2.Size = new System.Drawing.Size(43, 15);
             label2.TabIndex = 8;
             label2.Text = "Height";
-            label2.Click += label2_Click;
             // 
             // label3
             // 
