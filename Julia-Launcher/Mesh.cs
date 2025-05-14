@@ -17,7 +17,6 @@ namespace Julia_Launcher
         public Vector4i BoneIds;     // Индексы костей (4 int)
         public Vector4 BoneWeights;  // Веса костей (4 float)
 
-        // Конструктор для удобного создания экземпляра
         public Vertex(Vector3 position, Vector3 normal, Vector2 texCoord, Vector3 tangent, Vector3 bitangent, Vector4i boneIds, Vector4 boneWeights)
         {
             Position = position;
@@ -30,20 +29,17 @@ namespace Julia_Launcher
         }
     }
 
-
-
-
     public class Mesh
     {
         private int VAO, VBO, EBO;
         private int indexCount;
         private bool hasBones;
-        public List<UserControl2.Texture> Textures { get; private set; }
+        public List<Texture> Textures { get; private set; } // Исправлено на List<Texture>
         private float[] vertices;
 
         public bool HasBones => hasBones;
 
-        public Mesh(float[] vertices, uint[] indices, List<UserControl2.Texture> textures, bool hasBones = false)
+        public Mesh(float[] vertices, uint[] indices, List<Texture> textures, bool hasBones = false)
         {
             this.vertices = vertices;
             Textures = textures;
@@ -90,7 +86,7 @@ namespace Julia_Launcher
             return vertices;
         }
 
-        public void Draw(UserControl2.Shader shader)
+        public void Draw(UserControl2.Shader shader) // Предполагается, что Shader в UserControl2
         {
             uint diffuseNr = 1;
             uint specularNr = 1;
