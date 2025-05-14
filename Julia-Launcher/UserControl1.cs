@@ -267,12 +267,7 @@ namespace Julia_Launcher
             }
         }
 
-        // Поля без валидации — просто убираем сохранение
-        private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
-        private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }
-        private void txtModulesDirectory_TextChanged(object sender, EventArgs e) { }
-        private void txtCacheDirectory_TextChanged(object sender, EventArgs e) { }
-        private void txtHotkeyLounch_TextChanged(object sender, EventArgs e) { }
+
 
         // Поля с валидацией — оставляем только проверку
         private void txtCPULimit_TextChanged(object sender, EventArgs e)
@@ -324,7 +319,7 @@ namespace Julia_Launcher
             txtNetworkSpeed.Text = trimmedText;
         }
 
- 
+
 
         // Обработчики кнопок
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
@@ -372,12 +367,12 @@ namespace Julia_Launcher
             }
         }
 
-        // Обработчики ComboBox
-        private void cmbErrors_SelectedIndexChanged(object sender, EventArgs e) { }
-
-        private void radioButton2_CheckedChanged_1(object sender, EventArgs e) { }
-        private void cmbLogLevel_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void tabPage4_Click(object sender, EventArgs e) { }
+   
         private void UserControl1_Load(object sender, EventArgs e) { }
+        private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtModulesDirectory_TextChanged(object sender, EventArgs e) { }
+        private void txtCacheDirectory_TextChanged(object sender, EventArgs e) { }
+
     }
 }

@@ -722,7 +722,6 @@
             tabPage4.Size = new System.Drawing.Size(1155, 564);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Logging and Debugging";
-            tabPage4.Click += tabPage4_Click;
             // 
             // cmbDebugging
             // 
@@ -792,7 +791,6 @@
             cmbErrors.Name = "cmbErrors";
             cmbErrors.Size = new System.Drawing.Size(140, 23);
             cmbErrors.TabIndex = 124;
-            cmbErrors.SelectedIndexChanged += cmbErrors_SelectedIndexChanged;
             // 
             // lblErrors
             // 
@@ -814,7 +812,6 @@
             cmbLogLevel.Name = "cmbLogLevel";
             cmbLogLevel.Size = new System.Drawing.Size(140, 23);
             cmbLogLevel.TabIndex = 123;
-            cmbLogLevel.SelectedIndexChanged += cmbLogLevel_SelectedIndexChanged;
             // 
             // lblWarnings
             // 
@@ -917,7 +914,6 @@
             txtHotkeyLounch.Name = "txtHotkeyLounch";
             txtHotkeyLounch.Size = new System.Drawing.Size(374, 23);
             txtHotkeyLounch.TabIndex = 123;
-            txtHotkeyLounch.TextChanged += txtHotkeyLounch_TextChanged;
             // 
             // label31
             // 
@@ -944,15 +940,10 @@
             // 
             // radDark
             // 
-            radDark.AutoSize = true;
-            radDark.Location = new System.Drawing.Point(146, 46);
-            radDark.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            radDark.Location = new System.Drawing.Point(210, 40);
             radDark.Name = "radDark";
-            radDark.Size = new System.Drawing.Size(14, 13);
-            radDark.TabIndex = 122;
-            radDark.TabStop = true;
-            radDark.UseVisualStyleBackColor = true;
-            radDark.CheckedChanged += radioButton2_CheckedChanged_1;
+            radDark.Size = new System.Drawing.Size(104, 24);
+            radDark.TabIndex = 125;
             // 
             // label33
             // 
@@ -975,6 +966,7 @@
             radWhite.TabIndex = 121;
             radWhite.TabStop = true;
             radWhite.UseVisualStyleBackColor = true;
+  
             // 
             // label34
             // 
