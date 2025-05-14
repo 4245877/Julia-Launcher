@@ -121,9 +121,8 @@ namespace Julia_Launcher
 
         private void UserControl2_Load(object sender, EventArgs e)
         {
-            string exePath = Application.StartupPath;
-            string projectDir = Directory.GetParent(Directory.GetParent(exePath).FullName).FullName;
-            string shadersDirectory = Path.Combine(projectDir, "Shaders");
+            string appDirectory = Application.StartupPath;
+            string shadersDirectory = Path.Combine(appDirectory, "Shaders");
             string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
             string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
 
@@ -155,8 +154,8 @@ namespace Julia_Launcher
                 camera = new Camera(new Vector3(0, 0, 3), glControl1.Width / (float)glControl1.Height);
                 camera.LookAt(new Vector3(0, 0, 0));
 
-                string modelDirectory = Path.Combine(appDirectory, "..", "..", "..", "Model");
-                string modelPath = Path.Combine(modelDirectory, "sketch2.fbx");
+                string modelsDirectory = Path.Combine(appDirectory, "Model");
+                string modelPath = Path.Combine(modelsDirectory, "sketch2.fbx");
 
                 if (!File.Exists(modelPath))
                 {
