@@ -1094,7 +1094,6 @@
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl1";
             Size = new System.Drawing.Size(1171, 626);
-            Load += UserControl1_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();

@@ -36,18 +36,11 @@ namespace Julia_Launcher
             txtModulesDirectory.TextChanged += txtModulesDirectory_TextChanged;
             txtCacheDirectory.TextChanged += txtCacheDirectory_TextChanged;
 
-            // Инициализация с использованием переданного hardwareInfo
-            if (hardwareInfo != null)
-            {
-                trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024));
-                previousRamUsage = trackRamUsage.Value;
-                InitializeComboBox();
-                LoadHardwareInfo();
-            }
-            else
-            {
-                MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Инициализация с использованием hardwareInfo
+            trackRamUsage.Maximum = (int)(hardwareInfo.RamTotalVisibleBytes / (1024 * 1024));
+            previousRamUsage = trackRamUsage.Value;
+            InitializeComboBox();
+            LoadHardwareInfo();
 
             // Загрузка настроек
             LoadSettings();
@@ -205,9 +198,7 @@ namespace Julia_Launcher
                 InfoMassages = cmbInfoMassages.SelectedItem?.ToString(),
                 LogFormat = cmbLogFormat.SelectedItem?.ToString(),
                 Debugging = cmbDebugging.SelectedItem?.ToString(),
-                SelectedTheme = radWhite.Checked ? Theme.White : radDark.Checked ? Theme.Dark : Theme.System,
-
-                SelectedRadioButtonIndex = radWhite.Checked ? 0 : radDark.Checked ? 1 : 2
+                SelectedTheme = radWhite.Checked ? Theme.White : radDark.Checked ? Theme.Dark : Theme.System
             };
         }
 
@@ -368,7 +359,7 @@ namespace Julia_Launcher
         }
 
    
-        private void UserControl1_Load(object sender, EventArgs e) { }
+ 
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtModulesDirectory_TextChanged(object sender, EventArgs e) { }
