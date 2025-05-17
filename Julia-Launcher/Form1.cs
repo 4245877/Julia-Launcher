@@ -54,8 +54,8 @@ namespace Julia_Launcher
             }
             catch (Exception ex)
             {
-                Log($"Ошибка в Form1_Load: {ex.Message}");
-                MessageBox.Show("Произошла ошибка при загрузке формы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log($"Error in Form1_Load: {ex.Message}");
+                MessageBox.Show("There was an error loading the form.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -81,17 +81,17 @@ namespace Julia_Launcher
                 await hardwareInfo.CollectAllDataAsync();
                 string json = JsonSerializer.Serialize(hardwareInfo, new JsonSerializerOptions { WriteIndented = true });
                 await File.WriteAllTextAsync(hardwareInfoFilePath, json);
-                Log("Информация о железе успешно собрана.");
+                Log("Hardware information successfully collected.");
             }
             catch (ManagementException mex)
             {
-                Log($"Ошибка WMI: {mex.Message}");
-                MessageBox.Show($"Ошибка WMI: {mex.Message}", "Ошибка оборудования", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log($"Error WMI: {mex.Message}");
+                MessageBox.Show($"Error WMI: {mex.Message}", "Hardware error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                Log($"Ошибка при сборе информации о железе: {ex.Message}");
-                MessageBox.Show($"Ошибка при сборе информации о железе: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log($"Error collecting hardware information: {ex.Message}");
+                MessageBox.Show($"Error collecting hardware information: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -106,13 +106,13 @@ namespace Julia_Launcher
                 }
                 else
                 {
-                    MessageBox.Show("Файл с информацией о железе не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Hardware information file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                Log($"Ошибка при загрузке информации о железе: {ex.Message}");
-                MessageBox.Show("Не удалось загрузить информацию о железе.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log($"Error loading hardware information: {ex.Message}");
+                MessageBox.Show("Failed to load hardware information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -159,18 +159,18 @@ namespace Julia_Launcher
 
             if (File.Exists(installedFilePath))
             {
-                DialogResult result = MessageBox.Show("Продукт уже установлен. Запустить его?", "Продукт готов", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("The product is already installed. Run it?", "The product is ready", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     try { Process.Start(installedFilePath); }
-                    catch (Exception ex) { MessageBox.Show($"Ошибка при запуске: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    catch (Exception ex) { MessageBox.Show($"Error while starting: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
                 return;
             }
 
             progressBar.Visible = true;
             progressBar.Value = 0;
-            labelStatus.Text = "Проверка файла...";
+            labelStatus.Text = "Checking file...";
 
             try
             {
@@ -190,7 +190,7 @@ namespace Julia_Launcher
 
                 if (needToDownload)
                 {
-                    labelStatus.Text = "Скачивание...";
+                    labelStatus.Text = "Download...";
                     HttpResponseMessage response = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token);
                     response.EnsureSuccessStatusCode();
                     long? totalBytes = response.Content.Headers.ContentLength;
@@ -215,12 +215,12 @@ namespace Julia_Launcher
                         }
                         progressBar.Value = 100;
                     }
-                    labelStatus.Text = "Скачивание завершено.";
+                    labelStatus.Text = "Download complete.";
                 }
 
                 if (File.Exists(installerFilePath))
                 {
-                    labelStatus.Text = "Установка...";
+                    labelStatus.Text = "Installation...";
                     Process installerProcess = new Process
                     {
                         StartInfo = new ProcessStartInfo(installerFilePath),
@@ -232,14 +232,14 @@ namespace Julia_Launcher
                         {
                             isInstalled = true;
                             UpdateUI();
-                            labelStatus.Text = "Установка завершена.";
-                            Log("Установка успешно завершена.");
+                            labelStatus.Text = "Installation is complete.";
+                            Log("Installation completed successfully.");
                         }
                         else
                         {
-                            MessageBox.Show($"Установка завершилась с ошибкой. Код: {installerProcess.ExitCode}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            labelStatus.Text = "Ошибка установки.";
-                            Log($"Ошибка установки. Код: {installerProcess.ExitCode}");
+                            MessageBox.Show($"Installation failed with error. Code: {installerProcess.ExitCode}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            labelStatus.Text = "Installation error.";
+                            Log($"Installation error. Code: {installerProcess.ExitCode}");
                         }
                     };
                     installerProcess.Start();
@@ -247,15 +247,15 @@ namespace Julia_Launcher
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show("Загрузка отменена.", "Отмена", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                labelStatus.Text = "Загрузка отменена.";
-                Log("Загрузка отменена пользователем.");
+                MessageBox.Show("Upload cancelled.", "Cancel", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                labelStatus.Text = "Upload cancelled.";
+                Log("Upload cancelled by user.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                labelStatus.Text = "Ошибка.";
-                Log($"Ошибка при загрузке/установке: {ex.Message}");
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                labelStatus.Text = "Error.";
+                Log($"Error while downloading/installing: {ex.Message}");
             }
             finally
             {
@@ -296,7 +296,7 @@ namespace Julia_Launcher
             }
             else
             {
-                MessageBox.Show("Информация о железе недоступна.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hardware information is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -309,7 +309,7 @@ namespace Julia_Launcher
             }
             else
             {
-                MessageBox.Show("Папка настроек не существует.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("The settings folder does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
