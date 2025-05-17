@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Mathematics;
-using static Julia_Launcher.UserControl2;
+
 
 namespace Julia_Launcher
 {

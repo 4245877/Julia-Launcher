@@ -8,6 +8,7 @@ using System.IO;
 using static Julia_Launcher.SettingsManager;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Assimp;
 
 namespace Julia_Launcher
 {
@@ -312,6 +313,7 @@ namespace Julia_Launcher
 
         private void GlControl_Click(object sender, EventArgs e) { }
 
+        
 
 
 

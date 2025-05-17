@@ -61,33 +61,55 @@ namespace Julia_Launcher
             return textureId;
         }
 
-        private void LoadModel(string path)
+        private AssimpContext InitializeImporter()
         {
             var importer = new AssimpContext();
             importer.SetConfig(new NormalSmoothingAngleConfig(NORMAL_SMOOTHING_ANGLE));
-            Scene scene = importer.ImportFile(path,
-                PostProcessSteps.Triangulate |
-                PostProcessSteps.GenerateSmoothNormals |
-                PostProcessSteps.FlipUVs |
-                PostProcessSteps.CalculateTangentSpace |
-                PostProcessSteps.LimitBoneWeights);
+            return importer;
+        }
 
+        private Scene ImportSceneFromFile(AssimpContext importer, string path, PostProcessSteps steps)
+        {
+            return importer.ImportFile(path, steps);
+        }
+
+        private void ValidateScene(Scene scene)
+        {
             if (scene == null || scene.RootNode == null || (scene.SceneFlags & SceneFlags.Incomplete) == SceneFlags.Incomplete)
             {
                 throw new Exception("Не удалось загрузить модель с помощью Assimp.");
             }
+        }
 
-            directory = Path.GetDirectoryName(path);
+        private void ProcessSceneContent(Scene scene, Matrix4 initialTransform)
+        {
+            ProcessNode(scene.RootNode, scene, initialTransform);
+        }
+
+        private void SetupAnimations(Scene scene)
+        {
             LoadAnimations(scene);
-
-            Matrix4 scaleTransform = Matrix4.CreateScale(INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE);
-            ProcessNode(scene.RootNode, scene, scaleTransform);
-
             if (animations.Count > 0)
             {
                 hasAnimations = true;
                 animator.SetAnimation(animations.Values.First());
             }
+        }
+
+        private void LoadModel(string path)
+        {
+            AssimpContext importer = InitializeImporter();
+            Scene scene = ImportSceneFromFile(importer, path,
+                PostProcessSteps.Triangulate |
+                PostProcessSteps.GenerateSmoothNormals |
+                PostProcessSteps.FlipUVs |
+                PostProcessSteps.CalculateTangentSpace |
+                PostProcessSteps.LimitBoneWeights);
+            ValidateScene(scene);
+            directory = Path.GetDirectoryName(path);
+            Matrix4 scaleTransform = Matrix4.CreateScale(INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE, INITIAL_MODEL_SCALE);
+            ProcessSceneContent(scene, scaleTransform);
+            SetupAnimations(scene);
         }
 
         public (Vector3 Min, Vector3 Max) CalculateBoundingBox()

@@ -13,7 +13,7 @@ namespace Julia_Launcher
     public partial class UserControl1 : UserControl
     {
         private readonly string settingsFilePath;
-        private readonly HardwareInfo hardwareInfo; // Теперь это поле только для чтения
+        private readonly HardwareInfo hardwareInfo; 
         private int previousRamUsage;
         private const long BytesInMegabyte = 1024L * 1024L;
 
