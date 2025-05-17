@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
 
 namespace Julia_Launcher
 {
