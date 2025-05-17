@@ -51,7 +51,6 @@
     <EmbeddedResource Include="Shaders\vertex.glsl">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="Style.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />

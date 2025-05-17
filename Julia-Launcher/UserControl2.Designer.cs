@@ -312,8 +312,7 @@
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
-            Size = new System.Drawing.Size(1171, 626);
-            Load += UserControl2_Load;
+            Size = new System.Drawing.Size(1171, 626); 
             ((System.ComponentModel.ISupportInitialize)trkHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkWeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkAge).EndInit();

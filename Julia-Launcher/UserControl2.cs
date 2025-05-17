@@ -7,6 +7,7 @@ using OpenTK.Mathematics;
 using System.IO;
 using static Julia_Launcher.SettingsManager;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Julia_Launcher
 {
@@ -18,9 +19,9 @@ namespace Julia_Launcher
         private const float CAMERA_ZOOM_SPEED = 120.0f;
 
 
-        private const float BACKGROUND_COLOR_R = 0.7f;
-        private const float BACKGROUND_COLOR_G = 0.6f;
-        private const float BACKGROUND_COLOR_B = 0.5f;
+        private const float BACKGROUND_COLOR_R = 0.11764706f;  
+        private const float BACKGROUND_COLOR_G = 0.23529412f;  
+        private const float BACKGROUND_COLOR_B = 0.44705882f;  
         private const float BACKGROUND_COLOR_A = 1.0f;
 
         private float modelScale = Model.INITIAL_MODEL_SCALE;
@@ -28,8 +29,6 @@ namespace Julia_Launcher
         private bool isAnimating = false;
         private DateTime lastFrameTime;
         private System.Windows.Forms.Timer animationTimer;
-        private System.Windows.Forms.ComboBox comboAnimations;
-        private System.Windows.Forms.Button btnPlayPause;
         private bool loaded = false;
         private Model model;
         private Camera camera;
@@ -121,19 +120,7 @@ namespace Julia_Launcher
             trkTimbre.Value = settings.Timbre;
         }
 
-        private void UserControl2_Load(object sender, EventArgs e)
-        {
-            string appDirectory = Application.StartupPath;
-            string shadersDirectory = Path.Combine(appDirectory, "Shaders");
-            string vertexPath = Path.Combine(shadersDirectory, "vertex.glsl");
-            string fragmentPath = Path.Combine(shadersDirectory, "fragment.glsl");
-
-            if (!CheckShaderFiles(vertexPath, fragmentPath))
-            {
-                return;
-            }
-        }
-
+ 
         private void GlControl_Load(object sender, EventArgs e)
         {
             try
@@ -168,6 +155,9 @@ namespace Julia_Launcher
 
                 LoadModel(modelPath);
                 loaded = true;
+
+                // Запуск асинхронного цикла
+                StartAnimationLoop();
             }
             catch (Exception ex)
             {
@@ -335,7 +325,24 @@ namespace Julia_Launcher
             }
             return true;
         }
+        private async void StartAnimationLoop()
+        {
+            while (true)
+            {
+                if (model != null && model.HasAnimations && isAnimating)
+                {
+                    DateTime now = DateTime.Now;
+                    float deltaTime = (float)(now - lastFrameTime).TotalSeconds;
+                    lastFrameTime = now;
 
+                    model.Update(deltaTime);
+
+                    glControl1.Invalidate();
+                }
+
+                await Task.Delay(16); // ~60 FPS
+            }
+        }
         public class Shader
         {
             public int Handle { get; private set; }
@@ -403,6 +410,7 @@ namespace Julia_Launcher
 
                 return shader;
             }
+
 
             public void SetInt(string name, int value)
             {
@@ -635,29 +643,33 @@ namespace Julia_Launcher
 
         private void btnAddClothing_Click(object sender, EventArgs e)
         {
-            PlayHelloWorld();
+            PlayHelloWorldAsync();
         }
 
-
-        public void PlayHelloWorld()
+        private async void PlayHelloWorldAsync()
         {
             string filePath = "output.wav";
 
             Process process = new Process();
             process.StartInfo.FileName = "python";
             process.StartInfo.Arguments = "script.py";
+            process.EnableRaisingEvents = true;
+            process.Exited += (s, e) =>
+            {
+                // Выполняется в UI-потоке после завершения процесса
+                if (File.Exists(filePath))
+                {
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(filePath);
+                    player.Play();
+                }
+                else
+                {
+                    Console.WriteLine($"Ошибка: файл {filePath} не найден.");
+                }
+            };
             process.Start();
-            process.WaitForExit();
 
-            if (File.Exists(filePath))
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(filePath);
-                player.Play();
-            }
-            else
-            {
-                Console.WriteLine($"Ошибка: файл {filePath} не найден.");
-            }
+            // UI остаётся отзывчивым
         }
     }
 }

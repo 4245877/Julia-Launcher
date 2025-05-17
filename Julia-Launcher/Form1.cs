@@ -15,6 +15,7 @@ namespace Julia_Launcher
 {
     public partial class Form1 : Form
     {
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
         private bool isInstalled = false;
         private readonly string hardwareInfoFilePath;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -43,12 +44,19 @@ namespace Julia_Launcher
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            // Проверяем актуальность файла (например, 1 день)
-            if (!File.Exists(hardwareInfoFilePath) || File.GetLastWriteTime(hardwareInfoFilePath) < DateTime.Now.AddDays(-1))
+            try
             {
-                await Task.Run(async () => await CollectHardwareInfoAsync());
+                if (!File.Exists(hardwareInfoFilePath) || File.GetLastWriteTime(hardwareInfoFilePath) < DateTime.Now.AddDays(-1))
+                {
+                    await Task.Run(CollectHardwareInfoAsync);
+                }
+                await LoadHardwareInfoAsync(); // Асинхронный вызов
             }
-            LoadHardwareInfo();
+            catch (Exception ex)
+            {
+                Log($"Ошибка в Form1_Load: {ex.Message}");
+                MessageBox.Show("Произошла ошибка при загрузке формы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void UpdateUI()
@@ -87,14 +95,14 @@ namespace Julia_Launcher
             }
         }
 
-        private void LoadHardwareInfo()
+        private async Task LoadHardwareInfoAsync()
         {
             try
             {
                 if (File.Exists(hardwareInfoFilePath))
                 {
-                    string json = File.ReadAllText(hardwareInfoFilePath);
-                    ComputerInfo = JsonSerializer.Deserialize<HardwareInfo>(json);
+                    string json = await File.ReadAllTextAsync(hardwareInfoFilePath);
+                    ComputerInfo = JsonSerializer.Deserialize<HardwareInfo>(json, _jsonSerializerOptions);
                 }
                 else
                 {
@@ -253,6 +261,13 @@ namespace Julia_Launcher
             {
                 progressBar.Visible = false;
             }
+        }
+
+
+        public class HardwareInfoService
+        {
+            public HardwareInfo ComputerInfo { get; private set; }
+            public async Task LoadHardwareInfoAsync(string filePath) { /* логика загрузки */ }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
