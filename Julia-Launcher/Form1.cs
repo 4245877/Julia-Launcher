@@ -287,19 +287,29 @@ namespace Julia_Launcher
             panel1.Controls.Add(control);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+
+
+
+
+
+
+
+        private void pictureBoxInfo_Click(object sender, EventArgs e)
         {
-            if (ComputerInfo != null)
+            ProcessStartInfo psi = new ProcessStartInfo
             {
-                LoadUserControl(new UserControl1(ComputerInfo));
-            }
-            else
-            {
-                MessageBox.Show("Hardware information is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                FileName = "https://4245877.github.io/Julia_site/",
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnModelVoiceSettings_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new UserControl2());
+        }
+
+        private void btnCoreFolder_Click(object sender, EventArgs e)
         {
             string settingsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings");
             if (Directory.Exists(settingsDirectory))
@@ -312,21 +322,16 @@ namespace Julia_Launcher
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnSetings_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new UserControl2());
-        }
-
-
-
-        private void pictureBoxInfo_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new ProcessStartInfo
+            if (ComputerInfo != null)
             {
-                FileName = "https://4245877.github.io/Julia_site/",
-                UseShellExecute = true
-            };
-            Process.Start(psi);
+                LoadUserControl(new UserControl1(ComputerInfo));
+            }
+            else
+            {
+                MessageBox.Show("Hardware information is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

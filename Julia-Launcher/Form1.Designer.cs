@@ -34,9 +34,9 @@
             progressBar = new System.Windows.Forms.ProgressBar();
             pictureBoxInfo = new System.Windows.Forms.PictureBox();
             panel2 = new System.Windows.Forms.Panel();
-            SetingButton = new System.Windows.Forms.Button();
+            btnSetings = new System.Windows.Forms.Button();
             btnModelVoiceSettings = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
+            btnCoreFolder = new System.Windows.Forms.Button();
             panel3 = new System.Windows.Forms.Panel();
             button1 = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
@@ -90,26 +90,26 @@
             panel2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             panel2.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
             panel2.Controls.Add(pictureBoxInfo);
-            panel2.Controls.Add(SetingButton);
+            panel2.Controls.Add(btnSetings);
             panel2.Controls.Add(btnModelVoiceSettings);
-            panel2.Controls.Add(button3);
+            panel2.Controls.Add(btnCoreFolder);
             panel2.Location = new System.Drawing.Point(10, 12);
             panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(148, 705);
             panel2.TabIndex = 1;
             // 
-            // SetingButton
+            // btnSetings
             // 
-            SetingButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            SetingButton.Location = new System.Drawing.Point(3, 657);
-            SetingButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            SetingButton.Name = "SetingButton";
-            SetingButton.Size = new System.Drawing.Size(141, 48);
-            SetingButton.TabIndex = 4;
-            SetingButton.Text = "Setings";
-            SetingButton.UseVisualStyleBackColor = true;
-            SetingButton.Click += button5_Click;
+            btnSetings.Anchor = System.Windows.Forms.AnchorStyles.None;
+            btnSetings.Location = new System.Drawing.Point(3, 657);
+            btnSetings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnSetings.Name = "btnSetings";
+            btnSetings.Size = new System.Drawing.Size(141, 48);
+            btnSetings.TabIndex = 4;
+            btnSetings.Text = "Setings";
+            btnSetings.UseVisualStyleBackColor = true;
+            btnSetings.Click += btnSetings_Click;
             // 
             // btnModelVoiceSettings
             // 
@@ -121,20 +121,20 @@
             btnModelVoiceSettings.TabIndex = 3;
             btnModelVoiceSettings.Text = "Model & Voice Settings";
             btnModelVoiceSettings.UseVisualStyleBackColor = true;
-            btnModelVoiceSettings.Click += button4_Click;
+            btnModelVoiceSettings.Click += btnModelVoiceSettings_Click;
             // 
-            // button3
+            // btnCoreFolder
             // 
-            button3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            button3.Location = new System.Drawing.Point(3, 548);
-            button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(145, 48);
-            button3.TabIndex = 2;
-            button3.Text = "CoreFolder";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            btnCoreFolder.Anchor = System.Windows.Forms.AnchorStyles.None;
+            btnCoreFolder.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            btnCoreFolder.Location = new System.Drawing.Point(3, 548);
+            btnCoreFolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnCoreFolder.Name = "btnCoreFolder";
+            btnCoreFolder.Size = new System.Drawing.Size(145, 48);
+            btnCoreFolder.TabIndex = 2;
+            btnCoreFolder.Text = "CoreFolder";
+            btnCoreFolder.UseVisualStyleBackColor = true;
+            btnCoreFolder.Click += btnCoreFolder_Click;
             // 
             // panel3
             // 
@@ -191,9 +191,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button SetingButton;
+        private System.Windows.Forms.Button btnSetings;
         private System.Windows.Forms.Button btnModelVoiceSettings;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnCoreFolder;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.PictureBox pictureBoxInfo;

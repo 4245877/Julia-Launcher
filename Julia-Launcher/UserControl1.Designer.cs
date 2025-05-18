@@ -518,7 +518,7 @@
             txtCPULimit.Name = "txtCPULimit";
             txtCPULimit.Size = new System.Drawing.Size(116, 23);
             txtCPULimit.TabIndex = 108;
-            txtCPULimit.TextChanged += textBox4_TextChanged;
+            txtCPULimit.TextChanged += txtCPULimit_TextChanged_1;
             // 
             // txtGPULimit
             // 
@@ -966,7 +966,6 @@
             radWhite.TabIndex = 121;
             radWhite.TabStop = true;
             radWhite.UseVisualStyleBackColor = true;
-  
             // 
             // label34
             // 

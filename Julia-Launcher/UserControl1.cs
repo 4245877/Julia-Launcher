@@ -13,7 +13,7 @@ namespace Julia_Launcher
     public partial class UserControl1 : UserControl
     {
         private readonly string settingsFilePath;
-        private readonly HardwareInfo hardwareInfo; 
+        private readonly HardwareInfo hardwareInfo;
         private int previousRamUsage;
         private const long BytesInMegabyte = 1024L * 1024L;
 
@@ -224,24 +224,7 @@ namespace Julia_Launcher
             }
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtCPULimit.Text))
-                return;
 
-            if (int.TryParse(txtCPULimit.Text, out int number))
-            {
-                if (number < 1 || number > 100)
-                {
-                    txtCPULimit.Text = number < 1 ? "1" : "100";
-                    txtCPULimit.SelectionStart = txtCPULimit.Text.Length;
-                }
-            }
-            else
-            {
-                txtCPULimit.Text = "";
-            }
-        }
 
         // Общий метод для выбора директории
         private void SelectDirectory(TextBox textBox, string description)
@@ -311,7 +294,24 @@ namespace Julia_Launcher
             txtNetworkSpeed.Text = trimmedText;
         }
 
+        private void txtCPULimit_TextChanged_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtCPULimit.Text))
+                return;
 
+            if (int.TryParse(txtCPULimit.Text, out int number))
+            {
+                if (number < 1 || number > 100)
+                {
+                    txtCPULimit.Text = number < 1 ? "1" : "100";
+                    txtCPULimit.SelectionStart = txtCPULimit.Text.Length;
+                }
+            }
+            else
+            {
+                txtCPULimit.Text = "";
+            }
+        }
 
         // Обработчики кнопок
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
@@ -359,12 +359,13 @@ namespace Julia_Launcher
             }
         }
 
-   
- 
+
+
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtModulesDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtCacheDirectory_TextChanged(object sender, EventArgs e) { }
 
+       
     }
 }
