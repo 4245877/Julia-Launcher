@@ -316,29 +316,29 @@ namespace Julia_Launcher
         // Обработчики кнопок
         private void btnSelectInstallDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtInstallDirectory, "Выберите папку для установки");
+            SelectDirectory(txtInstallDirectory, "Select installation folder");
         }
 
         private void btnSelectLogDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtLogDirectory, "Выберите папку для логов");
+            SelectDirectory(txtLogDirectory, "Select a folder for logs");
         }
 
         private void btnSelectModulesDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtModulesDirectory, "Выберите папку для модулей");
+            SelectDirectory(txtModulesDirectory, "Select a folder for modules");
         }
 
         private void btnSelectCacheDirectory_Click(object sender, EventArgs e)
         {
-            SelectDirectory(txtCacheDirectory, "Выберите папку для кеша");
+            SelectDirectory(txtCacheDirectory, "Select a folder for the cache");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             var settings = CollectSettings();
             SaveAllSettings(settings);
-            MessageBox.Show("Настройки успешно сохранены.", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("The settings have been saved successfully.", "Preservation", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -358,8 +358,6 @@ namespace Julia_Launcher
                 this.Parent.Controls.Remove(this);
             }
         }
-
-
 
         private void txtInstallDirectory_TextChanged(object sender, EventArgs e) { }
         private void txtLogDirectory_TextChanged(object sender, EventArgs e) { }

@@ -650,28 +650,160 @@ namespace Julia_Launcher
 
         private async void PlayHelloWorldAsync()
         {
-            string filePath = "output.wav";
+            // 1. Определяем пути
+            // baseDirectory - это папка, где находится твой .exe файл (например, bin\Debug\)
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string scriptName = "script.py"; // Имя твоего Python скрипта
+            string pythonScriptPath = Path.Combine(baseDirectory, scriptName); // Полный путь к script.py
 
-            Process process = new Process();
-            process.StartInfo.FileName = "python";
-            process.StartInfo.Arguments = "script.py";
-            process.EnableRaisingEvents = true;
-            process.Exited += (s, e) =>
+            string outputFileName = "output.wav";
+            string outputAudioFilePath = Path.Combine(baseDirectory, outputFileName); // Ожидаемый полный путь к output.wav
+
+            // 2. Проверка существования Python скрипта
+            if (!File.Exists(pythonScriptPath))
             {
-                // Выполняется в UI-потоке после завершения процесса
-                if (File.Exists(filePath))
+                MessageBox.Show($"Python скрипт не найден: {pythonScriptPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"[C#] Python скрипт не найден: {pythonScriptPath}");
+                return;
+            }
+
+            // 3. Удаляем старый аудиофайл, если он существует (чтобы не проиграть старую версию)
+            if (File.Exists(outputAudioFilePath))
+            {
+                try
                 {
-                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(filePath);
-                    player.Play();
+                    File.Delete(outputAudioFilePath);
+                    Console.WriteLine($"[C#] Старый файл {outputAudioFilePath} удален.");
+                }
+                catch (IOException ex)
+                {
+                    // Не критично, если не удалился, но лучше знать об этом
+                    Console.WriteLine($"[C#] Не удалось удалить старый файл {outputAudioFilePath}: {ex.Message}");
+                }
+            }
+
+            // 4. Настройка и запуск процесса Python
+            Process pythonProcess = new Process();
+            pythonProcess.StartInfo.FileName = "python"; // Или полный путь к python.exe, если "python" не в системной переменной PATH
+            pythonProcess.StartInfo.Arguments = $"\"{pythonScriptPath}\""; // Передаем путь к скрипту. Кавычки важны, если путь содержит пробелы.
+
+            pythonProcess.StartInfo.UseShellExecute = false; // Обязательно для CreateNoWindow и перенаправления вывода
+            pythonProcess.StartInfo.CreateNoWindow = true;   // Не создавать окно консоли для Python
+            pythonProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden; // Дополнительно скрываем окно
+
+            // Устанавливаем рабочую директорию для Python скрипта.
+            // Если script.py сохраняет output.wav относительно своего местоположения,
+            // и script.py находится в baseDirectory, то output.wav тоже будет там.
+            pythonProcess.StartInfo.WorkingDirectory = baseDirectory;
+
+            // Включаем перенаправление стандартного вывода и ошибок для отладки
+            pythonProcess.StartInfo.RedirectStandardOutput = true;
+            pythonProcess.StartInfo.RedirectStandardError = true;
+            pythonProcess.EnableRaisingEvents = true; // Нужно для события Exited
+
+            // Для сбора вывода от Python
+            System.Text.StringBuilder pythonOutputBuilder = new System.Text.StringBuilder();
+            System.Text.StringBuilder pythonErrorBuilder = new System.Text.StringBuilder();
+
+            pythonProcess.OutputDataReceived += (sender, args) => {
+                if (args.Data != null)
+                {
+                    pythonOutputBuilder.AppendLine(args.Data);
+                    Console.WriteLine($"[Python Output]: {args.Data}"); // Выводим в консоль C# для отладки
+                }
+            };
+            pythonProcess.ErrorDataReceived += (sender, args) => {
+                if (args.Data != null)
+                {
+                    pythonErrorBuilder.AppendLine(args.Data);
+                    Console.WriteLine($"[Python Error]: {args.Data}"); // Выводим в консоль C# для отладки
+                }
+            };
+
+            // 5. Обработчик завершения процесса Python
+            pythonProcess.Exited += (s, e) =>
+            {
+                // Этот код выполнится ПОСЛЕ того, как Python скрипт завершит свою работу.
+                // Важно: этот обработчик выполняется в отдельном потоке.
+                // Любые операции с UI (например, MessageBox) должны выполняться через Invoke/BeginInvoke.
+
+                string capturedOutput = pythonOutputBuilder.ToString();
+                string capturedError = pythonErrorBuilder.ToString();
+
+                // Проверяем код завершения Python скрипта (0 обычно означает успех)
+                if (pythonProcess.ExitCode == 0)
+                {
+                    Console.WriteLine($"[C#] Python скрипт успешно завершен.");
+                    if (File.Exists(outputAudioFilePath))
+                    {
+                        Console.WriteLine($"[C#] Файл {outputAudioFilePath} найден. Попытка воспроизведения...");
+                        try
+                        {
+                            // Воспроизведение звука
+                            Action playSoundAction = () => {
+                                using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(outputAudioFilePath))
+                                {
+                                    player.Play(); // Асинхронное воспроизведение. Для синхронного используйте player.PlaySync();
+                                }
+                                Console.WriteLine($"[C#] Воспроизведение {outputAudioFilePath} запущено.");
+                            };
+
+                            // Если этот код вызывается из UserControl, который является частью Windows Forms
+                            if (this.InvokeRequired)
+                            {
+                                this.BeginInvoke(playSoundAction); // Используем BeginInvoke для асинхронного вызова в UI потоке
+                            }
+                            else
+                            {
+                                playSoundAction();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            string errorMsg = $"[C#] Ошибка воспроизведения звука: {ex.Message}";
+                            Console.WriteLine(errorMsg);
+                            this.BeginInvoke((Action)(() => {
+                                MessageBox.Show(errorMsg, "Ошибка звука", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }));
+                        }
+                    }
+                    else
+                    {
+                        string errorMsg = $"[C#] Ошибка: аудиофайл {outputAudioFilePath} не найден после выполнения скрипта.\nPython Output:\n{capturedOutput}\nPython Error:\n{capturedError}";
+                        Console.WriteLine(errorMsg);
+                        this.BeginInvoke((Action)(() => {
+                            MessageBox.Show(errorMsg, "Ошибка генерации аудио", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }));
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"Ошибка: файл {filePath} не найден.");
+                    string errorMsg = $"[C#] Python скрипт завершился с ошибкой (код: {pythonProcess.ExitCode}).\nPython Output:\n{capturedOutput}\nPython Error:\n{capturedError}";
+                    Console.WriteLine(errorMsg);
+                    this.BeginInvoke((Action)(() => {
+                        MessageBox.Show(errorMsg, "Ошибка Python скрипта", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }));
                 }
-            };
-            process.Start();
 
-            // UI остаётся отзывчивым
+                pythonProcess.Dispose(); // Освобождаем ресурсы процесса
+            };
+
+            // 6. Запуск процесса
+            try
+            {
+                pythonProcess.Start();
+                pythonProcess.BeginOutputReadLine(); // Начинаем асинхронное чтение стандартного вывода
+                pythonProcess.BeginErrorReadLine();  // Начинаем асинхронное чтение стандартных ошибок
+                Console.WriteLine("[C#] Python процесс запущен...");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось запустить Python процесс: {ex.Message}", "Ошибка запуска Python", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"[C#] Не удалось запустить Python процесс: {ex.Message}");
+                pythonProcess.Dispose();
+            }
+            // Метод PlayHelloWorldAsync завершит выполнение здесь, а Python-скрипт продолжит работать в фоне.
+            // UI останется отзывчивым.
         }
     }
 }

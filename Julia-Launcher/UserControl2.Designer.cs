@@ -43,7 +43,6 @@
             label13 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             glControl1 = new OpenTK.GLControl.GLControl();
-            label7 = new System.Windows.Forms.Label();
             btnModel = new System.Windows.Forms.Button();
             trkSpeechRate = new System.Windows.Forms.TrackBar();
             trkVolume = new System.Windows.Forms.TrackBar();
@@ -230,22 +229,13 @@
             glControl1.TabIndex = 21;
             glControl1.Click += glControl1_Click_2;
             // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(33, 503);
-            label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(38, 15);
-            label7.TabIndex = 22;
-            label7.Text = "label7";
-            // 
             // btnModel
             // 
             btnModel.Location = new System.Drawing.Point(15, 540);
             btnModel.Name = "btnModel";
             btnModel.Size = new System.Drawing.Size(457, 71);
             btnModel.TabIndex = 23;
-            btnModel.Text = "button1";
+            btnModel.Text = "Choose";
             btnModel.UseVisualStyleBackColor = true;
             btnModel.Click += btnModel_Click;
             // 
@@ -276,11 +266,11 @@
             // 
             // btnAddClothing
             // 
-            btnAddClothing.Location = new System.Drawing.Point(182, 495);
+            btnAddClothing.Location = new System.Drawing.Point(182, 451);
             btnAddClothing.Name = "btnAddClothing";
-            btnAddClothing.Size = new System.Drawing.Size(75, 23);
+            btnAddClothing.Size = new System.Drawing.Size(290, 23);
             btnAddClothing.TabIndex = 27;
-            btnAddClothing.Text = "button1";
+            btnAddClothing.Text = "Test";
             btnAddClothing.UseVisualStyleBackColor = true;
             btnAddClothing.Click += btnAddClothing_Click;
             // 
@@ -294,7 +284,6 @@
             Controls.Add(trkVolume);
             Controls.Add(trkSpeechRate);
             Controls.Add(btnModel);
-            Controls.Add(label7);
             Controls.Add(glControl1);
             Controls.Add(label6);
             Controls.Add(label13);
@@ -312,7 +301,7 @@
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "UserControl2";
-            Size = new System.Drawing.Size(1171, 626); 
+            Size = new System.Drawing.Size(1171, 626);
             ((System.ComponentModel.ISupportInitialize)trkHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkWeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkAge).EndInit();
@@ -342,7 +331,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label6;
         private OpenTK.GLControl.GLControl glControl1;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnModel;
         private System.Windows.Forms.TrackBar trkSpeechRate;
         private System.Windows.Forms.TrackBar trkVolume;
